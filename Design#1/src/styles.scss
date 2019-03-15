@@ -90,6 +90,7 @@ main {
 	right: 0;
 
 	pointer-events: none;
+	overflow: hidden;
 
 	z-index: 6;
 
@@ -98,8 +99,8 @@ main {
 		bottom: 100%;
 
 		@for $i from 1 through 3 {
-			.layer {
-				transition: top .4s $t_curve (($i - 1) / 10)s, bottom .4s $t_curve (($i - 1) / 10 + .2)s 
+			&:nth-child(#{$i}) {
+				transition: top 2s $t_curve (($i - 1) / 10) * 400ms * $i, bottom 2s $t_curve (($i - 1) / 10 + .3) * 1000ms;
 			}
 		}
 
