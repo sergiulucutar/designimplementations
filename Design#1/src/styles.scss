@@ -47,6 +47,8 @@ table {
 	border-spacing: 0;
 }
 
+$freshDelay: 1.5s;
+
 $c_red: #BF9E91;
 $c_green: #97C6B5;
 $c_yellow: #CFC489;
@@ -59,6 +61,9 @@ $t_curve: cubic-bezier(.55, 0, .1, 1);
 		font-family: 'Syncopate', sans-serif;
 		font-weight: bold;
 
+		opacity: 1;
+		transform: translateY(0);
+		transition: opacity 1s $t_curve, transform 1s $t_curve;
 		box-sizing: border-box;
 	}
 }
@@ -72,6 +77,26 @@ main {
 	display: grid;
 	grid-template-rows: 100px auto 100px;
 	grid-template-columns: 100px 1fr 1fr 100px;
+
+	&.fresh {
+		.hero-title h1 {
+			opacity: 0;
+		}
+
+		.menu_top span {
+			transform: translateY(-100%);
+			opacity: 0;
+		}
+
+		.menu_left a {
+			opacity: 0;
+		}
+
+		.menu_bottom a {
+			transform: translateY(100%);
+			opacity: 0;
+		}
+	}
 }
 
 .layer {
@@ -91,18 +116,14 @@ main {
 
 	pointer-events: none;
 	overflow: hidden;
-
 	z-index: 6;
 
 	.layer {
-		top: 100%;
-		bottom: 100%;
+		top: 0;
+		height: 0;
 
-		@for $i from 1 through 3 {
-			&:nth-child(#{$i}) {
-				transition: top 2s $t_curve (($i - 1) / 10) * 400ms * $i, bottom 2s $t_curve (($i - 1) / 10 + .3) * 1000ms;
-			}
-		}
+		pointer-events: all;
+		transition: height 1.5s $t_curve;
 
 		&:nth-child(1) {
 			background-color: $c_red;
@@ -117,9 +138,27 @@ main {
 		}
 	}
 
-	&.active .layer{
+	&.active {
+		.layer {
+			height: 100%;
+	
+			transition: height 0s linear .25s;
+			@for $i from 1 through 3 {
+				&:nth-child(#{$i}) {
+					animation: load 1.5s $t_curve (($i - 1) / 10) * 400ms * $i forwards;
+				}
+			}
+		}
+	}
+}
+
+@keyframes load {
+	from {
+		top: 100%;
+	}
+
+	to {
 		top: 0;
-		bottom: 0;
 	}
 }
 
@@ -202,8 +241,6 @@ main {
 			background-position: 125% 50%;
 			background-repeat: no-repeat;
 			background-size: auto 120%;
-
-			// transition: background-position 1.5s $t_curve, background-size 1.5s $t_curve, transform 1.5s $t_curve !important;
 			
 			&:not(:first-child) {
 				transition: background-position 1.5s $t_curve .75s, background-size 1.5s $t_curve .75s, transform 1.5s $t_curve .75s !important;
@@ -243,6 +280,8 @@ main {
 			position: absolute;
 			font-size: 20vw;
 			opacity: .2;
+
+			transition-delay: $freshDelay;
 		}
 
 		h2, h3 {
@@ -311,6 +350,7 @@ main {
 		z-index: 5;
 
 		a {
+			display: inline-block;
 			text-decoration: none;
 		}
 	}
@@ -325,6 +365,11 @@ main {
 
 		> *:last-child {
 			margin-right: 50px;
+		}
+
+		span {
+			display: inline-block;
+			transition-delay: $freshDelay / 2;
 		}
 	}
 
@@ -351,6 +396,7 @@ main {
 				opacity: .7;
 	
 				transform: rotate(-90deg);
+				transition-delay: $freshDelay;
 			}
 		}
 
@@ -361,10 +407,17 @@ main {
 		grid-column: 2;
 
 		a {
+			padding: 7px;
 			margin-right: 50px;
 
+			
+			@for $i from 1 through 4 {
+				&:nth-child(#{$i}) {
+					transition-delay: $freshDelay + $i * .1s;
+				}
+			}
+
 			&.active {
-				padding: 7px;
 				border-bottom: 2px solid white;
 			}
 		}

@@ -36,19 +36,49 @@ function slide() {
     }
 }
 
+function reset() {
+    layers.forEach(layer => {
+        layer.classList.remove('layer-active');
+        layer.classList.remove('layer-active-next');
+        layer.classList.remove('layer-active-prev');
+        if(layer.dataset.scene == 0) {
+            layer.classList.add('layer-active');
+        }
+        if(layer.dataset.scene == 1) {
+            layer.classList.add('layer-active-next');
+        }
+    });
+    
+    menu.forEach(item => {
+        item.classList.remove('active');
+    });
+}
+
 const loader = document.querySelector('.loader');
+const parent = document.querySelector('main');
+const menu = [...document.querySelectorAll('.menu_bottom a')];
 window.onload = function() {
     document.addEventListener('wheel', this.slide.bind(this));
+    parent.classList.remove('fresh');
     slide();
 
-    const menu = [...document.querySelectorAll('.menu_bottom a')];
     menu.forEach(el => {
         el.addEventListener('click', event => {
-            event.preventDefault();
             loader.classList.add('active');
+            event.preventDefault();
+            
+            //Simulate route changed
             setTimeout(() => {
-                loader.classList.remove('active');
+                index=0;
+                prevIndex=0;
+                reset();
+                event.target.classList.add('active');
             }, 2000);
+
+            setTimeout(() => {
+                slide();
+                loader.classList.remove('active');
+            }, 4000);
         });
     });
 }
