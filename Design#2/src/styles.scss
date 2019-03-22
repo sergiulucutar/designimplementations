@@ -1,0 +1,275 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+:root {
+	* {
+		font-family: 'Montserrat', sans-serif;
+		// font-size: 1rem;
+
+		box-sizing: border-box;
+	}
+}
+
+body {
+	font-size: 10px;
+}
+
+main {
+	position: relative;
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+	grid-template-columns: 1.5fr 1fr;
+
+	width: 100vw;
+	height: 100vh;
+	padding: 20px;
+
+	background-color: transparent;
+
+	z-index: 1;
+
+	.logo {
+		grid-row: 1;
+		grid-column: 1;
+
+		color: white;
+		font-size: 1rem;
+
+		pointer-events: none;
+	}
+
+	menu {
+		grid-row: 1;
+		grid-column: 2;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		height: 80px;
+		padding: 20px 50px;
+
+		background-color: white;
+		
+		a {
+			font-size: .8rem;
+			font-weight: bold;
+
+			color: black;
+			text-decoration: none;
+		}
+	}
+
+	h1 {
+		grid-row: 2;
+
+		color: white;
+
+		font-size: 10rem;
+		font-weight: 900;
+		line-height: .8;
+
+		pointer-events: none;
+	}
+
+	.info {
+		grid-row: 2;
+		grid-column: 2;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		padding: 30px 50px;
+
+		background-color: white;
+
+		h2 {
+			font-size: 4rem;
+			font-weight: 900;
+		}
+
+		h3 {
+			font-size: 2rem;
+		}
+
+		&_footer {
+			font-size: 1rem;
+
+			a {
+				display: block;
+				color: red;
+				text-decoration: none;
+			}
+		}
+	}
+}
+
+.canvas {
+	width: 110vw;
+	height: 110vh;
+	transform: translate(-10vw);
+
+	&_wrapper {
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		width: 100vw;
+		height: 100vh;
+		overflow: hidden;
+		
+		z-index: -1;
+		cursor: url('data:image/svg+xml;utf8,<svg id="svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20"><circle cx="10" cy="10" r="10" style="fill: red;"/></svg>') 10 10, pointer;
+	}
+}
+
+.slider {
+	&_controls {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+
+		width: 210px;
+		height: 210px;
+
+		transform: translate(-50%, -75%);
+		// cursor: none;
+		cursor: url('data:image/svg+xml;utf8,<svg id="svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20"><circle cx="10" cy="10" r="10" style="fill: red;"/></svg>') 10 10, pointer;
+
+		> div {
+			position: relative;
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			width: 100%;
+			height: 100%;
+		}
+
+		&_buttons {
+			position: absolute;
+
+			button {
+				padding: 20px;
+
+				font-size: 2rem;
+				color: white;
+
+				border: 1px solid transparent;
+				border-radius: 50%;
+				background-color: transparent;
+
+				transition: padding .2s cubic-bezier(.55, 0, .1, 1), border .2s cubic-bezier(.55, 0, .1, 1);
+				cursor: url('data:image/svg+xml;utf8,<svg id="svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20"><circle cx="10" cy="10" r="10" style="fill: red;"/></svg>') 10 10, pointer;
+
+				&:hover {
+
+					// cursor: none;
+				}
+			}
+		}
+	}
+
+	&_circle {
+		width: 100%;
+		height: 100%;
+
+		circle {
+			cx: 105px;
+			cy: 105px;
+			r: 100px;
+			stroke-width: 1px;
+			stroke: white;
+			stroke-dasharray: 628px 628px;
+			stroke-dashoffset: 100px;
+
+
+			fill: transparent;
+
+			perspective: 1000px;
+
+			transform-origin: 50% 50%;
+			// transition: transform .5s cubic-bezier(.55, 0, .1, 1);
+			animation: loader-spin-rotate 2s cubic-bezier(.55, 0, .1, 1) infinite, loader-spin-gap 2s linear infinite;
+		}
+
+		&:hover_circle {
+		}
+	}
+}
+
+@keyframes loader-spin-rotate {
+	0% {	
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes loader-spin-gap {
+	0% {
+		stroke-dashoffset: 0;
+	}
+
+	50% {
+		stroke-dashoffset: 100px;
+	}
+
+	75% {
+		stroke-dashoffset: 0;
+	}
+
+	100% {
+		stroke-dashoffset: 0;
+	}
+}
