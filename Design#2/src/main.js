@@ -4,12 +4,44 @@ const mainEl = document.querySelector('main');
 const vCanvas = document.createElement('canvas');
 const ctx = vCanvas.getContext('2d');
 
-function svgUrl(svgString, width, height, viewBoxWidth, viewBoxHeight) {
-    viewBoxWidth = viewBoxWidth || width;
-    viewBoxHeight = viewBoxHeight || width;
-    return `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="${width}" height="${height}" viewBox="0 0 ${viewBoxWidth} ${viewBoxHeight}">${svgString}</svg>')`;
-  }
+const renderer = PIXI.autoDetectRenderer(canvas.offsetWidth, canvas.offsetHeight, {
+    transparent: true,
+    view: canvas
+});
+const container = new PIXI.Container();
+container.sortableChildren = true;
+const stage = new PIXI.Stage();
+let sliderIndex = 0;
+stage.addChild(container);
 
+function loadImages() {
+    const images = [
+        'http://localhost:3000/photo.jpeg',
+        'https://images.unsplash.com/photo-1553383408-37f7039b19a3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80',
+        'https://images.unsplash.com/photo-1553431294-c75e827a5e57?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'
+    ];
+
+    for(let i of images) {
+        const texture = new PIXI.Texture.fromImage(i, true);
+        const img = new PIXI.Sprite(texture);
+        img.anchor.set(.5);
+        img.x = renderer.width / 2;
+        img.y = renderer.height / 2;
+        img.alpha = 0;
+        container.addChild(img);
+    }
+    container.children[0].alpha = 1;
+}
+
+
+function loop() {
+    if(isAnimationPlaying) {
+        // container.filters[0].scale.x += 2;
+        // container.filters[0].scale.y += 2;
+        renderer.render(stage);
+    }
+    requestAnimationFrame(loop);
+}
 
 window.onload = function () {
     vCanvas.width = 400;
@@ -21,46 +53,85 @@ window.onload = function () {
     ctx.fillStyle = grd;
     ctx.fillRect(0, 0, 400, 400);
 
-    const renderer = PIXI.autoDetectRenderer(canvas.offsetWidth, canvas.offsetHeight, {
-        transparent: true,
-        view: canvas
-    });
+    loadImages();
 
-    const stage = new PIXI.Stage();
-    const container = new PIXI.Container();
-    stage.addChild(container);
+    const bg_disTexture = new PIXI.Texture.from('http://i.imgur.com/2yYayZk.png', true);
+    const bg_disSprite = new PIXI.Sprite.from(bg_disTexture);
+    const bg_disFilter = new PIXI.filters.DisplacementFilter(bg_disSprite);
+    bg_disTexture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
 
-    const bg = PIXI.Sprite.fromImage('http://localhost:3000/photo.jpeg');
-    bg.width = canvas.offsetWidth;
-    bg.height = canvas.offsetHeight;
-    bg.position.x = 0;
-    bg.position.y = 0;
-    container.addChild(bg);
 
     const disTexture = PIXI.Sprite.from(vCanvas);
     const filter = new PIXI.filters.DisplacementFilter(disTexture);
-    container.filters = [filter];
+    container.filters = [bg_disFilter];
+    bg_disFilter.scale.x = 0;
+    bg_disFilter.scale.y = 0;
+
     stage.addChild(disTexture);
     filter.scale.x = 150;
     filter.scale.y = -150;
     disTexture.anchor.set(.5);
 
-    // const mousePointer = new PIXI.Graphics();
-    // stage.addChild(mousePointer);
+    const shadows = [...document.querySelectorAll('.shadow')];
 
     mainEl.addEventListener('mousemove', event => {
-        disTexture.position.set(event.clientX + window.innerWidth / 10, event.clientY);
-        // mousePointer.clear();
-        // mousePointer.beginFill(0xff0000);
-        // mousePointer.drawCircle(event.clientX + window.innerWidth / 10, event.clientY, 10);
-        // mousePointer.endFill();
+        // disTexture.position.set(event.clientX + window.innerWidth / 10, event.clientY);
+        for(let child of container.children) {
+            child.position.set(event.clientX + window.innerWidth / 10, event.clientY);
+        }
         renderer.render(stage);
+
+        const clipOverlap =  event.clientX - container.children[sliderIndex].width / 2 - 20;
+        for(let shadow of shadows) {
+            shadow.style['clip-path'] = `polygon(0 0, ${clipOverlap}px 0, ${clipOverlap}px 100%, 0 100%)`
+        }
     });
 
     //Should be removed one the dev server is no longer needed (PIXI JS does not work with a local server)
     setTimeout(() => {
         renderer.render(stage);
-    }, 100);
+    }, 1000);
+    loop();
+}
 
-    // canvas.style.cursor = `${svgUrl('<circle cx="100" cy="100" r="100" fill="red/>', 100, 100, 200, 200)}, auto`;
+
+function getNextSliderValue(delta = 1) {
+    return (sliderIndex + 1) % 3;
+}
+
+let isAnimationPlaying = false;
+const loader = document.querySelector('.slider_circle circle');
+function slide(event) {
+    if(!isAnimationPlaying) {
+        isAnimationPlaying = true;
+        loader.classList.remove('spin');
+        setTimeout(() => {
+            loader.classList.add('spin');
+        }, 50);
+    
+        const prevIndex = sliderIndex;
+        sliderIndex = getNextSliderValue();
+        const timeline = new TimelineMax({
+            onComplete: () => {
+                isAnimationPlaying = false;
+            }
+        });
+
+        if(sliderIndex===0) {
+            timeline.to(container.filters[0].scale, 1, {x: 500, y: 500})
+                    .to(container.children[sliderIndex], 0, {alpha: 1}, 0)
+                    .to(container.children[prevIndex], 1, {alpha: .7}, 0)
+                    .to(container.children[prevIndex], 1, {alpha: 0})
+                    .to(container.filters[0].scale, 1, {x: 0, y: 0}, '-=1');
+
+        } else {
+            timeline.to(container.filters[0].scale, 1, {x: 500, y: 500})
+                    .to(container.children[sliderIndex], 1, {alpha: .3}, 0)
+                    .to(container.children[sliderIndex], 1, {alpha: 1})
+                    .to(container.children[prevIndex], .5, {alpha: 0}, '-=.5')
+                    .to(container.filters[0].scale, 1, {x: 0, y: 0}, '-=1');
+        }
+
+    }
+
 }

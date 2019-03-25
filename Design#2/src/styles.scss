@@ -78,11 +78,27 @@ main {
 		grid-row: 1;
 		grid-column: 1;
 
-		color: white;
+		position: relative;
 		font-size: 1rem;
 
 		pointer-events: none;
+
+		span {
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: block;
+		}
+
+		span:first-child {
+			color: white;
+		}
+
+		.shadow {
+			color: black;
+		}
 	}
+
 
 	menu {
 		grid-row: 1;
@@ -106,16 +122,27 @@ main {
 		}
 	}
 
-	h1 {
+	.title {
 		grid-row: 2;
-
-		color: white;
-
-		font-size: 10rem;
-		font-weight: 900;
-		line-height: .8;
-
+		position: relative;
 		pointer-events: none;
+
+		h1, .shadow {
+			position: absolute;
+			top: 0;
+			left: 0;
+			color: white;
+	
+			font-size: 10rem;
+			font-weight: 900;
+			line-height: .8;
+		}
+
+		.shadow {
+			color: black !important;
+			-webkit-clip-path: polygon(0 0, 15% 0, 15% 100%, 0 100%);
+			clip-path: polygon(0 0, 15% 0, 15% 100%, 0 100%);
+		}
 	}
 
 	.info {
@@ -210,8 +237,8 @@ main {
 				transition: padding .2s cubic-bezier(.55, 0, .1, 1), border .2s cubic-bezier(.55, 0, .1, 1);
 				cursor: url('data:image/svg+xml;utf8,<svg id="svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20"><circle cx="10" cy="10" r="10" style="fill: red;"/></svg>') 10 10, pointer;
 
-				&:hover {
-
+				&:focus {
+					outline: 0;
 					// cursor: none;
 				}
 			}
@@ -226,10 +253,10 @@ main {
 			cx: 105px;
 			cy: 105px;
 			r: 100px;
-			stroke-width: 1px;
+			stroke-width: 3px;
 			stroke: white;
 			stroke-dasharray: 628px 628px;
-			stroke-dashoffset: 100px;
+			stroke-dashoffset: 0;
 
 
 			fill: transparent;
@@ -238,7 +265,10 @@ main {
 
 			transform-origin: 50% 50%;
 			// transition: transform .5s cubic-bezier(.55, 0, .1, 1);
-			animation: loader-spin-rotate 2s cubic-bezier(.55, 0, .1, 1) infinite, loader-spin-gap 2s linear infinite;
+			
+			&.spin {
+				animation: loader-spin-rotate 2s cubic-bezier(.55, 0, .1, 1), loader-spin-gap 2s linear;
+			}
 		}
 
 		&:hover_circle {
@@ -261,11 +291,11 @@ main {
 		stroke-dashoffset: 0;
 	}
 
-	50% {
+	60% {
 		stroke-dashoffset: 100px;
 	}
 
-	75% {
+	85% {
 		stroke-dashoffset: 0;
 	}
 
