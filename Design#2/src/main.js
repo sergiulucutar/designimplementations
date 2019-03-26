@@ -76,14 +76,16 @@ window.onload = function () {
 
     mainEl.addEventListener('mousemove', event => {
         // disTexture.position.set(event.clientX + window.innerWidth / 10, event.clientY);
+        const pos = keepSliderInVounds(event);
         for(let child of container.children) {
-            child.position.set(event.clientX + window.innerWidth / 10, event.clientY);
+            child.position.set(pos.x + window.innerWidth / 10, pos.y);
         }
         renderer.render(stage);
 
-        const clipOverlap =  event.clientX - container.children[sliderIndex].width / 2 - 20;
+        // const clipOverlap = pos.x - container.children[sliderIndex].width / 2 - 20;
         for(let shadow of shadows) {
-            shadow.style['clip-path'] = `polygon(0 0, ${clipOverlap}px 0, ${clipOverlap}px 100%, 0 100%)`
+            console.log(getPolygon(event, shadow));
+            shadow.style['clip-path'] = getPolygon(event, shadow);
         }
     });
 
@@ -92,6 +94,61 @@ window.onload = function () {
         renderer.render(stage);
     }, 1000);
     loop();
+}
+
+function getPolygon(event, shadow) {
+    const spriteBounds = {
+        x: container.children[sliderIndex].x - window.innerWidth / 10 - container.children[sliderIndex].width / 2,
+        y: container.children[sliderIndex].y - container.children[sliderIndex].height / 2,
+    }
+
+    const shadowBounds = shadow.getBoundingClientRect();
+
+    const intersection = [];
+    intersection.push({
+        x: Math.max(spriteBounds.x, shadowBounds.left)  - 20,
+        y: Math.max(spriteBounds.y, shadowBounds.top) - shadowBounds.top
+    });
+    
+    intersection.push({
+        x: Math.min(spriteBounds.x + container.children[sliderIndex].width, shadowBounds.right)  - 20,
+        y: Math.max(spriteBounds.y, shadowBounds.top) - shadowBounds.top
+    });
+
+    
+    intersection.push({
+        x: Math.min(spriteBounds.x + container.children[sliderIndex].width, shadowBounds.right)  - 20,
+        y: Math.min(spriteBounds.y + container.children[sliderIndex].height, shadowBounds.bottom) - shadowBounds.top
+    });
+
+    intersection.push({
+        x: Math.max(spriteBounds.x, shadowBounds.left)  - 20,
+        y: Math.min(spriteBounds.y + container.children[sliderIndex].height, shadowBounds.bottom) - shadowBounds.top
+    });
+
+    return `polygon(${intersection[0].x}px ${intersection[0].y}px, ${intersection[1].x}px ${intersection[1].y}px, ${intersection[2].x}px ${intersection[2].y}px, ${intersection[3].x}px ${intersection[3].y}px)`;
+}
+
+function keepSliderInVounds(event) {
+    const pos = {
+        x: event.clientX,
+        y: event.clientY
+    };
+
+    if(pos.x < window.innerWidth * .2) {
+        pos.x = window.innerWidth * .2;
+    }
+    if(pos.x > window.innerWidth - window.innerWidth * .2) {
+        pos.x = window.innerWidth - window.innerWidth * .2;
+    }
+    if(pos.y < window.innerHeight * .2) {
+        pos.y = window.innerHeight * .2;
+    }
+    if(pos.y > window.innerHeight - window.innerHeight * .2) {
+        pos.y = window.innerHeight - window.innerHeight * .2;
+    }
+    
+    return pos;
 }
 
 

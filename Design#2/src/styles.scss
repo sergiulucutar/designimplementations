@@ -91,11 +91,11 @@ main {
 		}
 
 		span:first-child {
-			color: white;
+			color: black;
 		}
 
 		.shadow {
-			color: black;
+			color: white;
 		}
 	}
 
@@ -131,7 +131,7 @@ main {
 			position: absolute;
 			top: 0;
 			left: 0;
-			color: white;
+			color: black;
 	
 			font-size: 10rem;
 			font-weight: 900;
@@ -139,7 +139,7 @@ main {
 		}
 
 		.shadow {
-			color: black !important;
+			color: white !important;
 			-webkit-clip-path: polygon(0 0, 15% 0, 15% 100%, 0 100%);
 			clip-path: polygon(0 0, 15% 0, 15% 100%, 0 100%);
 		}
@@ -227,7 +227,7 @@ main {
 			button {
 				padding: 20px;
 
-				font-size: 2rem;
+				font-size: 3rem;
 				color: white;
 
 				border: 1px solid transparent;
