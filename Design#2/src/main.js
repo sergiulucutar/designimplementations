@@ -36,8 +36,6 @@ function loadImages() {
 
 function loop() {
     if(isAnimationPlaying) {
-        // container.filters[0].scale.x += 2;
-        // container.filters[0].scale.y += 2;
         renderer.render(stage);
     }
     requestAnimationFrame(loop);
@@ -75,16 +73,13 @@ window.onload = function () {
     const shadows = [...document.querySelectorAll('.shadow')];
 
     mainEl.addEventListener('mousemove', event => {
-        // disTexture.position.set(event.clientX + window.innerWidth / 10, event.clientY);
         const pos = keepSliderInVounds(event);
         for(let child of container.children) {
             child.position.set(pos.x + window.innerWidth / 10, pos.y);
         }
         renderer.render(stage);
 
-        // const clipOverlap = pos.x - container.children[sliderIndex].width / 2 - 20;
         for(let shadow of shadows) {
-            console.log(getPolygon(event, shadow));
             shadow.style['clip-path'] = getPolygon(event, shadow);
         }
     });
