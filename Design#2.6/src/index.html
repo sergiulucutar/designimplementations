@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="styles.css" type="text/css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+            <div class="canvas_wrapper">
+                <canvas class="canvas"></canvas>
+            </div>
+            <div class="slider_controls">
+                <div>
+                    <svg class="slider_circle">
+                        <circle cx="105" cy="105" r="100" />
+                    </svg>
+                    <div class="slider_controls_buttons">
+                        <button onmouseover="slide(1); event.preventDefault();">></button>
+                    </div>
+                </div>
+            </div>
+            <div class="logo">
+                <span>LOGO<br>COMPANY</span>
+                <span class="shadow">LOGO<br>COMPANY</span>
+            </div>
+            <menu>
+                <a href="">About Us</a>
+                <a href="">About the Platform</a>
+                <a href="">More Stuff</a>
+            </menu>
+            <div class="title">
+                <h1>WELCOME TO SEPIA EFFECT</h1>
+                <h1 class="shadow">WELCOME TO SEPIA EFFECT</h1>
+            </div>
+            <section class="info">
+                <div class="info_header">
+                    <h2>PEET<br>DULLAERT</h2>
+                    <h3>$ / S 19 / 2018-2 Campaign</h3>
+                </div>
+                <div class="info_footer">
+                    GET MORE INSPIRATION EVERY DAY
+                    <a href="">VIEW MORE</a>
+                </div>
+            </section>
+        </main>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.6/pixi.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
+        <script src="main.js"></script>
+    </body>
+</html>
