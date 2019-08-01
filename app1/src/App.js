@@ -10,12 +10,29 @@ import About from './pages/About';
 export default class App extends React.Component {
   constructor() {
     super();
+
+    this.state = {
+      menuActive: false
+    };
+    this.toggleMenu = this.toggleMenu.bind(this);
+  }
+
+  toggleMenu() {
+    this.setState({
+      menuActive: !this.state.menuActive
+    });
   }
 
   render() {
     return (
       <section className="page">
-      <button className="menu_button">Menu</button>
+      <button className="menu_button" onClick={this.toggleMenu}>Menu</button>
+      <menu
+        className={this.state.menuActive ? "menu menu-displayed" : "menu"}
+        >
+        <a href="">Home</a>
+        <a href="">About</a>
+      </menu>
       <Router>
         <Suspense fallback={<div>Loading...</div>} />
         <Switch>
