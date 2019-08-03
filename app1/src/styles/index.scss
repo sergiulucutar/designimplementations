@@ -67,8 +67,16 @@ html {
 
   background-color: var(--c_blue-light);
 
-  color: var(--c_red);
+  color: white;
 
   z-index: 2;
   cursor: pointer;
+}
+
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
