@@ -1,8 +1,10 @@
 import React, { lazy, Suspense } from 'react';
 import { render } from 'react-dom';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+
 import Home from './pages/Home';
 import About from './pages/About';
+import { Menu } from './components/menu';
 
 // const Home = lazy(() => import('./pages/Home'));
 // const About = lazy(() => import('./pages/About'));
@@ -27,12 +29,7 @@ export default class App extends React.Component {
     return (
       <section className="page">
       <button className="menu_button" onClick={this.toggleMenu}>Menu</button>
-      <menu
-        className={this.state.menuActive ? "menu menu-displayed" : "menu"}
-        >
-        <a href="">Home</a>
-        <a href="">About</a>
-      </menu>
+      <Menu active={this.state.menuActive} />
       <Router>
         <Suspense fallback={<div>Loading...</div>} />
         <Switch>
