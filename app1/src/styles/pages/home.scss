@@ -3,26 +3,46 @@
   grid-template-rows: 80px repeat(4, 1fr);
   grid-template-columns: 80px 1fr 2fr 2fr 1fr 80px;
 
-  article {
+  .articles {
     grid-row: 2 / span 2;
     grid-column: 3;
 
-    //THis needs to change
-    padding-right: 80px;
+    position: relative;
 
-    h2 {
-      padding: 20px 0;
-      margin-bottom: 20px;
-      font-size: 2rem;
+    .layer {
+      opacity: 0;
+      z-index: 0;
 
-      background-color: var(--c_blue-light);
-      color: white;
+      transition: opacity .6s cubic-bezier(.55, 0, .1, 1);
+
+      &-displayed {
+        opacity: 1;
+        z-index: 1;
+
+        transition: opacity .6s cubic-bezier(.55, 0, .1, 1) .3s;
+      }
+
     }
-
-    p {
-      line-height: 1.5;
+    
+    article {
+      //THis needs to change
+      padding-right: 80px;
+  
+      h2 {
+        padding: 20px 0;
+        margin-bottom: 20px;
+        font-size: 2rem;
+  
+        background-color: var(--c_blue-light);
+        color: white;
+      }
+  
+      p {
+        line-height: 1.5;
+      }
     }
   }
+
 
   .hero_index {
     grid-row: 5;
@@ -111,13 +131,15 @@
   }
 
   menu {
-    grid-row: 3 / span 2;
+    grid-row: 2 / span 3;
     grid-column: 1;
 
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
+
+    padding-bottom: 80px;
 
     a {
       background-color: white;
@@ -143,7 +165,7 @@
     text-align: center;
 
     color: white;
-    font-family: 'Slabo 27px', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 2rem;
     letter-spacing: 5px;
 

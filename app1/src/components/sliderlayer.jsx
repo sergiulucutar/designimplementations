@@ -21,7 +21,7 @@ export default class SliderLayer extends React.Component {
         return (
             <div
             className={classes}
-            style={{backgroundImage: `url(${bgImg})`}}></div>
+            style={{backgroundImage: `url(${bgImg})`}}>{this.props.children}</div>
         );
     }
 }
