@@ -2,9 +2,9 @@ import React, { lazy, Suspense } from 'react';
 import { render } from 'react-dom';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 
-import Home from './pages/Home';
+import Home from './pages/home/Home';
 import About from './pages/About';
-import { Menu } from './components/menu';
+import { Menu } from './components/menu/menu';
 
 // const Home = lazy(() => import('./pages/Home'));
 // const About = lazy(() => import('./pages/About'));

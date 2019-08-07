@@ -1,5 +1,7 @@
+import './home.scss';
+
 import React from 'react';
-import SliderLayer from '../components/sliderlayer';
+import SliderLayer from '../../components/layer/sliderlayer';
 
 export default class Home extends React.Component {
 
