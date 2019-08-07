@@ -20,10 +20,10 @@ export class Menu extends React.Component {
       className={this.state.active ? "menu menu-displayed" : "menu"}
       >
         <div>
-        <a href="">home</a>
-        <a href="">about</a>
-        <a href="">members</a>
-        <a href="">contact</a>
+        <a href="" className="corners-hover">home</a>
+        <a href="" className="corners-hover">about</a>
+        <a href="" className="corners-hover">members</a>
+        <a href="" className="corners-hover">contact</a>
         </div>
       </menu>
     );

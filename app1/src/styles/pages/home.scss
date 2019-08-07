@@ -5,11 +5,20 @@
 
   .articles {
     grid-row: 2 / span 2;
-    grid-column: 3;
+    grid-column: 2 / span 2;
 
     position: relative;
 
     .layer {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+
+      padding-left: 80px;
+
+      color: var(--c_blue-light);
+
       opacity: 0;
       z-index: 0;
 
@@ -20,6 +29,27 @@
         z-index: 1;
 
         transition: opacity .6s cubic-bezier(.55, 0, .1, 1) .3s;
+      }
+
+      h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 12rem;
+      }
+
+      button {
+        align-self: center;
+
+        padding: 10px 20px;
+        border: none;
+
+        background-color: white;
+
+        color: var(--c_red);
+
+        // background-color: var(--c_red);
+        // color: white;
+
+        font-size: 1.6rem;
       }
 
     }
@@ -57,7 +87,7 @@
     overflow: hidden;
 
     .hero_index_digit {
-      color: var(--c_red);
+      color: var(--c_blue-light);
     }
   }
 
@@ -81,10 +111,9 @@
       padding: 30px;
       border: none;
 
-      color: white;
-
       background-color: var(--c_red);
-
+      
+      color: white;
     }
   }
 
@@ -137,13 +166,13 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: flex-start;
+    align-items: center;
 
     padding-bottom: 80px;
 
     a {
       background-color: white;
-      padding: 20px 0;
+      padding: 20px;
 
       color: var(--c_red);
       font-size: 1.4rem;
@@ -151,6 +180,7 @@
 
       transform: rotate(-90deg);
       transform-origin: 50% 50%;
+      backface-visibility: hidden;
     }
   }
 

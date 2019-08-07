@@ -28,15 +28,15 @@ export default class App extends React.Component {
   render() {
     return (
       <section className="page">
-      <button className="menu_button" onClick={this.toggleMenu}>Menu</button>
-      <Menu active={this.state.menuActive} />
-      <Router>
-        <Suspense fallback={<div>Loading...</div>} />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
-        </Switch>
-      </Router>
+        <button className="menu_button" onClick={this.toggleMenu}>Menu</button>
+        <Menu active={this.state.menuActive} />
+        <Router>
+          <Suspense fallback={<div>Loading...</div>} />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/about" component={About} />
+          </Switch>
+        </Router>
       </section>
     );
   }
