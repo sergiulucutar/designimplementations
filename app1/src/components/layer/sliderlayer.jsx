@@ -15,8 +15,8 @@ export default class SliderLayer extends React.Component {
     }
 
     render() {
-        const {sliderIndex, index, bgImg} = this.state;
-        const classes = `layer ${sliderIndex == index ? 'layer-displayed' : ''} ${(sliderIndex + 1) % 3 + 1 == index ? 'layer-displayed-prev' : ''}`;
+        const {bgImg} = this.state;
+        const classes = `layer ${this.state.className}`;
 
         return (
             <div

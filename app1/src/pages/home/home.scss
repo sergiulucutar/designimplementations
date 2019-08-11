@@ -4,18 +4,19 @@
   grid-template-columns: 80px 1fr 2fr 2fr 1fr 80px;
 
   .articles {
-    grid-row: 2 / span 2;
-    grid-column: 2 / span 2;
+    grid-row: 2 / span 3;
+    grid-column: 1 / span 3;
+
+    @media only screen and (min-width: 767px) {
+      grid-column: 2 / span 2;
+    }
 
     position: relative;
 
     .layer {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-
-      padding-left: 80px;
+      display: grid;
+      grid-template-rows: 5fr 1fr;
+      grid-template-columns: 1fr;
 
       color: var(--c_blue-light);
 
@@ -31,13 +32,37 @@
         transition: opacity .6s cubic-bezier(.55, 0, .1, 1) .3s;
       }
 
+      @media only screen and (min-width: 767px) {
+        grid-template-rows: 2fr 1fr;
+        grid-template-columns: 2fr 1fr 1fr;
+      }
+
       h1 {
+        grid-row: 1;
+        grid-column: 1 / span 3;
+
+        align-self: flex-end;
+
         font-family: 'Playfair Display', serif;
-        font-size: 10vw;
+        font-size: 10rem;
+        transform: rotate(0);
+        transform-origin: 50% 50%;
+
+        @media only screen and (max-width: 767px) {
+          grid-row: 1;
+          // grid-column: 1 / span 3;
+          align-self: center;
+          font-size: 15vw;
+          transform: rotate(-90deg);
+        }
       }
 
       button {
-        align-self: center;
+        grid-row: 2;
+        grid-column: 1;
+
+        align-self: flex-start;
+        justify-self: center;
 
         padding: 10px 20px;
         border: none;
@@ -45,18 +70,20 @@
         background-color: white;
 
         color: var(--c_red);
-
-        // background-color: var(--c_red);
-        // color: white;
-
         font-size: 1.6rem;
+
+        @media only screen and (min-width: 767px) {
+          grid-column: 2;
+        }
       }
 
     }
     
     article {
       //THis needs to change
-      padding-right: 80px;
+      @media only screen and (min-width: 767px) {
+        padding-right: 80px;
+      }
   
       h2 {
         padding: 20px 0;
@@ -73,10 +100,9 @@
     }
   }
 
-
   .hero_index {
     grid-row: 5;
-    grid-column: 5;
+    grid-column: 4 / -1;
 
     display: flex;
     justify-content: flex-end;
@@ -89,17 +115,29 @@
     .hero_index_digit {
       color: var(--c_blue-light);
     }
+
+    @media only screen and (min-width: 1000px) {
+      grid-column: 4 / -2;
+    }
   }
 
   .hero_button {
 
     &-next {
-      grid-row: 4;
-      grid-column: 3;
+      grid-row: 5;
+      grid-column: 4;
+      justify-self: flex-end;
+      
+      z-index: 1;
 
-      display: flex;
-      justify-content: flex-end;
-      align-items: flex-end;
+      @media only screen and (min-width: 767px) {
+        grid-row: 4;
+        grid-column: 3;
+
+        justify-self: flex-end;
+        align-self: flex-end;
+      }
+
     }
 
     &-prev {
@@ -127,21 +165,24 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
-
-        // clip-path: polygon(0% 100%, 0% 100%, 0% 100%, 0% 100%);
-        clip-path: polygon(100% 0%, 100% 0%, 100% 0%, 100% 0%);
+        
+        animation-fill-mode: forwards;
         opacity: 0;
-        transition: clip-path .6s cubic-bezier(.55, 0, .1, 1), opacity .6s cubic-bezier(.55, 0, .1, 1);
+        transition: opacity .6s cubic-bezier(.55, 0, .1, 1);
         z-index: 0;
 
         &-displayed {
-          clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
+          animation: slide .6s cubic-bezier(.55, 0, .1, 1);
           opacity: 1;
           z-index: 2;
+
+          &.reverse {
+            animation: slide-reverse .6s cubic-bezier(.55, 0, .1, 1);
+          }
         }
 
         &-displayed-prev {
-          clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
+          clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%) !important;
           opacity: 1;
           z-index: 1;
         }
@@ -160,6 +201,10 @@
   }
 
   menu {
+    @media only screen and (max-width: 767px) {
+      display: none;
+    }
+
     grid-row: 2 / span 3;
     grid-column: 1;
 
@@ -185,8 +230,14 @@
   }
 
   .logo {
+
     grid-row: 1;
-    grid-column: 2;
+    grid-column: 1 / span 3;
+
+    @media only screen and (min-width: 767px) {
+      grid-row: 1;
+      grid-column: 2;
+    }
 
     display: flex;
     justify-content: center;
@@ -206,10 +257,33 @@
     grid-row: -2;
     grid-column: 1;
 
-    background-color: var(--c_blue-light);
-    mix-blend-mode: multiply;
-
+    
     z-index: 3;
+    
+    @media only screen and (min-width: 767px) {
+      background-color: var(--c_blue-light);
+      mix-blend-mode: multiply;
+    }
   }
 
+}
+
+@keyframes slide {
+  from {
+    clip-path: polygon(100% 0%, 100% 0%, 100% 0%, 100% 0%);
+  }
+
+  to {
+    clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%); 
+  }
+}
+
+@keyframes slide-reverse {
+  from {
+    clip-path: polygon(0% 100%, 0% 100%, 0% 100%, 0% 100%);
+  }
+
+  to {
+    clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%); 
+  }
 }

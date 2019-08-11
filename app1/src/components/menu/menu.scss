@@ -37,11 +37,15 @@
         
             color: var(--c_red);
             font-family: 'Playfair Display', serif;
-            font-size: 10rem;
+            font-size: 5rem;
             text-decoration: none;
 
             &:not(:last-of-type) {
                 margin-bottom: 30px;
+            }
+
+            @media only screen and (min-width: 767px) {
+                font-size: 10rem;
             }
         }
     }
