@@ -23,8 +23,8 @@
     > div {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
         flex-wrap: nowrap;
         
         width: 100%;
@@ -37,7 +37,7 @@
         
             color: var(--c_red);
             font-family: 'Playfair Display', serif;
-            font-size: 5rem;
+            font-size: 18vmin;
             text-decoration: none;
 
             &:not(:last-of-type) {

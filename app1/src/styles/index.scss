@@ -40,7 +40,7 @@ html {
 
   background-color: var(--c_red);
 
-  color: white;
+  color: var(--c_white);
 
   z-index: 6;
   cursor: pointer;
@@ -68,7 +68,7 @@ button {
     width: 2vmin;
     height: 2vmin;
 
-    border-color: white;
+    border-color: var(--c_white);
     opacity: 0;
 
     transition: all .2s ease-in-out;
@@ -95,7 +95,7 @@ button {
   }
 
   &:hover {
-      color: white;
+      color: var(--c_white);
 
       &::after, &::before {
           opacity: 1;
