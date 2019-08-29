@@ -1,0 +1,106 @@
+@import './reset';
+@import './variables';
+
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display:900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+:root {
+  * {
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+  }
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+html {
+  font-size: 14px;
+}
+
+.page {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+}
+
+.menu_button {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 80px;
+  height: 80px;
+
+  padding: 20px;
+  border: none;
+
+  background-color: var(--c_red);
+
+  color: var(--c_white);
+
+  z-index: 6;
+  cursor: pointer;
+}
+
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+.corners-hover {
+  position: relative;
+
+  &::after, &::before {
+    content: ' ';
+    position: absolute;
+    display: block;
+    width: 2vmin;
+    height: 2vmin;
+
+    border-color: var(--c_white);
+    opacity: 0;
+
+    transition: all .2s ease-in-out;
+  }
+
+  &::after {
+      bottom: 0;
+      left: 0;
+
+      border-left: 3px solid var(--c_red);
+      border-bottom: 3px solid var(--c_red);
+
+      transform: translate(-50px, 50px);
+  }
+
+  &::before {
+      top: 0;
+      right: 0;
+
+      border-top: 3px solid var(--c_red);
+      border-right: 3px solid var(--c_red);
+
+      transform: translate(50px, -50px);
+  }
+
+  &:hover {
+      color: var(--c_white);
+
+      &::after, &::before {
+          opacity: 1;
+
+          transform: translate(0, 0);
+      }
+  }
+}
