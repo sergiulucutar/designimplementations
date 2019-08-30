@@ -24,14 +24,25 @@ main {
       font-size: 20rem;
       font-family: "Six Caps", sans-serif;
       line-height: 1;
-
-      &:nth-of-type(2) span:nth-of-type(2) {
-        border: 2px solid var(--c_red);
-      }
     }
 
-    > span {
+    .scroll_banner {
       font-size: 5.5rem;
+
+      span {
+        display: inline-block;
+        padding: 0 10px;
+
+        transform: rotate(90deg);
+
+        animation: fade 3s linear infinite;
+
+        @for $i from 1 through 3 {
+          &:nth-of-type(#{$i}) {
+            animation-delay: .4s * $i;
+          }
+        }
+      }
     }
   }
 
@@ -40,9 +51,9 @@ main {
     grid-column: 3;
 
     // border-left: 1px solid var(--c_red);
-    border-right: 1px solid var(--c_red);
+    // border-right: 1px solid var(--c_red);
 
-    // border-bottom: 1px solid var(--c_red);
+    border-bottom: 1px solid var(--c_red);
 
     opacity: 0.4;
   }
@@ -62,11 +73,36 @@ main {
     background-size: cover;
   }
 
+  .story_week_info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+
+    opacity: 1;
+
+    strong {
+      font-weight: bold;
+    }
+
+    .author {
+      transform-origin: right;
+      transform: rotate(-90deg);
+
+      span, strong {
+        display: block;
+      }
+    }
+  }
+
   .hero_banner {
     grid-row: 2;
     grid-column: 5;
 
-    font-size: 9rem;
+    // font-size: 9rem;
+    font-size: 5rem;
     // font-family: "Roboto", sans-serif;
     font-family: "Six Caps", sans-serif;
 
@@ -74,6 +110,23 @@ main {
 
     span {
       display: block;
+
+      // animation: fade 3s linear infinite;
+
+      @for $i from 1 through 11 {
+        &:nth-of-type(#{$i}) {
+          animation-delay: -.2s * $i;
+        }
+      }
     }
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
