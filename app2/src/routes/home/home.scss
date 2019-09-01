@@ -1,16 +1,18 @@
-.stories {
-}
-
 main {
   display: grid;
   grid-template-rows: 0px auto 0px;
-  grid-template-columns: 0px 1fr 1fr 2fr 1fr 0px;
+  grid-template-columns: 0px 2fr 1fr 2fr 1fr 0px;
   grid-gap: 50px;
 
   width: 100vw;
   height: 100vh;
 
-  color: var(--c_red);
+  $primary: var(--c_red);
+  color: $primary;
+
+  * {
+    transition: color 0.2s ease-in-out;
+  }
 
   header {
     grid-row: 2;
@@ -35,11 +37,11 @@ main {
 
         transform: rotate(90deg);
 
-        animation: fade 3s linear infinite;
+        animation: fade 3s ease-in-out infinite;
 
         @for $i from 1 through 3 {
           &:nth-of-type(#{$i}) {
-            animation-delay: .4s * $i;
+            animation-delay: 0.4s * $i;
           }
         }
       }
@@ -50,27 +52,55 @@ main {
     grid-row: 2;
     grid-column: 3;
 
-    // border-left: 1px solid var(--c_red);
-    // border-right: 1px solid var(--c_red);
-
-    border-bottom: 1px solid var(--c_red);
+    // border-left: 1px solid $primary;
+    // border-right: 1px solid $primary;
+    // border-bottom: 1px solid white;
 
     opacity: 0.4;
   }
 
   .story_week {
     grid-row: 2;
-    grid-column: 4;
+    grid-column: 3 / span 2;
 
+    position: relative;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
 
-    background-color: var(--c_red);
-    background-image: url("https://images.unsplash.com/photo-1565667562916-fcac2e6818c0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    font-family: "Roboto", sans-serif;
+
+    svg {
+      position: relative;
+
+      width: 100%;
+      height: 100%;
+    }
+
+    > span {
+      position: absolute;
+      top: 50%;
+      right: -20px;
+
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    > h2 {
+      position: absolute;
+
+      bottom: 20%;
+      right: 50%;
+
+      font-size: 4rem;
+      font-weight: bold;
+    }
+
+    h2,
+    span {
+      background-color: var(--c_white);
+      opacity: 0;
+    }
   }
 
   .story_week_info {
@@ -82,6 +112,8 @@ main {
     font-size: 1rem;
 
     opacity: 1;
+    z-index: 1;
+    pointer-events: none;
 
     strong {
       font-weight: bold;
@@ -91,7 +123,8 @@ main {
       transform-origin: right;
       transform: rotate(-90deg);
 
-      span, strong {
+      span,
+      strong {
         display: block;
       }
     }
@@ -101,32 +134,92 @@ main {
     grid-row: 2;
     grid-column: 5;
 
-    // font-size: 9rem;
-    font-size: 5rem;
+    position: relative;
+    font-size: 4.5rem;
     // font-family: "Roboto", sans-serif;
     font-family: "Six Caps", sans-serif;
 
     overflow: hidden;
 
-    span {
+    > span {
+      position: relative;
       display: block;
 
-      // animation: fade 3s linear infinite;
+      animation: fade 10s ease-in-out infinite;
+      overflow: visible;
+
+      > span:nth-of-type(1) {
+        position: relative;
+
+        &:after {
+          content: " ";
+          position: absolute;
+          top: 50%;
+          left: 0;
+          display: inline-block;
+          width: 0;
+          height: 6px;
+          background-color: var(--c_red);
+          transition: width 0.1s ease-in;
+          transform: rotate(-15deg);
+          transform-origin: center;
+        }
+      }
+
+      > span:nth-of-type(2) {
+        position: absolute;
+        top: -10px;
+        left: -20%;
+        display: block;
+      }
 
       @for $i from 1 through 11 {
         &:nth-of-type(#{$i}) {
-          animation-delay: -.2s * $i;
+          animation-delay: 1s * $i;
         }
       }
+    }
+  }
+
+  &.placed {
+    color: var(--c_white) !important;
+    background-color: black;
+
+    .scroll_banner span,
+    .hero_banner span {
+      animation: none;
+
+      & > span:nth-of-type(1):after {
+        width: 100%;
+      }
+    }
+    .story_week {
+      image,
+      rect {
+        filter: invert(100%);
+      }
+
+      h2,
+      span {
+        opacity: 1;
+      }
+    }
+
+    .story_week,
+    .story_week_info {
+      color: var(--c_red);
     }
   }
 }
 
 @keyframes fade {
-  from {
+  0% {
     opacity: 1;
   }
-  to {
+  50% {
     opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

@@ -1,9 +1,9 @@
-import React from 'react';
-import { render } from 'react-dom';
+import React from "react";
+import { render } from "react-dom";
 
-import './app.scss';
+import "./app.scss";
 
-import Home from './routes/home';
+import Home from "./routes/home";
 
 export default class App extends React.Component {
   constructor() {
@@ -12,7 +12,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <section class="app">
+      <section className="app">
         <menu></menu>
         <Home />
       </section>
@@ -20,4 +20,4 @@ export default class App extends React.Component {
   }
 }
 
-render(<App />, document.querySelector('#root'));
+render(<App />, document.querySelector("#root"));

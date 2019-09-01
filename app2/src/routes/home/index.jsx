@@ -5,12 +5,117 @@ import "./home.scss";
 export default class Home extends React.Component {
   constructor() {
     super();
+
+    this.isDragging = false;
+    this.index = 10;
+
+    this.state = {
+      color: 31,
+      svg: {
+        isDraging: false,
+        piecePosition: {
+          x: 10,
+          y: 10
+        },
+        gapPosition: {
+          x: 0,
+          y: 0
+        }
+      }
+    };
   }
 
+  componentDidMount() {
+    this.piece = document.querySelector("main svg #piece");
+    this.piece.addEventListener("mousedown", () => {
+      this.isDragging = true;
+    });
+
+    document.addEventListener("mouseup", () => {
+      this.isDragging = false;
+
+      if (this.isPiecePlaced()) {
+        this.setState({
+          ...this.state,
+          svg: {
+            ...this.state.svg,
+            piecePosition: {
+              x: this.state.svg.gapPosition.x,
+              y: this.state.svg.gapPosition.y
+            }
+          }
+        });
+
+        document.querySelector("main").classList.add("placed");
+      }
+    });
+
+    const svgEl = document.querySelector("main svg");
+    this.bounds = svgEl.getBoundingClientRect();
+
+    this.setState({
+      ...this.state,
+      svg: {
+        ...this.state.svg,
+        gapPosition: {
+          x: svgEl.clientWidth * 0.7,
+          y: svgEl.clientHeight * 0.4
+        }
+      }
+    });
+
+    document.querySelector("main svg").addEventListener("mousemove", event => {
+      if (this.isDragging) {
+        this.getNewPiecePosittion(event);
+
+        this.setState({
+          ...this.state,
+          color: this.getPieceDistance()
+        });
+      }
+    });
+  }
+
+  getNewPiecePosittion(e) {
+    const x = e.clientX - this.bounds.left;
+    const y = e.clientY - this.bounds.top;
+
+    this.setState({
+      ...this.state,
+      svg: {
+        ...this.state.svg,
+        piecePosition: { x, y }
+      }
+    });
+  }
+
+  getPieceDistance() {
+    const { piecePosition, gapPosition } = this.state.svg;
+    const x = piecePosition.x - gapPosition.x;
+    const y = piecePosition.y - gapPosition.y;
+
+    return 100 - Math.sqrt(x * x, y * y) / 6 + 20;
+  }
+
+  isPiecePlaced() {
+    const { piecePosition, gapPosition } = this.state.svg;
+
+    return (
+      Math.abs(gapPosition.x - piecePosition.x) < 50 &&
+      Math.abs(gapPosition.y - piecePosition.y) < 50
+    );
+  }
+
+  isPieceInPosition() {}
+
   render() {
+    const { piecePosition, gapPosition } = this.state.svg;
+    const color = `hsl(4, 76%, ${this.state.color}%)`;
+    // const bg = `hsl(343, 100%, ${(this.state.color * 3) / 100}%)`;
+
     return (
       <section className="stories">
-        <main>
+        <main style={{ color }}>
           <header>
             <h1>MISSING</h1>
             <h1>PIECE</h1>
@@ -26,19 +131,87 @@ export default class Home extends React.Component {
               <strong>Adrian Myoasdjja</strong>
             </div>
           </div>
-          <div className="story_week" />
+          <div
+            className="story_week"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+          >
+            <svg>
+              <pattern
+                id="img1"
+                patternUnits="userSpaceOnUse"
+                width="50%"
+                height="100%"
+              >
+                <image
+                  xlinkHref="https://images.unsplash.com/photo-1500373994708-4d781bd7bd15?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+                  x="-70%"
+                  y="0"
+                  width="100%"
+                  height="100%"
+                />
+              </pattern>
+              <image
+                xlinkHref="https://images.unsplash.com/photo-1500373994708-4d781bd7bd15?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+                x="30%"
+                y="0"
+                width="70%"
+                height="100%"
+                preserveAspectRatio="xMinYMin slice"
+              />
+              <rect
+                id="gap"
+                x={gapPosition.x}
+                y={gapPosition.y}
+                width="10%"
+                height="40%"
+              />
+              <rect
+                id="piece"
+                x={piecePosition.x}
+                y={piecePosition.y}
+                width="10%"
+                height="40%"
+                fill="url(#img1)"
+              />
+            </svg>
+            <span>THRILLER</span>
+            <h2>FEATHERS</h2>
+          </div>
           <div className="hero_banner">
-            <span>STORY OF THE WEEK</span>
-            <span>STORY OF THE WEEK</span>
-            <span>STORY OF THE WEEK</span>
-            <span>STORY OF THE WEEK</span>
-            <span>STORY OF THE WEEK</span>
-            <span>STORY OF THE WEEK</span>
-            <span>STORY OF THE WEEK</span>
-            <span>STORY OF THE WEEK</span>
-            <span>STORY OF THE WEEK</span>
-            <span>STORY OF THE WEEK</span>
-            <span>STORY OF THE WEEK</span>
+            <span>
+              <span>STORY</span> OF THE WEEK
+            </span>
+            <span>
+              <span>STORY</span> OF THE WEEK
+            </span>
+            <span>
+              <span>STORY</span> OF THE WEEK
+            </span>
+            <span>
+              <span>STORY</span> OF THE WEEK
+            </span>
+            <span>
+              <span>STORY</span> OF THE WEEK
+            </span>
+            <span>
+              <span>STORY</span> OF THE WEEK
+            </span>
+            <span>
+              <span>STORY</span> OF THE WEEK
+            </span>
+            <span>
+              <span>STORY</span> OF THE WEEK
+            </span>
+            <span>
+              <span>STORY</span> OF THE WEEK
+            </span>
+            <span>
+              <span>STORY</span> OF THE WEEK
+            </span>
+            <span>
+              <span>STORY</span> OF THE WEEK
+            </span>
           </div>
         </main>
       </section>
