@@ -11,11 +11,12 @@ export default class Home extends React.Component {
 
     this.state = {
       color: 31,
+      placed: false,
       svg: {
         isDraging: false,
         piecePosition: {
-          x: 10,
-          y: 10
+          x: 400,
+          y: 250
         },
         gapPosition: {
           x: 0,
@@ -37,6 +38,7 @@ export default class Home extends React.Component {
       if (this.isPiecePlaced()) {
         this.setState({
           ...this.state,
+          placed: true,
           svg: {
             ...this.state.svg,
             piecePosition: {
@@ -59,7 +61,7 @@ export default class Home extends React.Component {
         ...this.state.svg,
         gapPosition: {
           x: svgEl.clientWidth * 0.7,
-          y: svgEl.clientHeight * 0.4
+          y: svgEl.clientHeight * 0.5
         }
       }
     });
@@ -137,15 +139,10 @@ export default class Home extends React.Component {
             xmlnsXlink="http://www.w3.org/1999/xlink"
           >
             <svg>
-              <pattern
-                id="img1"
-                patternUnits="userSpaceOnUse"
-                width="50%"
-                height="100%"
-              >
+              <pattern id="img1" width="100%" height="100%">
                 <image
                   xlinkHref="https://images.unsplash.com/photo-1500373994708-4d781bd7bd15?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
-                  x="-70%"
+                  x="0"
                   y="0"
                   width="100%"
                   height="100%"
@@ -153,29 +150,33 @@ export default class Home extends React.Component {
               </pattern>
               <image
                 xlinkHref="https://images.unsplash.com/photo-1500373994708-4d781bd7bd15?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
-                x="30%"
+                x="60%"
                 y="0"
-                width="70%"
+                width="50%"
                 height="100%"
                 preserveAspectRatio="xMinYMin slice"
               />
-              <rect
-                id="gap"
-                x={gapPosition.x}
-                y={gapPosition.y}
-                width="10%"
-                height="40%"
-              />
-              <rect
-                id="piece"
-                x={piecePosition.x}
-                y={piecePosition.y}
-                width="10%"
-                height="40%"
-                fill="url(#img1)"
-              />
+              {!this.state.placed ? (
+                <g>
+                  <rect
+                    id="gap"
+                    x={gapPosition.x}
+                    y={gapPosition.y}
+                    width="5%"
+                    height="40%"
+                  />
+                  <rect
+                    id="piece"
+                    x={piecePosition.x}
+                    y={piecePosition.y}
+                    width="5%"
+                    height="40%"
+                    fill="white"
+                  />
+                </g>
+              ) : null}
             </svg>
-            <span>THRILLER</span>
+            {/* <span>THRILLER</span> */}
             <h2>FEATHERS</h2>
           </div>
           <div className="hero_banner">
