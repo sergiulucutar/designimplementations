@@ -77,7 +77,7 @@ main {
       height: 100%;
 
       rect:last-of-type() {
-        z-index: 2;
+        z-index: 3;
       }
     }
 
@@ -99,18 +99,16 @@ main {
       font-size: 4rem;
       font-weight: bold;
     }
-
-    h2,
-    span {
-      background-color: var(--c_white);
-      opacity: 0;
-    }
   }
 
   .story_week_info {
+    grid-row: 2;
+    grid-column: 4;
+
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
 
     font-family: "Roboto", sans-serif;
     font-size: 1rem;
@@ -118,10 +116,6 @@ main {
     opacity: 1;
     z-index: 1;
     pointer-events: none;
-
-    strong {
-      font-weight: bold;
-    }
 
     .author {
       transform-origin: right;
@@ -131,6 +125,14 @@ main {
       strong {
         display: block;
       }
+    }
+
+    h2 {
+      position: absolute;
+      bottom: 30%;
+
+      font-size: 5rem;
+      font-weight: bold;
     }
   }
 
