@@ -73,6 +73,9 @@ export default class Cover extends React.Component {
         piecePosition: { x, y }
       }
     });
+    this.distance = this.getPieceDistance();
+    console.log(this.distance);
+    
   }
 
   getPieceDistance() {
@@ -80,7 +83,7 @@ export default class Cover extends React.Component {
     const x = piecePosition.x - gapPosition.x;
     const y = piecePosition.y - gapPosition.y;
 
-    return 100 - Math.sqrt(x * x, y * y) / 6 + 20;
+    return Math.sqrt(x * x, y * y);
   }
 
   updatePieceStatus() {
@@ -111,45 +114,34 @@ export default class Cover extends React.Component {
     const { piecePosition, gapPosition } = this.state.svg;
 
     return (
-      <svg onMouseMove={event => this.movePiece(event)}>
-        <pattern id="img1" width="100%" height="100%">
-          <image
-            xlinkHref="https://images.unsplash.com/photo-1500373994708-4d781bd7bd15?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-          />
-        </pattern>
-        <image
-          xlinkHref="https://images.unsplash.com/photo-1500373994708-4d781bd7bd15?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
-          x="60%"
-          y="0"
-          width="50%"
-          height="100%"
-          preserveAspectRatio="xMinYMin slice"
-        />
-        {!this.state.placed ? (
-          <g>
-            <rect
-              id="gap"
-              x={gapPosition.x}
-              y={gapPosition.y}
-              width="5%"
-              height="40%"
-            />
-            <rect
-              id="piece"
-              x={piecePosition.x}
-              y={piecePosition.y}
-              width="5%"
-              height="40%"
-              fill="white"
-              onMouseDown={this.updatePieceStatus}
-            />
-          </g>
-        ) : null}
-      </svg>
+      <div className="story_week">
+      <div className="cover_image" />
+      <div className="cover_image_duplicate"></div>
+      <div className="cover_image_duplicate"></div>
+      <div className="cover_image_duplicate"></div>
+        <svg onMouseMove={event => this.movePiece(event)}>
+          {!this.state.placed ? (
+            <g>
+              <rect
+                id="gap"
+                x={gapPosition.x}
+                y={gapPosition.y}
+                width="5%"
+                height="40%"
+              />
+              <rect
+                id="piece"
+                x={piecePosition.x}
+                y={piecePosition.y}
+                width="5%"
+                height="40%"
+                fill="white"
+                onMouseDown={this.updatePieceStatus}
+              />
+            </g>
+          ) : null}
+        </svg>
+      </div>
     );
   }
 }

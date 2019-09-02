@@ -50,9 +50,7 @@ export default class Home extends React.Component {
             </div>
             <h2>FEATHERS</h2>
           </div>
-          <div className="story_week">
-            <Cover />
-          </div>
+          <Cover />
           <div className="hero_banner">
             <span>
               <span>STORY</span> OF THE WEEK
