@@ -10,6 +10,8 @@ main {
   $primary: var(--c_red);
   color: $primary;
 
+  overflow: hidden;
+
   * {
     transition: color 0.2s ease-in-out;
   }
@@ -106,16 +108,31 @@ main {
       left: 60%;
       width: 40%;
       height: 100%;
-      background-image: url('https://images.unsplash.com/photo-1500373994708-4d781bd7bd15?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
 
-      opacity: .4;
+      opacity: 0.5;
+
+      &:nth-of-type(1) {
+        transform: scale(1.1);
+        filter: hue-rotate(90deg);
+      }
 
       &:nth-of-type(2) {
-        top: -50px;
+        transform: scale(1.2);
+        filter: hue-rotate(180deg);
       }
 
       &:nth-of-type(3) {
-        transform: translateX(-50px);
+        transform: scale(1.4);
+        filter: hue-rotate(220deg);
+      }
+
+      > div {
+        background-image: url("../../assets/img.jpg");
+
+        width: 100%;
+        height: 100%;
+
+        animation: shake 0.1s linear infinite;
       }
     }
 
@@ -125,7 +142,7 @@ main {
       left: 60%;
       width: 40%;
       height: 100%;
-      background-image: url('https://images.unsplash.com/photo-1500373994708-4d781bd7bd15?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
+      background-image: url("../../assets/img.jpg");
     }
   }
 
@@ -234,7 +251,7 @@ main {
       }
     }
     .story_week {
-      .cover_image { 
+      .cover_image {
         filter: invert(100%);
       }
 
@@ -260,5 +277,41 @@ main {
   }
   100% {
     opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
   }
 }

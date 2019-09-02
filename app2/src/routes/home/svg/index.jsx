@@ -66,6 +66,8 @@ export default class Cover extends React.Component {
     const x = e.clientX - this.bounds.left;
     const y = e.clientY - this.bounds.top;
 
+    this.distance = this.getPieceDistance();
+    this.intensity = Math.max(100 - this.distance / 6, 0);
     this.setState({
       ...this.state,
       svg: {
@@ -73,9 +75,6 @@ export default class Cover extends React.Component {
         piecePosition: { x, y }
       }
     });
-    this.distance = this.getPieceDistance();
-    console.log(this.distance);
-    
   }
 
   getPieceDistance() {
@@ -115,10 +114,26 @@ export default class Cover extends React.Component {
 
     return (
       <div className="story_week">
-      <div className="cover_image" />
-      <div className="cover_image_duplicate"></div>
-      <div className="cover_image_duplicate"></div>
-      <div className="cover_image_duplicate"></div>
+        <div className="cover_image" />
+        {!this.state.placed ? (
+          <div className="cover_image_duplicates">
+            {this.intensity > 0 ? (
+              <div className="cover_image_duplicate">
+                <div></div>
+              </div>
+            ) : null}
+            {this.intensity > 40 ? (
+              <div className="cover_image_duplicate">
+                <div></div>
+              </div>
+            ) : null}
+            {this.intensity > 80 ? (
+              <div className="cover_image_duplicate">
+                <div></div>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
         <svg onMouseMove={event => this.movePiece(event)}>
           {!this.state.placed ? (
             <g>
