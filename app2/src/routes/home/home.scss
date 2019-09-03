@@ -144,6 +144,14 @@ main {
       height: 100%;
       background-image: url("../../assets/img.jpg");
     }
+
+    .cover_image_letter {
+      position: absolute;
+      top: 22%;
+      left: 79%;
+      font-size: 25rem;
+      opacity: 0;
+    }
   }
 
   .story_week_info {
@@ -219,7 +227,8 @@ main {
 
           overflow: hidden;
           transform: translateY(-50%);
-          transition: width 0.1s ease-in;
+          transition: width 0.2s ease-out;
+          transition-delay: 1s;
         }
       }
 
@@ -243,20 +252,23 @@ main {
     background-color: black;
 
     .scroll_banner span,
-    .hero_banner span {
+    .hero_banner > span {
+      color: var(--c_white);
       animation: none;
 
-      & > span:nth-of-type(1):after {
-        width: 100%;
-      }
+      & > span {
+        color: var(--c_white);
+          &:nth-of-type(1):after {
+            width: 100%;
+          }
+        }
     }
     .story_week {
       .cover_image {
         filter: invert(100%);
       }
 
-      h2,
-      span {
+      h2 {
         opacity: 1;
       }
     }
@@ -264,6 +276,13 @@ main {
     .story_week,
     .story_week_info {
       color: var(--c_red);
+    }
+
+    .cover_image_letter {
+      opacity: 0;
+
+      animation: flicker .3s linear;
+      animation-iteration-count: 3;
     }
   }
 }
@@ -314,4 +333,17 @@ main {
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 1
+  }
+  49% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+
 }

@@ -1,5 +1,7 @@
 import React from "react";
 
+import TimelineMax from "gsap";
+
 export default class Cover extends React.Component {
   constructor() {
     super();
@@ -26,7 +28,7 @@ export default class Cover extends React.Component {
   }
 
   componentDidMount() {
-    // Reset dragging event if the mouse buttin is released anywhere in the page
+    // Reset dragging event if the mouse button is released anywhere in the page
     document.addEventListener("mouseup", () => {
       this.isDragging = false;
 
@@ -101,12 +103,12 @@ export default class Cover extends React.Component {
   movePiece(event) {
     if (this.isDragging) {
       this.updateNewPiecePosition(event);
-
-      //   this.setState({
-      //     ...this.state,
-      //     color: this.getPieceDistance()
-      //   });
     }
+  }
+
+  startAnimation() {
+    const animation = new TimelineMax()
+    animation.to('.cover_iamge_letter', )
   }
 
   render() {
@@ -115,6 +117,7 @@ export default class Cover extends React.Component {
     return (
       <div className="story_week">
         <div className="cover_image" />
+        <span className="cover_image_letter">X</span>
         {!this.state.placed ? (
           <div className="cover_image_duplicates">
             {this.intensity > 0 ? (
@@ -141,15 +144,15 @@ export default class Cover extends React.Component {
                 id="gap"
                 x={gapPosition.x}
                 y={gapPosition.y}
-                width="5%"
-                height="40%"
+                width="100px"
+                height="100px"
               />
               <rect
                 id="piece"
                 x={piecePosition.x}
                 y={piecePosition.y}
-                width="5%"
-                height="40%"
+                width="100px"
+                height="100px"
                 fill="white"
                 onMouseDown={this.updatePieceStatus}
               />

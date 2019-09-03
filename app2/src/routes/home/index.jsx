@@ -48,7 +48,7 @@ export default class Home extends React.Component {
               <span>Written by:</span>
               <strong>Adrian Myoasdjja</strong>
             </div>
-            <h2>FEATHERS</h2>
+            {/* <h2>FEATHERS</h2> */}
           </div>
           <Cover />
           <div className="hero_banner">
