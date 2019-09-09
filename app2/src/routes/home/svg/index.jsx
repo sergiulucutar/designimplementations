@@ -1,6 +1,6 @@
 import React from "react";
 
-import TimelineMax from "gsap";
+import { TweenLite, Linear } from "gsap";
 
 export default class Cover extends React.Component {
   constructor() {
@@ -62,11 +62,19 @@ export default class Cover extends React.Component {
         }
       }
     });
+
+    TweenLite.to("#piece", 0, { x: 500 });
+    TweenLite.to("#piece", 0, { y: 400 });
+
+    TweenLite.to("#piece", 0.3, { x: 250, delay: 0.1, ease: Linear.easeOut });
   }
 
   updateNewPiecePosition(e) {
     const x = e.clientX - this.bounds.left;
     const y = e.clientY - this.bounds.top;
+
+    TweenLite.to("#piece", 0.3, { x, ease: Linear.easeInOut });
+    TweenLite.to("#piece", 0.3, { y, ease: Linear.easeInOut });
 
     this.distance = this.getPieceDistance();
     this.intensity = Math.max(100 - this.distance / 6, 0);
@@ -104,11 +112,6 @@ export default class Cover extends React.Component {
     if (this.isDragging) {
       this.updateNewPiecePosition(event);
     }
-  }
-
-  startAnimation() {
-    const animation = new TimelineMax()
-    animation.to('.cover_iamge_letter', )
   }
 
   render() {
@@ -149,8 +152,8 @@ export default class Cover extends React.Component {
               />
               <rect
                 id="piece"
-                x={piecePosition.x}
-                y={piecePosition.y}
+                x="-50"
+                y="-50"
                 width="100px"
                 height="100px"
                 fill="white"

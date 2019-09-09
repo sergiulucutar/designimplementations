@@ -2,6 +2,7 @@ import React from "react";
 import "./home.scss";
 
 import Cover from "./svg";
+import Stories from "./stories";
 
 export default class Home extends React.Component {
   constructor() {
@@ -32,8 +33,8 @@ export default class Home extends React.Component {
     // const bg = `hsl(343, 100%, ${(this.state.color * 3) / 100}%)`;
 
     return (
-      <section className="stories">
-        <main style={{ color }}>
+      <section className="stories" style={{ color }}>
+        <main>
           <header>
             <h1>MISSING</h1>
             <h1>PIECE</h1>
@@ -96,6 +97,7 @@ export default class Home extends React.Component {
             </span>
           </div>
         </main>
+        <Stories />
       </section>
     );
   }
