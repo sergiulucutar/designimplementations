@@ -9,7 +9,7 @@ export default class Cover extends React.Component {
     this.piecePosition = {
       x: 250,
       y: 400
-    }
+    };
 
     this.state = {
       color: 31,
@@ -30,15 +30,15 @@ export default class Cover extends React.Component {
 
   playPiecePlacedAnim() {
     const timeline = new TimelineLite();
-    timeline.to('.cover_image_duplicate:nth-of-type(3)', .1, { opacity: 0 }, '+=.3')
-      .to('.cover_image_duplicate:nth-of-type(2)', .05, { opacity: 0 })
-      .to('.cover_image_duplicate:nth-of-type(1)', .025, { opacity: 0 });
+    timeline
+      .to(".cover_image_duplicate:nth-of-type(3)", 0.1, { opacity: 0 }, "+=.3")
+      .to(".cover_image_duplicate:nth-of-type(2)", 0.05, { opacity: 0 })
+      .to(".cover_image_duplicate:nth-of-type(1)", 0.025, { opacity: 0 });
   }
 
   componentDidMount() {
     // Reset dragging event if the mouse button is released anywhere in the page
     document.addEventListener("mouseup", () => {
-
       if (this.isPiecePlaced()) {
         this.setState({
           ...this.state,
@@ -52,7 +52,7 @@ export default class Cover extends React.Component {
         this.setState({
           ...this.state,
           isDragging: false
-        })
+        });
       }
     });
 
@@ -91,7 +91,7 @@ export default class Cover extends React.Component {
     this.setState({
       ...this.state,
       intensity
-    })
+    });
   }
 
   getPieceDistance() {
@@ -130,15 +130,27 @@ export default class Cover extends React.Component {
     return (
       <div className="story_week">
         <div className="cover_image" />
-        <span className="cover_image_letter">X</span>
+        {/* <span className="cover_image_letter">X</span> */}
         <div className="cover_image_duplicates">
-          <div className={`cover_image_duplicate ${this.state.intensity > 20 ? 'active' : ''}`}>
+          <div
+            className={`cover_image_duplicate ${
+              this.state.intensity > 20 ? "active" : ""
+            }`}
+          >
             <div></div>
           </div>
-          <div className={`cover_image_duplicate ${this.state.intensity > 40 ? 'active' : ''}`}>
+          <div
+            className={`cover_image_duplicate ${
+              this.state.intensity > 40 ? "active" : ""
+            }`}
+          >
             <div></div>
           </div>
-          <div className={`cover_image_duplicate ${this.state.intensity > 70 ? 'active' : ''}`}>
+          <div
+            className={`cover_image_duplicate ${
+              this.state.intensity > 70 ? "active" : ""
+            }`}
+          >
             <div></div>
           </div>
         </div>
@@ -160,7 +172,7 @@ export default class Cover extends React.Component {
                 height="100px"
                 fill="white"
                 onMouseDown={this.updatePieceStatus}
-                className={this.state.isDragging ? 'active' : ''}
+                className={this.state.isDragging ? "active" : ""}
               />
             </g>
           ) : null}
