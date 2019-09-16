@@ -7,49 +7,28 @@ import Stories from "./stories";
 export default class Home extends React.Component {
   constructor() {
     super();
-
-    this.isDragging = false;
-    this.index = 10;
-
-    this.state = {
-      color: 31,
-      placed: false,
-      svg: {
-        isDraging: false,
-        piecePosition: {
-          x: 400,
-          y: 250
-        },
-        gapPosition: {
-          x: 0,
-          y: 0
-        }
-      }
-    };
   }
 
   render() {
-    const color = `hsl(4, 76%, ${this.state.color}%)`;
-    // const bg = `hsl(343, 100%, ${(this.state.color * 3) / 100}%)`;
-
     return (
-      <section className="stories" style={{ color }}>
+      <section className="stories">
         <main>
           <header>
             <h1>MISSING</h1>
             <h1>PIECE</h1>
+            <div className="scroll_banner">
+              <span>></span>
+              <span>></span>
+              <span>></span>
+              <span>></span>
+            </div>
           </header>
-          <div className="scroll_banner">
-            <span>></span>
-            <span>></span>
-            <span>></span>
-          </div>
           <div className="story_week_info ">
             <div className="author">
               <span>Written by:</span>
               <strong>Adrian Myoasdjja</strong>
             </div>
-            {/* <h2>FEATHERS</h2> */}
+            <h2>FEATHERS</h2>
           </div>
           <Cover />
           <div className="hero_banner">

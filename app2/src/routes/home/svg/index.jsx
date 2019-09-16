@@ -28,36 +28,15 @@ export default class Cover extends React.Component {
     this.updatePieceStatus = this.updatePieceStatus.bind(this);
   }
 
-  playPiecePlacedAnim() {
-    const timeline = new TimelineLite();
-    timeline
-      .to(".cover_image_duplicate:nth-of-type(3)", 0.1, { opacity: 0 }, "+=.3")
-      .to(".cover_image_duplicate:nth-of-type(2)", 0.05, { opacity: 0 })
-      .to(".cover_image_duplicate:nth-of-type(1)", 0.025, { opacity: 0 });
+  componentWillUnmount() {
+    document.removeEventListener("mouseup", this.handleMouseUp.bind(this));
   }
 
   componentDidMount() {
     // Reset dragging event if the mouse button is released anywhere in the page
-    document.addEventListener("mouseup", () => {
-      if (this.isPiecePlaced()) {
-        this.setState({
-          ...this.state,
-          isDragging: false,
-          placed: true
-        });
-
-        document.querySelector("main").classList.add("placed");
-        this.playPiecePlacedAnim();
-      } else {
-        this.setState({
-          ...this.state,
-          isDragging: false
-        });
-      }
-    });
+    document.addEventListener("mouseup", this.handleMouseUp.bind(this));
 
     const svgEl = document.querySelector("main svg");
-    this.bounds = svgEl.getBoundingClientRect();
 
     this.setState({
       ...this.state,
@@ -76,9 +55,27 @@ export default class Cover extends React.Component {
     TweenLite.to("#piece", 0.3, { x: 250, delay: 0.1, ease: Linear.easeInOut });
   }
 
+  handleMouseUp() {
+    if (this.isPiecePlaced()) {
+      this.setState({
+        ...this.state,
+        isDragging: false,
+        placed: true
+      });
+
+      document.querySelector("main").classList.add("placed");
+      this.playPiecePlacedAnim();
+    } else {
+      this.setState({
+        ...this.state,
+        isDragging: false
+      });
+    }
+  }
+
   updateNewPiecePosition(e) {
-    const x = e.clientX - this.bounds.left;
-    const y = e.clientY - this.bounds.top;
+    const x = e.clientX - 50;
+    const y = e.clientY - 50;
 
     TweenLite.to("#piece", 0.3, { x, ease: Linear.easeInOut });
     TweenLite.to("#piece", 0.3, { y, ease: Linear.easeInOut });
@@ -122,6 +119,21 @@ export default class Cover extends React.Component {
     if (this.state.isDragging) {
       this.updateNewPiecePosition(event);
     }
+  }
+
+  playPiecePlacedAnim() {
+    const timeline = new TimelineLite();
+    timeline
+      .to(".scroll_banner", 0, { css: { className: "+=paused" } })
+      .to(".cover_image_duplicate:nth-of-type(3)", 0.1, {
+        opacity: 0,
+        delay: 0.3
+      })
+      .to(".cover_image_duplicate:nth-of-type(2)", 0.05, { opacity: 0 })
+      .to(".cover_image_duplicate:nth-of-type(1)", 0.025, { opacity: 0 })
+      .to("#eye", 0, { css: { className: "+=active" } })
+      .to(".hero_banner", 0, { css: { className: "+=active" }, delay: 2 })
+      .to(".scroll_banner", 0, { css: { className: "-=paused" } });
   }
 
   render() {
@@ -170,12 +182,12 @@ export default class Cover extends React.Component {
                 y="-50"
                 width="100px"
                 height="100px"
-                fill="white"
                 onMouseDown={this.updatePieceStatus}
                 className={this.state.isDragging ? "active" : ""}
               />
             </g>
           ) : null}
+          <circle id="eye" cx="87.5%" cy="46%" r="5%"></circle>
         </svg>
       </div>
     );

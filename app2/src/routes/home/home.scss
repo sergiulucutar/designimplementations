@@ -48,7 +48,7 @@ main {
 
       animation: fade 3s ease-in-out infinite;
 
-      @for $i from 1 through 3 {
+      @for $i from 1 through 4 {
         &:nth-of-type(#{$i}) {
           animation-delay: 0.4s * $i;
         }
@@ -72,6 +72,18 @@ main {
 
       width: 100%;
       height: 100%;
+
+      isolation: isolate;
+
+      #eye {
+        fill: var(--c_red);
+        opacity: 0;
+        z-index: 5;
+
+        &.active {
+          animation: flicker 2s linear 0.3s;
+        }
+      }
     }
 
     > span {
@@ -96,7 +108,8 @@ main {
     #piece {
       cursor: move;
 
-      stroke: white;
+      fill: var(--c_white);
+      stroke: var(--c_white);
       stroke-width: 0;
 
       transition: stroke-width 0.1s ease-in-out;
@@ -183,7 +196,7 @@ main {
 
     .author {
       transform-origin: right;
-      transform: rotate(-90deg);
+      transform: rotate(-90deg) translatey(-400%);
 
       span,
       strong {
@@ -193,7 +206,7 @@ main {
 
     h2 {
       position: absolute;
-      bottom: 30%;
+      bottom: 0;
 
       font-size: 5rem;
       font-weight: bold;
@@ -246,7 +259,6 @@ main {
             overflow: hidden;
             transform: translateY(-50%);
             transition: width 0.2s ease-out;
-            transition-delay: 1s;
           }
         }
 
@@ -264,6 +276,14 @@ main {
         }
       }
     }
+
+    &.active {
+      .banner {
+        span span::after {
+          width: 100%;
+        }
+      }
+    }
   }
 
   &.placed {
@@ -272,23 +292,18 @@ main {
 
     .hero_banner .banner {
       animation-play-state: paused;
-
-      > span {
-        color: var(--c_white);
-        animation: none;
-        opacity: 1;
-
-        & > span {
-          color: var(--c_white);
-          &:nth-of-type(1):after {
-            width: 100%;
-          }
-        }
-      }
+      color: var(--c_white);
     }
 
-    .scroll_banner span {
-      color: var(--c_white);
+    .scroll_banner {
+      span {
+        color: var(--c_white);
+        opacity: 0;
+      }
+
+      &.paused span {
+        animation: none;
+      }
     }
 
     .story_week {
@@ -311,13 +326,6 @@ main {
       transition: none;
       filter: invert(1);
     }
-
-    .cover_image_letter {
-      opacity: 0;
-
-      animation: flicker 0.3s linear 0.2s;
-      animation-iteration-count: 3;
-    }
   }
 }
 
@@ -335,22 +343,37 @@ main {
 
 @keyframes scroll {
   from {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 
   to {
-    transform: translateY(-100%);
+    transform: translate3d(0, -100%, 0);
   }
 }
 
 @keyframes flicker {
   0% {
+    opacity: 0;
+  }
+  20% {
     opacity: 1;
   }
-  49% {
+  40% {
     opacity: 1;
   }
-  50% {
+  46% {
+    opacity: 0;
+  }
+  54% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
     opacity: 0;
   }
 }
