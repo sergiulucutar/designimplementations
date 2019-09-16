@@ -1,7 +1,379 @@
 main {
   display: grid;
-  grid-template-columns: 80px 1fr 2fr 1fr 80px;
+  grid-template-rows: 0px auto 0px;
+  grid-template-columns: 0px 2fr 1fr 2fr 1fr 0px;
+  grid-gap: 50px;
 
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+
+  $primary: var(--c_red);
+  color: $primary;
+
+  overflow: hidden;
+
+  * {
+    transition: color 0.2s ease-in-out;
+  }
+
+  header {
+    grid-row: 2;
+    grid-column: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    h1 {
+      font-size: 22rem;
+      font-family: "Six Caps", sans-serif;
+      line-height: 1;
+    }
+  }
+
+  .scroll_banner {
+    grid-row: 2;
+    grid-column: 3;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+
+    span {
+      display: inline-block;
+      padding: 0 10px;
+
+      font-size: 5.5rem;
+      transform: rotate(90deg);
+      opacity: 0;
+
+      animation: fade 3s ease-in-out infinite;
+
+      @for $i from 1 through 4 {
+        &:nth-of-type(#{$i}) {
+          animation-delay: 0.4s * $i;
+        }
+      }
+    }
+  }
+
+  .story_week {
+    grid-row: 2;
+    grid-column: 2 / span 3;
+
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+
+    font-family: "Roboto", sans-serif;
+
+    svg {
+      position: relative;
+
+      width: 100%;
+      height: 100%;
+
+      isolation: isolate;
+
+      #eye {
+        fill: var(--c_red);
+        opacity: 0;
+        z-index: 5;
+
+        &.active {
+          animation: flicker 2s linear 0.3s;
+        }
+      }
+    }
+
+    > span {
+      position: absolute;
+      top: 50%;
+      right: -20px;
+
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    > h2 {
+      position: absolute;
+
+      bottom: 20%;
+      right: 50%;
+
+      font-size: 4rem;
+      font-weight: bold;
+    }
+
+    #piece {
+      cursor: move;
+
+      fill: var(--c_white);
+      stroke: var(--c_white);
+      stroke-width: 0;
+
+      transition: stroke-width 0.1s ease-in-out;
+
+      &.active {
+        stroke-width: 10px;
+      }
+
+      &:hover {
+        stroke-width: 10px;
+      }
+    }
+
+    .cover_image_duplicate {
+      position: absolute;
+      top: 0;
+      left: 60%;
+      width: 40%;
+      height: 100%;
+
+      opacity: 0;
+      transition: opacity 1.2s linear;
+
+      &:nth-of-type(1) {
+        transform: scale(1.1);
+        filter: hue-rotate(90deg);
+      }
+
+      &:nth-of-type(2) {
+        transform: scale(1.2);
+        filter: hue-rotate(180deg);
+      }
+
+      &:nth-of-type(3) {
+        transform: scale(1.3);
+        filter: hue-rotate(220deg);
+      }
+
+      > div {
+        background-image: url("../../assets/img.jpg");
+
+        width: 100%;
+        height: 100%;
+      }
+
+      &.active {
+        opacity: 0.5;
+      }
+    }
+
+    .cover_image {
+      position: absolute;
+      top: 0;
+      left: 60%;
+      width: 40%;
+      height: 100%;
+      background-image: url("../../assets/img.jpg");
+    }
+
+    .cover_image_letter {
+      position: absolute;
+      top: 22%;
+      left: 79%;
+      font-size: 25rem;
+      opacity: 0;
+    }
+  }
+
+  .story_week_info {
+    grid-row: 2;
+    grid-column: 4;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+
+    opacity: 1;
+    z-index: 1;
+    pointer-events: none;
+
+    .author {
+      transform-origin: right;
+      transform: rotate(-90deg) translatey(-400%);
+
+      span,
+      strong {
+        display: block;
+      }
+    }
+
+    h2 {
+      position: absolute;
+      bottom: 0;
+
+      font-size: 5rem;
+      font-weight: bold;
+    }
+  }
+
+  .hero_banner {
+    grid-row: 2;
+    grid-column: 5;
+
+    display: flex;
+    flex-direction: column;
+
+    font-size: 4rem;
+    // font-family: "Roboto", sans-serif;
+    font-family: "Six Caps", sans-serif;
+
+    overflow: hidden;
+
+    .banner {
+      animation: scroll 60s linear infinite;
+
+      > span {
+        position: relative;
+        display: block;
+
+        // animation: fade 6s ease-in-out infinite;
+        // opacity: 0;
+        overflow: visible;
+        pointer-events: none;
+
+        > span:nth-of-type(1) {
+          position: relative;
+
+          &:after {
+            content: "THRILLER";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            display: inline-block;
+            width: 0;
+
+            color: var(--c_white);
+            font-family: "Roboto", sans-serif;
+            font-size: 1rem;
+            text-align: center;
+
+            background-color: var(--c_red);
+
+            overflow: hidden;
+            transform: translateY(-50%);
+            transition: width 0.2s ease-out;
+          }
+        }
+
+        > span:nth-of-type(2) {
+          position: absolute;
+          top: -10px;
+          left: -20%;
+          display: block;
+        }
+
+        @for $i from 1 through 11 {
+          &:nth-of-type(#{$i}) {
+            animation-delay: 1s * $i;
+          }
+        }
+      }
+    }
+
+    &.active {
+      .banner {
+        span span::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  &.placed {
+    color: var(--c_white) !important;
+    background-color: black;
+
+    .hero_banner .banner {
+      animation-play-state: paused;
+      color: var(--c_white);
+    }
+
+    .scroll_banner {
+      span {
+        color: var(--c_white);
+        opacity: 0;
+      }
+
+      &.paused span {
+        animation: none;
+      }
+    }
+
+    .story_week {
+      .cover_image {
+        filter: invert(100%);
+      }
+
+      h2 {
+        opacity: 1;
+      }
+    }
+
+    .story_week,
+    .story_week_info {
+      color: var(--c_red);
+    }
+
+    .cover_image_duplicate.active {
+      opacity: 0.7;
+      transition: none;
+      filter: invert(1);
+    }
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 1;
+  }
+  46% {
+    opacity: 0;
+  }
+  54% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

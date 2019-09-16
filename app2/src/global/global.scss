@@ -1,4 +1,24 @@
-html, body, #root {
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700|Six+Caps&display=swap");
+
+:root {
+  --c_black: #0e0004;
+  --c_red: #8b1a12;
+  --c_white: #dadff7;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
+}
+
+body {
+  background-color: var(--c_black);
+
+  font-size: 10px;
 }
