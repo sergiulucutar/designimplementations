@@ -2,6 +2,8 @@ import "./home.scss";
 
 import React from "react";
 
+import Tree from "../../components/tree";
+
 export default class Home extends React.Component {
   constructor() {
     super();
@@ -23,16 +25,29 @@ export default class Home extends React.Component {
     this.canvas.width = this.rootEl.clientWidth;
     this.canvas.height = this.rootEl.clientHeight;
 
+    this.tree = new Tree(this.canvas);
+
     this.loop();
+    // this.update();
+    // this.draw();
+  }
+
+  update() {
+    this.tree.update();
   }
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, 0);
-    this.ctx.lineTo(300, 150);
-    this.ctx.stroke();
+    this.ctx.fillStyle = "red";
+
+    this.tree.leaves.forEach(leaf => {
+      this.ctx.beginPath();
+      this.ctx.arc(leaf.pos[0], leaf.pos[1], 2, 0, 2 * Math.PI);
+      this.ctx.fill();
+    });
+
+    this.tree.draw();
   }
 
   loop() {
@@ -43,6 +58,7 @@ export default class Home extends React.Component {
 
     if (delta > this.loopState.interval) {
       this.loopState.then = now - (delta % this.loopState.interval);
+      this.update();
       this.draw();
     }
   }
