@@ -8,12 +8,14 @@ export default class Branch {
     this.originalDir = [...dir];
 
     this.attactionsCount = 0;
+    this.attactions = [];
     this.hasBeenSplit = false;
     this.dead = false;
   }
 
   reset() {
     this.dir = [...this.originalDir];
+    this.attactions = [];
     this.attactionsCount = 0;
   }
 }

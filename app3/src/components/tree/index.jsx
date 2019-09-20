@@ -25,7 +25,7 @@ export default class Tree {
     this.leaves = [];
     this.branches = [];
 
-    for (let i = 0; i < 400; i++) {
+    for (let i = 0; i < 500; i++) {
       this.leaves.push(new Leaf(canvas));
     }
 
@@ -37,7 +37,7 @@ export default class Tree {
 
   update() {
     // debugger
-    this.leaves.filter(leaf => !leaf.reached).forEach(leaf => {
+    this.leaves.forEach(leaf => {
       let record = 100000;
       let closestBranch = null;
       // find closest branch;
@@ -60,10 +60,7 @@ export default class Tree {
       });
 
       if (closestBranch != null) {
-        // debugger
-        let newDir = subVect([...leaf.pos], closestBranch.pos);
-        newDir = normalizeVect(newDir, 2);
-        closestBranch.dir = addVect(closestBranch.dir, newDir);
+        closestBranch.attactions.push(leaf);
         closestBranch.attactionsCount++;
       }
     });
@@ -71,15 +68,30 @@ export default class Tree {
     for (let i = 0, l = this.branches.length; i < l; i++) {
       const branch = this.branches[i];
       if (branch.attactionsCount > 0) {
-        divVect(branch.dir, branch.attactionsCount + 1);
-        const newPos = addVect([...branch.pos], multVect([...branch.dir], 10));
-        const newBranch = new Branch(newPos, branch, [...branch.dir]);
+
+        let avgDir = [0, 0];
+        branch.attactions.forEach(leaf => {
+          addVect(avgDir, normalizeVect(subVect([...leaf.pos], branch.pos)));
+        });
+
+        // avgDir = normalizeVect(addVect(avgDir, [(Math.floor(Math.random() * 2) - 1) / 10, (Math.floor(Math.random() * 2) - 1) / 10]));
+
+        divVect(avgDir, branch.attactionsCount + 1);
+
+        const newPos = addVect([...branch.pos], multVect([...avgDir], 20));
+        const newBranch = new Branch(newPos, branch, [...avgDir]);
         this.branches.push(newBranch);
         branch.isTip = false;
         branch.hasBeenSplit = true;
       }
       branch.reset();
     };
+
+    this.leaves.forEach((leaf, index) => {
+      if (leaf.reached) {
+        this.leaves.splice(index, 1);
+      }
+    });
   }
 
   draw() {
