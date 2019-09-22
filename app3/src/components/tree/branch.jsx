@@ -1,5 +1,5 @@
 export default class Branch {
-  constructor(pos, parent, dir) {
+  constructor(pos, parent, dir, color) {
     this.pos = pos;
     this.parent = parent;
     this.dir = dir;
@@ -11,6 +11,8 @@ export default class Branch {
     this.attactions = [];
     this.hasBeenSplit = false;
     this.dead = false;
+
+    this.color = color;
   }
 
   reset() {

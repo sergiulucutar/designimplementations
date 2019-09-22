@@ -1,10 +1,40 @@
 .home {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
   width: 100vw;
   height: 100vh;
   overflow: hidden;
 
+  .trees {
+    grid-column: 2 / span 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   canvas {
-    width: 100vw;
+    width: 50vw;
     height: 100vh;
+
+    filter: brightness(200%);
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    header {
+      width: 80%;
+
+      h2 {
+        font-size: 2rem;
+      }
+    }
+    h1 {
+      font-size: 4rem;
+    }
   }
 }

@@ -9,27 +9,26 @@ export default class Home extends React.Component {
     super();
 
     this.canvasRef = React.createRef();
+    // this.virtualCanvas = document.createElement('canvas');
 
     this.loopState = {
       then: Date.now(),
       interval: 1000 / 30
     };
-
-    this.l = 0;
   }
 
   componentDidMount() {
     this.canvas = this.canvasRef.current;
     this.ctx = this.canvas.getContext("2d");
 
-    this.canvas.width = this.rootEl.clientWidth;
-    this.canvas.height = this.rootEl.clientHeight;
+    this.canvas.width = this.canvas.clientWidth;
+    this.canvas.height = this.canvas.clientHeight;
 
     this.tree = new Tree(this.canvas);
-
-    this.loop();
     // this.update();
     // this.draw();
+
+    this.setRoot = this.setRoot.bind(this);
   }
 
   update() {
@@ -63,10 +62,26 @@ export default class Home extends React.Component {
     }
   }
 
+  setRoot(event) {
+    // this.tree.setRoot(event.clientX, event.clientY);
+    this.loop();
+  }
+
   render() {
     return (
       <section className="home" ref={rootEl => (this.rootEl = rootEl)}>
-        <canvas ref={this.canvasRef}></canvas>;
+        <main>
+          {/* <h1>Digital Life</h1> */}
+          <header>
+            <h2>Plant a tree</h2>
+          </header>
+        </main>
+        <div className="trees">
+          <canvas
+            ref={this.canvasRef}
+            onClick={this.setRoot.bind(this)}
+          ></canvas>
+        </div>
       </section>
     );
   }
