@@ -15,6 +15,14 @@ export default class Home extends React.Component {
       then: Date.now(),
       interval: 1000 / 30
     };
+
+    this.tree = {
+      isGrowing: true
+    };
+
+    this.state = {
+      showCanopy: false
+    };
   }
 
   componentDidMount() {
@@ -25,8 +33,7 @@ export default class Home extends React.Component {
     this.canvas.height = this.canvas.clientHeight;
 
     this.tree = new Tree(this.canvas);
-    // this.update();
-    // this.draw();
+    this.tree.onTreeGrowthStop = this.handleTreeGrowthStop.bind(this);
 
     this.setRoot = this.setRoot.bind(this);
   }
@@ -62,7 +69,13 @@ export default class Home extends React.Component {
     }
   }
 
-  setRoot(event) {
+  handleTreeGrowthStop() {
+    this.setState({
+      showCanopy: true
+    });
+  }
+
+  setRoot() {
     // this.tree.setRoot(event.clientX, event.clientY);
     this.loop();
   }
@@ -77,14 +90,14 @@ export default class Home extends React.Component {
           </header>
         </main>
         <div className="trees">
-          <div className="canopy">
+          <div className={`canopy ${this.state.showCanopy ? "" : "hide"}`}>
             <div className="canopy_layers">
               <div></div>
               <div></div>
               <div></div>
+              {/* <div></div>
               <div></div>
-              <div></div>
-              <div></div>
+              <div></div> */}
             </div>
           </div>
           <canvas

@@ -15,7 +15,8 @@
     justify-content: center;
     align-items: center;
 
-    background-color: #9fd4b7;
+    // background-color: #9fd4b7;
+    background-color: #d5e3e2;
   }
 
   .canopy {
@@ -26,68 +27,84 @@
     height: 55vh;
 
     // background-color: #008000;
-    background-image: linear-gradient(rgba(154, 205, 50, 1), #008000, rgba(154, 205, 50, 0));
-    opacity: .5;
+    background-image: linear-gradient(
+      rgba(154, 205, 50, 1),
+      #008000,
+      rgba(154, 205, 50, 0)
+    );
+    opacity: 0.5;
+    transition: opacity 2s linear;
 
     transform: translate(-50%, -50%);
+
+    &.hide {
+      opacity: 0;
+    }
 
     &_layers {
       position: relative;
       width: 100%;
       height: 100%;
 
+      animation: wind 5s ease-in-out infinite;
+
       > div {
         position: absolute;
         width: 100%;
         height: 100%;
-  
-        background-color: rgba(154, 205, 50, 1);
-        opacity: .4;
+
+        background-color: green;
+        opacity: 0.3;
 
         transform-origin: 50% 50%;
-  
+
         &:nth-of-type(1) {
-          transform: rotate(10deg);
+          transform: rotate(10deg) scale(0.95);
+          background-color: blue;
         }
-  
-  
+
+        &:nth-of-type(2) {
+          transform: rotate(-2deg);
+          background-color: yellow;
+        }
+
+        &:nth-of-type(3) {
+          transform: rotate(-20deg) scale(0.9);
+        }
+
         // &:nth-child(1) {
         //   width: 20%;
         //   height: 50%;
         // }
-  
+
         // &:nth-child(2) {
         //   width: 20%;
         //   height: 50%;
         //   margin-top: 70px;
         // }
-  
+
         // &:nth-child(3) {
         //   width: 20%;
         //   height: 50%;
         // }
-  
+
         // &:nth-child(4) {
         //   width: 10%;
         //   height: 20%;
         // }
-  
+
         // &:nth-child(5) {
         //   width: 40%;
         //   height: 10%;
         // }
-  
+
         // &:nth-child(6) {
         //   margin-top: 50px;
         //   width: 45%;
         //   height: 43%;
         // }
-  
-  
       }
     }
-
-    
   }
 
   canvas {
@@ -113,5 +130,51 @@
     h1 {
       font-size: 4rem;
     }
+  }
+}
+
+@keyframes wind {
+  10% {
+    transform: translate(10px, 0);
+  }
+
+  20% {
+    transform: translate(-8px, 0);
+  }
+
+  25% {
+    transform: translate(0, 0);
+  }
+
+  30% {
+    transform: translate(0, 0);
+  }
+
+  40% {
+    transform: translate(15px, 0);
+  }
+
+  50% {
+    transform: translate(-10px, 0);
+  }
+
+  60% {
+    transform: translate(13px, 0);
+  }
+
+  70% {
+    transform: translate(-8px, 0);
+  }
+
+  80% {
+    transform: translate(6px, 0);
+  }
+
+  70% {
+    transform: translate(-4px, 0);
+  }
+
+  100% {
+    transform: translate(1px, 0);
   }
 }

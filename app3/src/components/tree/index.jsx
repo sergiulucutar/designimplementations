@@ -24,6 +24,8 @@ export default class Tree {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
 
+    this.onTreeGrowthStop = null;
+
     this.leaves = [];
     this.branches = [];
 
@@ -49,6 +51,7 @@ export default class Tree {
   update() {
     if (this.isGrowing) {
       this.isGrowing = false;
+
       this.leaves.forEach(leaf => {
         let record = 100000;
         let closestBranch = null;
@@ -75,6 +78,10 @@ export default class Tree {
           closestBranch.attactionsCount++;
         }
       });
+
+      if (!this.isGrowing) {
+        this.onTreeGrowthStop();
+      }
 
       for (let i = 0, l = this.branches.length; i < l; i++) {
         const branch = this.branches[i];
