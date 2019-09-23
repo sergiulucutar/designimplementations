@@ -42,12 +42,8 @@ export default class Tree {
     this.isGrowing = true;
   }
 
-  // setRoot(x, y) {
-  //   this.branches[0].pos = [x, y];
-  // }
-
   random(min = 0, max) {
-    return Math.floor(Math.random() * max) + min;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   update() {

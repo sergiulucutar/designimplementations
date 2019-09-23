@@ -77,6 +77,16 @@ export default class Home extends React.Component {
           </header>
         </main>
         <div className="trees">
+          <div className="canopy">
+            <div className="canopy_layers">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
           <canvas
             ref={this.canvasRef}
             onClick={this.setRoot.bind(this)}
