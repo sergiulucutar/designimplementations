@@ -1,9 +1,12 @@
 .home {
+  position: relative;
+  
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 
   width: 100vw;
   height: 100vh;
+  
   overflow: hidden;
 
   .trees {
@@ -17,6 +20,8 @@
 
     // background-color: #9fd4b7;
     background-color: #d5e3e2;
+
+    overflow: hidden;
   }
 
   .canopy {
@@ -32,7 +37,7 @@
       #008000,
       rgba(154, 205, 50, 0)
     );
-    opacity: 0.5;
+    opacity: 0.7;
     transition: opacity 2s linear;
 
     transform: translate(-50%, -50%);
@@ -120,18 +125,44 @@
     justify-content: center;
     align-items: center;
 
-    header {
+    .left {
       width: 80%;
 
       h2 {
         font-size: 2rem;
+        margin: 20px 0;
       }
-    }
-    h1 {
-      font-size: 4rem;
     }
   }
 }
+
+.seed_pot {
+  width: 10vmin;
+  height: 10vmin;
+
+  border-radius: 50%;
+
+  background-color: black;
+}
+
+.seed {
+  position: absolute;
+
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: black;
+
+  transition: all 1s ease-out;
+
+  z-index: 5;
+
+  &.plant {
+    top: 100% !important;
+    left: 60% !important;
+  }
+}
+
 
 @keyframes wind {
   10% {

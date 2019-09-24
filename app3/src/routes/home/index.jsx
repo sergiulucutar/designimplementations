@@ -23,6 +23,9 @@ export default class Home extends React.Component {
     this.state = {
       showCanopy: false
     };
+
+    this.setRoot = this.setRoot.bind(this);
+    this.placeSeed = this.placeSeed.bind(this);
   }
 
   componentDidMount() {
@@ -34,8 +37,6 @@ export default class Home extends React.Component {
 
     this.tree = new Tree(this.canvas);
     this.tree.onTreeGrowthStop = this.handleTreeGrowthStop.bind(this);
-
-    this.setRoot = this.setRoot.bind(this);
   }
 
   update() {
@@ -45,13 +46,13 @@ export default class Home extends React.Component {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.ctx.fillStyle = "red";
+    // this.ctx.fillStyle = "red";
 
-    this.tree.leaves.forEach(leaf => {
-      this.ctx.beginPath();
-      this.ctx.arc(leaf.pos[0], leaf.pos[1], 2, 0, 2 * Math.PI);
-      this.ctx.fill();
-    });
+    // this.tree.leaves.forEach(leaf => {
+    //   this.ctx.beginPath();
+    //   this.ctx.arc(leaf.pos[0], leaf.pos[1], 2, 0, 2 * Math.PI);
+    //   this.ctx.fill();
+    // });
 
     this.tree.draw();
   }
@@ -75,19 +76,31 @@ export default class Home extends React.Component {
     });
   }
 
+  placeSeed(event) {
+    const seed = document.querySelector('.seed');
+    seed.style = `top: ${event.clientY}px; left:${event.clientX}px;`
+    setTimeout(() => {
+      seed.classList.add('plant');
+    }, 10);
+    setTimeout(() => {
+      this.loop();
+    }, 1010);
+  }
+
   setRoot() {
     // this.tree.setRoot(event.clientX, event.clientY);
-    this.loop();
+    // this.loop();
   }
 
   render() {
     return (
       <section className="home" ref={rootEl => (this.rootEl = rootEl)}>
+        <div className="seed"></div>
         <main>
-          {/* <h1>Digital Life</h1> */}
-          <header>
+          <div className="left">
             <h2>Plant a tree</h2>
-          </header>
+            <div className="seed_pot" onClick={this.placeSeed.bind(this)}></div>
+          </div>
         </main>
         <div className="trees">
           <div className={`canopy ${this.state.showCanopy ? "" : "hide"}`}>
