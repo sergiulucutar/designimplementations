@@ -4,6 +4,8 @@ import * as THREE from 'three';
 
 import World from './componnets/world';
 import Spires from './componnets/spire';
+import Hero from './componnets/hero';
+import Enemy from './componnets/enemy';
 
 var scene, camera, renderer, domEl;
 
@@ -11,7 +13,7 @@ function createScene() {
   domEl = document.querySelector('main');
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0xff0000, 100, 950);
+  scene.fog = new THREE.Fog(0xd6eae6, 10,350);
 
   camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2000);
   camera.position.x = 0;
@@ -35,16 +37,22 @@ function handleResize() {
   camera.updateProjectionMatrix();
 }
 
-
 // Objects
-var world;
+var world, hero;
 
 function createWorld() {
   world = new World();
   scene.add(world.mesh);
 
   const spires = new Spires();
-  scene.add(spires);
+  // scene.add(spires.mesh);
+  world.mesh.add(spires.mesh);
+
+  hero = new Hero();
+  scene.add(hero.mesh);
+
+  // const enemy = new Enemy();
+  // scene.add(enemy.mesh);
 }
 
 function createLights() {
@@ -65,7 +73,21 @@ function init() {
   createWorld();
   createLights();
 
-  // loop();
+  document.addEventListener('mousemove', event => {
+    hero.move(event);
+  });
+
+  document.addEventListener('click', event => {
+    hero.update(event);
+  });
+
+  loop();
+}
+
+function loop() {
+  requestAnimationFrame(loop);
+
+  world.mesh.rotation.z += .002;
 
   renderer.render(scene, camera);
 }

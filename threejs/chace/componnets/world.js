@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import Spires from './spire';
 
 export default class World {
 
@@ -9,7 +8,7 @@ export default class World {
       color: 0x23B5D3,
       shininess: 1,
       transparent: true,
-      opacity: .8
+      opacity: .98
     });
 
     this.mesh = new THREE.Mesh(this.geom, this.mat);

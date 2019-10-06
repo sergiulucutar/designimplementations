@@ -1,19 +1,24 @@
 import * as THREE from 'three';
+import Utils from './utils';
 
 class Spire {
   constructor() {
     this.mesh = new THREE.Object3D();
 
-    const partGeom = new THREE.BoxGeometry(20, 20, 20);
+    const partGeom = new THREE.BoxGeometry(10, 10, 10);
     const partMat = new THREE.MeshPhongMaterial({
-      color: 0xffffff
+      color: 0xff0000
     });
 
-    for (let i = 0; i < 5; i++) {
+    const piecesCount = Utils.random(5, 15) 
+    for (let i = 0; i < piecesCount; i++) {
+
       const tempMesh = new THREE.Mesh(partGeom, partMat);
-      tempMesh.position.y = i * 15;
+      // tempMesh.scale.set(1 / i, 1 / i, 1 / i);
+      tempMesh.scale.set(1 - i * .06, 1 - i * .06, 1 - i * .06);
+      tempMesh.position.y = i * 5;
       tempMesh.rotation.x = Math.random() * Math.PI * 2;
-      tempMesh.rotateOnAxis.z = Math.random() * Math.PI * 2;
+      tempMesh.rotation.z = Math.random() * Math.PI * 2;
 
       tempMesh.castShadow = true;
       tempMesh.receiveShadow = true;
@@ -32,11 +37,11 @@ export default class Spires {
     for (let i = 0; i < this.spiresCount; i++) {
       const spire = new Spire();
       const a = angle * i;
-      const height = 50;
-      spire.mesh.position.y = Math.sin(a) * height;
+      const height = 100;
       spire.mesh.position.x = Math.cos(a) * height;
-      spire.mesh.position.z = a + Math.PI / 2;
-      spire.mesh.position.z = -400 - Math.random() * 400;
+      spire.mesh.position.y = Math.sin(a) * height;
+      spire.mesh.position.z = 20 + -1 * Math.random() * 150;
+      spire.mesh.rotation.z = a - Math.PI / 2;
       this.mesh.add(spire.mesh);
     }
   }
