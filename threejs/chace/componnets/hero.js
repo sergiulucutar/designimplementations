@@ -16,6 +16,9 @@ export default class Hero {
         this.mesh.rotation.z = angle;
 
         this.mesh.position.z = 50;
+
+        this.mesh.castShadow = true;
+        this.mesh.receiveShadow = true;
     }
 
     move(event) {

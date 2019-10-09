@@ -38,13 +38,13 @@ function handleResize() {
 }
 
 // Objects
-var world, hero;
+var world, hero, spires;
 
 function createWorld() {
   world = new World();
   scene.add(world.mesh);
 
-  const spires = new Spires();
+  spires = new Spires();
   // scene.add(spires.mesh);
   world.mesh.add(spires.mesh);
 
@@ -62,6 +62,18 @@ function createLights() {
   const dirLight = new THREE.DirectionalLight(0xffffff, 1);
   dirLight.position.set(-20, 40, 20);
   dirLight.castShadow = true;
+  // // define the visible area of the projected shadow
+	// dirLight.shadow.camera.left = -400;
+	// dirLight.shadow.camera.right = 400;
+	// dirLight.shadow.camera.top = 400;
+	// dirLight.shadow.camera.bottom = -400;
+	// dirLight.shadow.camera.near = 1;
+	// dirLight.shadow.camera.far = 1000;
+
+	// // define the resolution of the shadow; the higher the better, 
+	// // but also the more expensive and less performant
+	// dirLight.shadow.mapSize.width = 2048;
+	// dirLight.shadow.mapSize.height = 2048;
   scene.add(dirLight);
 }
 
@@ -88,6 +100,7 @@ function loop() {
   requestAnimationFrame(loop);
 
   world.mesh.rotation.z += .002;
+  spires.update();
 
   renderer.render(scene, camera);
 }

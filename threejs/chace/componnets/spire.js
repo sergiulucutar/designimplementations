@@ -7,7 +7,7 @@ class Spire {
 
     const partGeom = new THREE.BoxGeometry(10, 10, 10);
     const partMat = new THREE.MeshPhongMaterial({
-      color: 0xff0000
+      color: 0x4392F1
     });
 
     const piecesCount = Utils.random(5, 15) 
@@ -24,6 +24,15 @@ class Spire {
       tempMesh.receiveShadow = true;
 
       this.mesh.add(tempMesh);
+    }
+
+    this.mesh.castShadow = true;
+    this.mesh.receiveShadow = true;
+  }
+
+  update() {
+    if(this.piecesCount > 13) {
+      this.mesh.children[this.piecesCount - 1].rotation.y += .1;
     }
   }
 }
@@ -44,5 +53,17 @@ export default class Spires {
       spire.mesh.rotation.z = a - Math.PI / 2;
       this.mesh.add(spire.mesh);
     }
+  }
+
+  update() {
+    this.mesh.children.forEach(spire => {
+      // debugger;
+      const childCount = spire.children.length;
+      if(childCount > 13) {
+        spire.children[childCount - 1].rotation.y += .01;
+        // spire.children[childCount - 1].position.y += Math.cos(spire.children[childCount - 1].position.y + 1);
+      }
+      // spire.update();
+    })
   }
 }
