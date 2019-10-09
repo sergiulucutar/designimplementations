@@ -7,6 +7,7 @@ export default class Hero {
         this.geom = new THREE.BoxGeometry(5, 5, 5);
         this.mat = new THREE.MeshPhongMaterial({color: 0x0000ff});
         this.mesh = new THREE.Mesh(this.geom, this.mat);
+        // this.createBoat();
 
         const angle = Math.PI / 2 - Math.PI /2 * .2;
 
@@ -30,5 +31,13 @@ export default class Hero {
         
         this.mesh.rotation.z = angle + Math.PI / 2;
         this.mesh.rotation.x = normalizeY -.5 * (1 - normalizeY);
+    }
+
+    createBoat() {
+        // this.mesh = new THREE.Group();
+
+        const hullgeom = new THREE.CylinderGeometry(4, 4, 14, 16, false, 0, Math.PI);
+        const hullmat = new THREE.MeshBasicMaterial({color: 'brown'});
+        this.mesh = new THREE.Mesh(hullgeom, hullmat);
     }
 }

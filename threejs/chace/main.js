@@ -56,7 +56,7 @@ function createWorld() {
 }
 
 function createLights() {
-  const generalLight = new THREE.AmbientLight(0xffffff, .9);
+  const generalLight = new THREE.AmbientLight(0xffffff, .5);
   scene.add(generalLight);
 
   const dirLight = new THREE.DirectionalLight(0xffffff, 1);
