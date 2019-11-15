@@ -107,15 +107,22 @@ function init() {
   loop();
 }
 
+const interval = 1000/60;
+let then = Date.now();
 function loop() {
   requestAnimationFrame(loop);
 
-  world.mesh.rotation.z += .008 + .003 * speed;
-  collect();
-  spires.update();
-  hero.update();
+  const now = Date.now();
+  const delta = now - then;
+  if (delta > interval) {
+    then = now - (delta % interval);
+    world.mesh.rotation.z += .008 + .003 * speed;
+    // collect();
+    spires.update();
+    hero.update();
 
-  renderer.render(scene, camera);
+    renderer.render(scene, camera);
+  }
 }
 
 window.onload = init.bind(this);
@@ -125,10 +132,16 @@ function collect() {
   const ids = [];
   for(let i = 0; i < collectables.total; i++) {
     const part = collectables.mesh.children[i];
-    if(part && Math.abs(hero.mesh.position.x - part.position.x) < 5 &&
-      Math.abs(hero.mesh.position.y - part.position.y) < 5) {
-        ids.push(i);
-      }
+    if(part) {
+      console.log(hero.mesh.position.x, part.position.x);
+      console.log(hero.mesh.position.y, part.position.y);
+      console.log('--------------------------------------')
+      // debugger;
+      if(part && Math.abs(hero.mesh.position.x - part.position.x) < 10 &&
+        Math.abs(hero.mesh.position.y - part.position.y) < 10) {
+          ids.push(i);
+        }
+    }
   }
 
   ids.forEach(id => {

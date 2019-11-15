@@ -1,0 +1,90 @@
+@import './reset.scss';
+
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display&display=swap');
+
+
+html {
+    font-size: 16px;
+        
+    @media screen and (min-width: 900px) {
+        font-size: 18px;
+    }
+        
+    @media screen and (min-width: 1200px) {
+        font-size: 20px;
+    }
+}
+
+body {
+    font-family: 'Playfair Display', serif;
+}
+
+main {
+    width: 100vw;
+    height: 100vh;
+
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-columns: repeat(6, 1fr);
+
+    .banner {
+        grid-row: -2;
+        grid-column: 1 / -1;
+
+        display: flex;
+        flex-direction: row;
+
+        overflow: hidden;
+        
+        > div {
+            animation: scroll 10s linear infinite;
+            span {
+                display: inline-block;
+                font-size: 5rem;
+            }
+        }
+    }
+}
+
+.video {
+    grid-row: 1 / -1;
+    grid-column: 1 / span 3;
+
+    background-color: orchid;
+
+    &_capture {
+        grid-row: 3 / span 2;
+        grid-column: 5;
+
+        background-color: orchid;
+    }
+}
+
+.logo {
+    color: white;
+}
+
+nav {
+    grid-row: 1;
+    grid-column: 4 / span 3;
+
+    background-color: whitesmoke;
+
+    ul {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        list-style: none;
+    }
+}
+
+@keyframes scroll {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+  
+    to {
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
