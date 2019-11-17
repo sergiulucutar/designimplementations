@@ -1,0 +1,300 @@
+<template>
+  <main>
+    <span class="logo">Captured.</span>
+    <nav>
+      <ul>
+        <li>Stories</li>
+        <li>About</li>
+        <li>Contact</li>
+      </ul>
+    </nav>
+    <div class="video"></div>
+    <div class="video_capture"></div>
+    <div class="banner">
+      <div>
+        <div class="banner_wrapper">
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+        </div>
+        <div class="banner_wrapper">
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</template>
+
+<script>
+export default {
+  name: "app",
+  data() {
+    return {
+      msg: "Welcome to Your Vue.js App"
+    };
+  }
+};
+</script>
+
+<style lang="scss">
+@import url("https://fonts.googleapis.com/css?family=Playfair+Display&display=swap");
+
+:root {
+  --s_margin-top: 20px;
+}
+
+html {
+  font-size: 16px;
+
+  @media screen and (min-width: 900px) {
+    font-size: 18px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    font-size: 20px;
+  }
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  grid-template-columns: repeat(6, 1fr);
+
+  font-family: "Playfair Display", serif;
+  .banner {
+    grid-row: -2;
+    grid-column: 1 / -1;
+
+    display: flex;
+    flex-direction: row;
+
+    overflow: hidden;
+
+    > div {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+
+      width: 100%;
+      height: 100%;
+    }
+
+    &_wrapper {
+      position: absolute;
+      bottom: var(--s_margin-top);
+      left: 0;
+      white-space: nowrap;
+
+      span {
+        display: inline-block;
+        font-size: 2rem;
+
+        animation: scroll 18s linear infinite;
+      }
+
+      &:last-of-type {
+        color: white;
+        clip: rect(0px, 50vw, 100px, 0px);
+      }
+    }
+  }
+}
+
+.video {
+  grid-row: 1 / -1;
+  grid-column: 1 / span 3;
+
+  background-color: orchid;
+
+  &_capture {
+    grid-row: 3 / span 2;
+    grid-column: 5;
+
+    background-color: orchid;
+  }
+}
+
+.video,
+.video_capture {
+  background-image: url("assets/img1.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.logo {
+  grid-row: 1;
+  grid-column: 2 / span 2;
+
+  margin: var(--s_margin-top);
+
+  color: white;
+  font-size: 2em;
+
+  z-index: 2;
+}
+
+nav {
+  grid-row: 1;
+  grid-column: 5;
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    list-style: none;
+
+    margin-top: var(--s_margin-top);
+  }
+}
+
+@keyframes scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+</style>
