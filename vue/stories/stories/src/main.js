@@ -1,11 +1,10 @@
 import Vue from "vue";
-import App from "./App.vue";
 import VueRouter from "vue-router";
 
-Vue.use(VueRouter);
+import App from "./App.vue";
+import Stories from "./routes/Stories.vue";
 
-const Home = { template: "<p>Home</p>" };
-const Stories = { template: "<p>Stories</p>" };
+Vue.use(VueRouter);
 
 const routes = [
   { path: "/", component: App },
