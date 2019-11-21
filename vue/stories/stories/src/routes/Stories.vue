@@ -1,12 +1,56 @@
 <template>
   <div class="stories">
     <div class="stories_background" ref="bg"></div>
-    <section class="stories_carousel">
-      <img @mouseover="onHover(1)" src="../assets/img/story1.jpg" />
-      <img @mouseover="onHover(2)" src="../assets/img/story2.jpg" />
-      <img src="../assets/img/story3.jpg" />
-      <img src="../assets/img/story4.jpg" />
-      <img src="../assets/img/story5.jpg" />
+    <section class="slides">
+      <div class="slide slide-displayed">
+        <div class="slide_carousel">
+          <img data-index="1" src="../assets/img/story1.jpg" />
+          <img data-index="2" src="../assets/img/story2.jpg" />
+          <img data-index="3" src="../assets/img/story3.jpg" />
+          <img data-index="4" src="../assets/img/story4.jpg" />
+          <img data-index="5" src="../assets/img/story5.jpg" />
+        </div>
+        <h1>STORIES</h1>
+      </div>
+      <div class="slide">
+        <div class="slide_carousel">
+          <img data-index="1" src="../assets/img/story1.jpg" />
+          <img data-index="2" src="../assets/img/story2.jpg" />
+          <img data-index="3" src="../assets/img/story3.jpg" />
+          <img data-index="4" src="../assets/img/story4.jpg" />
+          <img data-index="5" src="../assets/img/story5.jpg" />
+        </div>
+        <h1>EXPERIENCES</h1>
+      </div>
+      <div class="slide">
+        <div class="slide_carousel">
+          <img data-index="1" src="../assets/img/story1.jpg" />
+          <img data-index="2" src="../assets/img/story2.jpg" />
+          <img data-index="3" src="../assets/img/story3.jpg" />
+          <img data-index="4" src="../assets/img/story4.jpg" />
+          <img data-index="5" src="../assets/img/story5.jpg" />
+        </div>
+        <h1>MEMORIES</h1>
+      </div>
+    </section>
+    <section class="captions">
+      <div class="slide_captions">
+        <h2 :class="{ displayed: selectedImage == 1 }">
+          Pharetra sit amet aliquam id diam maecenas ultricies
+        </h2>
+        <h2 :class="{ displayed: selectedImage == 2 }">
+          Tellus in metus vulputate eu. Consectetur adipiscing elit
+        </h2>
+        <h2 :class="{ displayed: selectedImage == 3 }">
+          Aenean euismod elementum nisi quis eleifend quam
+        </h2>
+        <h2 :class="{ displayed: selectedImage == 4 }">
+          Morbi blandit cursus risus at ultrices
+        </h2>
+        <h2 :class="{ displayed: selectedImage == 5 }">
+          Natoque penatibus et magnis dis parturient montes nascetur
+        </h2>
+      </div>
     </section>
   </div>
 </template>
@@ -14,6 +58,7 @@
 <script>
 import * as THREE from "three";
 import { Power2, TweenLite } from "gsap";
+import { random } from "../components/utils";
 
 export default {
   name: "Stories",
@@ -23,6 +68,9 @@ export default {
       index: 1,
       textures: [],
       resolution: [],
+      isPaused: true,
+      animation: null,
+      selectedImage: 0,
       three: {
         render: null,
         scene: null,
@@ -62,6 +110,12 @@ export default {
         uniform sampler2D u_texture1;
         uniform sampler2D u_texture2;
 
+        mat2 rotate(float a) {
+          float s = sin(a);
+          float c = cos(a);
+          return mat2(c, -s, s, c);
+        }
+
         varying vec2 vUv;
 
         void main() {
@@ -69,9 +123,9 @@ export default {
             // gl_FragColor = texture2D(u_texture1, st - fract(st * vec2(5.0, 0.0)) * u_time * 0.1);
             // gl_FragColor = vec4(abs(sin(u_time)),st.y,0.0,1.0);
 
-            vec2 uvDivided = fract(st*vec2(50.0,1.0));
-            vec2 uvDisplaced1 = st + uvDivided*u_time*0.1;
-            vec2 uvDisplaced2 = st + uvDivided*(1. - u_time)*0.1;
+            vec2 uvDivided = fract(st*vec2(10.0,1.0));
+            vec2 uvDisplaced1 = st + rotate(3.1415926/4.)*uvDivided*u_time*0.1;
+            vec2 uvDisplaced2 = st + rotate(3.1415926/4.)*uvDivided*(1. - u_time)*0.1;
             vec4 t1 = texture2D(u_texture1,uvDisplaced1);
             vec4 t2 = texture2D(u_texture2,uvDisplaced2);
             gl_FragColor = mix(t1, t2, u_time);
@@ -84,20 +138,7 @@ export default {
     const texturePromises = this.loadTextures();
     Promise.all(texturePromises).then(() => {
       this.init();
-      this.shaders.uniforms.u_texture1.value = this.textures[0];
-      this.shaders.uniforms.u_texture2.value = this.textures[4];
-
-      //GSAP
-      TweenLite.to(this.shaders.uniforms.u_time, 3, {
-        value: 1,
-        ease: Power2.easeOut,
-        onComplete: () => {
-          this.shaders.uniforms.u_time.value = 0;
-          this.shaders.uniforms.u_texture1.value = this.shaders.uniforms.u_texture2.value;
-        }
-      });
-
-      this.loop();
+      this.addListeners();
     });
   },
   methods: {
@@ -128,7 +169,10 @@ export default {
 
       const scene = new THREE.Scene();
 
-      const renderer = new THREE.WebGLRenderer();
+      const renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true
+      });
       renderer.setSize(window.innerWidth, window.innerHeight);
       this.resolution = [window.innerWidth, window.innerHeight];
       this.shaders.uniforms.u_resolution.value = new THREE.Vector4(
@@ -139,7 +183,6 @@ export default {
       /**
        * Create material -> Shader Entry
        */
-      console.log(this.shaders);
       const mat = new THREE.ShaderMaterial({
         uniforms: this.shaders.uniforms,
         vertexShader: this.shaders.vertexShader,
@@ -158,20 +201,85 @@ export default {
       };
     },
     loop() {
-      requestAnimationFrame(this.loop);
-      this.three.renderer.render(this.three.scene, this.three.camera);
+      if (!this.isPaused) {
+        requestAnimationFrame(this.loop);
+        this.three.renderer.render(this.three.scene, this.three.camera);
+      }
     },
-    onHover(id) {}
+    addListeners() {
+      const imgEls = document.querySelectorAll("img");
+      imgEls.forEach(el => {
+        el.addEventListener("mouseenter", () => {
+          this.onMouseEnter(el.dataset.index);
+        });
+        el.addEventListener("mouseleave", () => {
+          this.onMouseLeave(el.dataset.index);
+        });
+        if (random(0, 3) !== 2) {
+          el.style = `transform: rotate(${random(-20, 20)}deg) translateY(0)`;
+        }
+      });
+    },
+    onMouseEnter(id) {
+      this.selectedImage = id;
+      if (this.isPaused) {
+        this.shaders.uniforms.u_texture2.value = this.textures[id - 1];
+
+        this.isPaused = false;
+        this.loop();
+        //GSAP
+        if (this.animation) {
+          this.animation.kill();
+        }
+        this.animation = TweenLite.to(this.shaders.uniforms.u_time, 1, {
+          value: 1,
+          ease: Power2.easeOut,
+          onComplete: () => {
+            this.shaders.uniforms.u_time.value = 0;
+            this.shaders.uniforms.u_texture1.value = this.shaders.uniforms.u_texture2.value;
+            this.isPaused = true;
+          }
+        });
+      }
+    },
+    onMouseLeave(id) {
+      this.selectedImage = 0;
+      if (this.isPaused) {
+        this.shaders.uniforms.u_texture1.value = this.textures[id - 1];
+        this.shaders.uniforms.u_texture2.value = 0;
+
+        this.isPaused = false;
+        this.loop();
+        //GSAP
+        if (this.animation) {
+          this.animation.kill();
+        }
+        this.animation = TweenLite.to(this.shaders.uniforms.u_time, 1, {
+          value: 1,
+          ease: Power2.easeOut,
+          onComplete: () => {
+            this.shaders.uniforms.u_time.value = 0;
+            this.shaders.uniforms.u_texture1.value = this.shaders.uniforms.u_texture2.value;
+            this.isPaused = true;
+          }
+        });
+      }
+    }
   }
 };
 </script>
 
 <style lang="scss">
+:root {
+  --e_easing: cubic-bezier(0.5, 0, 0.1, 1);
+}
+
 .stories {
   position: relative;
 
   display: grid;
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: 1fr 3fr 1fr;
+  grid-template-columns: 1fr;
 
   width: 100vw;
   height: 100vh;
@@ -182,24 +290,99 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
+
+    background-color: #aabd8c;
   }
 
-  &_carousel {
+  .slides {
     grid-row: 2;
-    display: flex;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    display: none;
     justify-content: center;
     align-items: center;
 
-    img {
-      width: 19%;
-      height: auto;
+    opacity: 0;
 
-      filter: grayscale(1) contrast(4);
-      opacity: 0.5;
-      transition: opacity 0.2s ease-in-out;
+    &-displayed {
+      display: flex;
+      opacity: 1;
+    }
 
-      &:hover {
+    h1 {
+      position: absolute;
+
+      color: white;
+      font-family: "Playfair Display", serif;
+      font-size: 15rem;
+      font-weight: bold;
+
+      pointer-events: none;
+    }
+
+    &_carousel {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: 16%;
+        height: auto;
+
+        filter: grayscale(1) contrast(4);
+        opacity: 0.5;
+        transform: translateY(0);
+        transition: opacity 1s var(--e_easing), transform 1s var(--e_easing);
+
+        &:hover {
+          opacity: 0;
+          transform: rotate(0) !important;
+          transition: opacity 1s var(--e_easing),
+            transform 0s var(--e_easing) 1s;
+        }
+      }
+    }
+  }
+
+  .captions {
+    grid-row: 3;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+
+    .slide_captions {
+      position: relative;
+
+      width: 50vw;
+
+      h2 {
+        position: absolute;
+
+        display: block;
+        width: 100%;
+
+        color: white;
+        // font-family: "Roboto", sans-serif;
+        font-size: 3.5rem;
+
         opacity: 0;
+        text-align: center;
+        transition: opacity 1s var(--e_easing);
+
+        &.displayed {
+          opacity: 1;
+        }
       }
     }
   }

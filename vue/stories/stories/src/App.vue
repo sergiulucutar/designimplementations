@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css?family=Playfair+Display&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Playfair+Display:400,700|Roboto&display=swap");
 
 :root {
   --s_margin-top: 20px;
@@ -69,7 +69,8 @@ main {
   grid-template-rows: repeat(6, 1fr);
   grid-template-columns: repeat(6, 1fr);
 
-  font-family: "Playfair Display", serif;
+  font-family: "Roboto", sans-serif;
+  // font-family: 'Playfair Display', serif;
   .banner {
     grid-row: -2;
     grid-column: 1 / -1;
