@@ -1,13 +1,13 @@
 <template>
   <div class="stories">
     <div class="stories_background" ref="bg"></div>
-    <!-- <section class="stories_carousel">
-      <img src="../assets/img/story1.jpg" />
-      <img src="../assets/img/story2.jpg" />
+    <section class="stories_carousel">
+      <img @mouseover="onHover(1)" src="../assets/img/story1.jpg" />
+      <img @mouseover="onHover(2)" src="../assets/img/story2.jpg" />
       <img src="../assets/img/story3.jpg" />
       <img src="../assets/img/story4.jpg" />
       <img src="../assets/img/story5.jpg" />
-    </section>-->
+    </section>
   </div>
 </template>
 
@@ -23,7 +23,30 @@ export default {
       index: 1,
       textures: [],
       resolution: [],
+      three: {
+        render: null,
+        scene: null,
+        camera: null
+      },
       shaders: {
+        uniforms: {
+          u_time: {
+            type: "f",
+            value: 0
+          },
+          u_texture1: {
+            type: "f",
+            value: 0
+          },
+          u_texture2: {
+            type: "f",
+            value: 0
+          },
+          u_resolution: {
+            type: "v2",
+            value: new THREE.Vector4(0, 0)
+          }
+        },
         vertexShader: `
         varying vec2 vUv;
 
@@ -58,12 +81,42 @@ export default {
     };
   },
   mounted() {
-    this.loadTextures();
-    setTimeout(() => {
-      const { bg } = this.$refs;
+    const texturePromises = this.loadTextures();
+    Promise.all(texturePromises).then(() => {
+      this.init();
+      this.shaders.uniforms.u_texture1.value = this.textures[0];
+      this.shaders.uniforms.u_texture2.value = this.textures[4];
 
-      const scene = new THREE.Scene();
-      const renderer = new THREE.WebGLRenderer();
+      //GSAP
+      TweenLite.to(this.shaders.uniforms.u_time, 3, {
+        value: 1,
+        ease: Power2.easeOut,
+        onComplete: () => {
+          this.shaders.uniforms.u_time.value = 0;
+          this.shaders.uniforms.u_texture1.value = this.shaders.uniforms.u_texture2.value;
+        }
+      });
+
+      this.loop();
+    });
+  },
+  methods: {
+    loadTextures() {
+      const promises = [];
+      let promise;
+      for (let i = 1; i <= 5; i++) {
+        promise = new Promise(resolve => {
+          this.textures.push(
+            new THREE.TextureLoader().load(`dist/story${i}.jpg`, resolve)
+          );
+        });
+        promises.push(promise);
+      }
+
+      return promises;
+    },
+    init() {
+      const { bg } = this.$refs;
       const camera = new THREE.PerspectiveCamera(
         70,
         window.innerWidth / window.innerHeight,
@@ -72,32 +125,23 @@ export default {
       );
       camera.position.set(0, 0, 2);
       camera.fov = 2 * (180 / Math.PI) * Math.atan(1 / (2 * camera.position.z));
+
+      const scene = new THREE.Scene();
+
+      const renderer = new THREE.WebGLRenderer();
       renderer.setSize(window.innerWidth, window.innerHeight);
       this.resolution = [window.innerWidth, window.innerHeight];
+      this.shaders.uniforms.u_resolution.value = new THREE.Vector4(
+        this.resolution[0],
+        this.resolution[1]
+      );
 
       /**
        * Create material -> Shader Entry
        */
-      var uniforms = {
-        u_time: {
-          type: "f",
-          value: 0
-        },
-        u_texture1: {
-          type: "f",
-          value: this.textures[0]
-        },
-        u_texture2: {
-          type: "f",
-          value: this.textures[1]
-        },
-        u_resolution: {
-          type: "v2",
-          value: new THREE.Vector4(this.resolution[0], this.resolution[1])
-        }
-      };
+      console.log(this.shaders);
       const mat = new THREE.ShaderMaterial({
-        uniforms,
+        uniforms: this.shaders.uniforms,
         vertexShader: this.shaders.vertexShader,
         fragmentShader: this.shaders.fragmentShader
       });
@@ -106,32 +150,18 @@ export default {
       scene.add(plane);
 
       bg.appendChild(renderer.domElement);
-      renderer.render(scene, camera);
 
-      //GSAP
-      TweenLite.to(uniforms.u_time, 3, {
-        value: 1,
-        ease: Power2.easeOut,
-        onComplete: () => {
-          uniforms.u_time.value = 0;
-          uniforms.u_texture1.value = uniforms.u_texture2.value;
-        }
-      });
-
-      const loop = () => {
-        requestAnimationFrame(loop);
-
-        // uniforms.u_time.value += 0.01;
-        renderer.render(scene, camera);
+      this.three = {
+        renderer,
+        camera,
+        scene
       };
-      loop();
-    }, 2000);
-  },
-  methods: {
-    loadTextures: function() {
-      this.textures.push(new THREE.TextureLoader().load("dist/story1.jpg"));
-      this.textures.push(new THREE.TextureLoader().load("dist/story3.jpg"));
-    }
+    },
+    loop() {
+      requestAnimationFrame(this.loop);
+      this.three.renderer.render(this.three.scene, this.three.camera);
+    },
+    onHover(id) {}
   }
 };
 </script>
