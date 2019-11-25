@@ -1,55 +1,59 @@
 <template>
-  <div class="stories">
+  <div class="stories" :data-sliderIndex="sliderIndex" ref="parent">
     <div class="stories_background" ref="bg"></div>
     <section class="slides">
-      <div class="slide slide-displayed">
-        <div class="slide_carousel">
-          <img data-index="1" src="../assets/img/story1.jpg" />
-          <img data-index="2" src="../assets/img/story2.jpg" />
-          <img data-index="3" src="../assets/img/story3.jpg" />
-          <img data-index="4" src="../assets/img/story4.jpg" />
-          <img data-index="5" src="../assets/img/story5.jpg" />
+      <transition name="fade">
+        <div class="slide" v-show="sliderIndex == 1">
+          <div class="slide_carousel">
+            <img data-index="1" src="../assets/img/story1.jpg" />
+            <img data-index="2" src="../assets/img/story2.jpg" />
+            <img data-index="3" src="../assets/img/story3.jpg" />
+            <img data-index="4" src="../assets/img/story4.jpg" />
+            <img data-index="5" src="../assets/img/story5.jpg" />
+          </div>
+          <h1>STORIES</h1>
         </div>
-        <h1>STORIES</h1>
-      </div>
-      <div class="slide">
-        <div class="slide_carousel">
-          <img data-index="1" src="../assets/img/story1.jpg" />
-          <img data-index="2" src="../assets/img/story2.jpg" />
-          <img data-index="3" src="../assets/img/story3.jpg" />
-          <img data-index="4" src="../assets/img/story4.jpg" />
-          <img data-index="5" src="../assets/img/story5.jpg" />
+      </transition>
+      <transition name="fade">
+        <div class="slide" v-show="sliderIndex == 2">
+          <div class="slide_carousel">
+            <img data-index="1" src="../assets/img/story1.jpg" />
+            <img data-index="2" src="../assets/img/story2.jpg" />
+            <img data-index="3" src="../assets/img/story3.jpg" />
+            <img data-index="4" src="../assets/img/story4.jpg" />
+            <img data-index="5" src="../assets/img/story5.jpg" />
+          </div>
+          <h1>EXPERIENCES</h1>
         </div>
-        <h1>EXPERIENCES</h1>
-      </div>
-      <div class="slide">
-        <div class="slide_carousel">
-          <img data-index="1" src="../assets/img/story1.jpg" />
-          <img data-index="2" src="../assets/img/story2.jpg" />
-          <img data-index="3" src="../assets/img/story3.jpg" />
-          <img data-index="4" src="../assets/img/story4.jpg" />
-          <img data-index="5" src="../assets/img/story5.jpg" />
+      </transition>
+      <transition name="fade">
+        <div class="slide" v-show="sliderIndex == 3">
+          <div class="slide_carousel">
+            <img data-index="1" src="../assets/img/story1.jpg" />
+            <img data-index="2" src="../assets/img/story2.jpg" />
+            <img data-index="3" src="../assets/img/story3.jpg" />
+            <img data-index="4" src="../assets/img/story4.jpg" />
+            <img data-index="5" src="../assets/img/story5.jpg" />
+          </div>
+          <h1>MEMORIES</h1>
         </div>
-        <h1>MEMORIES</h1>
-      </div>
+      </transition>
     </section>
     <section class="captions">
       <div class="slide_captions">
-        <h2 :class="{ displayed: selectedImage == 1 }">
-          Pharetra sit amet aliquam id diam maecenas ultricies
-        </h2>
-        <h2 :class="{ displayed: selectedImage == 2 }">
-          Tellus in metus vulputate eu. Consectetur adipiscing elit
-        </h2>
-        <h2 :class="{ displayed: selectedImage == 3 }">
-          Aenean euismod elementum nisi quis eleifend quam
-        </h2>
-        <h2 :class="{ displayed: selectedImage == 4 }">
-          Morbi blandit cursus risus at ultrices
-        </h2>
-        <h2 :class="{ displayed: selectedImage == 5 }">
-          Natoque penatibus et magnis dis parturient montes nascetur
-        </h2>
+        <h2
+          :class="{ displayed: selectedImage == 1 }"
+        >Pharetra sit amet aliquam id diam maecenas ultricies</h2>
+        <h2
+          :class="{ displayed: selectedImage == 2 }"
+        >Tellus in metus vulputate eu. Consectetur adipiscing elit</h2>
+        <h2
+          :class="{ displayed: selectedImage == 3 }"
+        >Aenean euismod elementum nisi quis eleifend quam</h2>
+        <h2 :class="{ displayed: selectedImage == 4 }">Morbi blandit cursus risus at ultrices</h2>
+        <h2
+          :class="{ displayed: selectedImage == 5 }"
+        >Natoque penatibus et magnis dis parturient montes nascetur</h2>
       </div>
     </section>
   </div>
@@ -65,7 +69,7 @@ export default {
   data() {
     return {
       progress: 0,
-      index: 1,
+      sliderIndex: 1,
       textures: [],
       resolution: [],
       isPaused: true,
@@ -123,11 +127,15 @@ export default {
             // gl_FragColor = texture2D(u_texture1, st - fract(st * vec2(5.0, 0.0)) * u_time * 0.1);
             // gl_FragColor = vec4(abs(sin(u_time)),st.y,0.0,1.0);
 
-            vec2 uvDivided = fract(st*vec2(10.0,1.0));
-            vec2 uvDisplaced1 = st + rotate(3.1415926/4.)*uvDivided*u_time*0.1;
-            vec2 uvDisplaced2 = st + rotate(3.1415926/4.)*uvDivided*(1. - u_time)*0.1;
-            vec4 t1 = texture2D(u_texture1,uvDisplaced1);
-            vec4 t2 = texture2D(u_texture2,uvDisplaced2);
+            vec4 d1 = texture2D(u_texture1, st);
+            vec4 d2 = texture2D(u_texture2, st);
+
+            float displace1 = (d1.r + d1.g + d1.b) * 0.33;
+            float displace2 = (d2.r + d2.g + d2.b) * 0.33;
+
+            vec4 t1 = texture2D(u_texture1, vec2(st.x, st.y + u_time * (displace2 * 0.6)));
+            vec4 t2 = texture2D(u_texture2, vec2(st.x, st.y + (1.0 - u_time) * (displace1 * 0.6)));
+
             gl_FragColor = mix(t1, t2, u_time);
         }
         `
@@ -139,6 +147,7 @@ export default {
     Promise.all(texturePromises).then(() => {
       this.init();
       this.addListeners();
+      this.loop();
     });
   },
   methods: {
@@ -201,8 +210,8 @@ export default {
       };
     },
     loop() {
+      requestAnimationFrame(this.loop);
       if (!this.isPaused) {
-        requestAnimationFrame(this.loop);
         this.three.renderer.render(this.three.scene, this.three.camera);
       }
     },
@@ -219,51 +228,49 @@ export default {
           el.style = `transform: rotate(${random(-20, 20)}deg) translateY(0)`;
         }
       });
+      this.$refs.parent.addEventListener("wheel", this.onScroll.bind(this));
     },
     onMouseEnter(id) {
       this.selectedImage = id;
-      if (this.isPaused) {
-        this.shaders.uniforms.u_texture2.value = this.textures[id - 1];
-
-        this.isPaused = false;
-        this.loop();
-        //GSAP
-        if (this.animation) {
-          this.animation.kill();
-        }
-        this.animation = TweenLite.to(this.shaders.uniforms.u_time, 1, {
-          value: 1,
-          ease: Power2.easeOut,
-          onComplete: () => {
-            this.shaders.uniforms.u_time.value = 0;
-            this.shaders.uniforms.u_texture1.value = this.shaders.uniforms.u_texture2.value;
-            this.isPaused = true;
-          }
-        });
+      //GSAP
+      if (this.animation) {
+        this.animation.kill();
       }
+      this.shaders.uniforms.u_time.value = 0;
+      this.shaders.uniforms.u_texture2.value = this.textures[id - 1];
+
+      this.isPaused = false;
+      this.animation = TweenLite.to(this.shaders.uniforms.u_time, 1, {
+        value: 1,
+        ease: Power2.easeOut,
+        onComplete: () => {
+          this.shaders.uniforms.u_texture1.value = this.shaders.uniforms.u_texture2.value;
+          this.isPaused = true;
+        }
+      });
     },
     onMouseLeave(id) {
       this.selectedImage = 0;
-      if (this.isPaused) {
-        this.shaders.uniforms.u_texture1.value = this.textures[id - 1];
-        this.shaders.uniforms.u_texture2.value = 0;
-
-        this.isPaused = false;
-        this.loop();
-        //GSAP
-        if (this.animation) {
-          this.animation.kill();
-        }
-        this.animation = TweenLite.to(this.shaders.uniforms.u_time, 1, {
-          value: 1,
-          ease: Power2.easeOut,
-          onComplete: () => {
-            this.shaders.uniforms.u_time.value = 0;
-            this.shaders.uniforms.u_texture1.value = this.shaders.uniforms.u_texture2.value;
-            this.isPaused = true;
-          }
-        });
+      if (this.animation) {
+        this.animation.kill();
       }
+      this.shaders.uniforms.u_time.value = 0;
+      this.shaders.uniforms.u_texture1.value = this.textures[id - 1];
+      this.shaders.uniforms.u_texture2.value = 0;
+
+      this.isPaused = false;
+      //GSAP
+      this.animation = TweenLite.to(this.shaders.uniforms.u_time, 1, {
+        value: 1,
+        ease: Power2.easeOut,
+        onComplete: () => {
+          this.shaders.uniforms.u_texture1.value = this.shaders.uniforms.u_texture2.value;
+          this.isPaused = true;
+        }
+      });
+    },
+    onScroll(event) {
+      this.sliderIndex = (this.sliderIndex++ % 3) + 1;
     }
   }
 };
@@ -284,14 +291,25 @@ export default {
   width: 100vw;
   height: 100vh;
 
+  overflow: hidden;
+  background-color: #aabd8c;
+
+  transition: background-color 1.2s var(--e_easing);
+
+  &[data-sliderIndex="2"] {
+    background-color: #f39b6d;
+  }
+
+  &[data-sliderIndex="3"] {
+    background-color: #f6bd60;
+  }
+
   &_background {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-
-    background-color: #aabd8c;
   }
 
   .slides {
@@ -305,23 +323,18 @@ export default {
     width: 100vw;
     height: 100vh;
 
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
 
-    opacity: 0;
-
-    &-displayed {
-      display: flex;
-      opacity: 1;
-    }
+    opacity: 1;
 
     h1 {
       position: absolute;
 
       color: white;
       font-family: "Playfair Display", serif;
-      font-size: 15rem;
+      font-size: 10rem;
       font-weight: bold;
 
       pointer-events: none;
@@ -337,14 +350,14 @@ export default {
         height: auto;
 
         filter: grayscale(1) contrast(4);
-        opacity: 0.5;
+        opacity: 0.3;
         transform: translateY(0);
-        transition: opacity 1s var(--e_easing), transform 1s var(--e_easing);
+        transition: opacity 1.2s var(--e_easing), transform 1.2s var(--e_easing);
 
         &:hover {
           opacity: 0;
           transform: rotate(0) !important;
-          transition: opacity 1s var(--e_easing),
+          transition: opacity 1.2s var(--e_easing),
             transform 0s var(--e_easing) 1s;
         }
       }
@@ -378,12 +391,37 @@ export default {
 
         opacity: 0;
         text-align: center;
-        transition: opacity 1s var(--e_easing);
+        transition: opacity 1.2s var(--e_easing);
 
         &.displayed {
           opacity: 1;
         }
       }
+    }
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 1.2s var(--e_easing), transform 1.2s var(--e_easing);
+    img {
+      transition: opacity 1.2s var(--e_easing), transform 1.2s var(--e_easing);
+    }
+  }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  .fade-enter {
+    transform: translateY(20%);
+    img {
+      transform: rotate(-15deg);
+    }
+  }
+  .fade-leave-to {
+    transform: translateY(-15%);
+    img {
+      transform: rotate(20deg);
     }
   }
 }

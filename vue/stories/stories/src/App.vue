@@ -1,44 +1,24 @@
 <template>
-  <main>
+  <main id="#app">
     <span class="logo">Captured.</span>
     <nav>
       <ul>
-        <li>Stories</li>
+        <li>
+          <router-link to="/stories">Stories</router-link>
+        </li>
         <li>About</li>
         <li>Contact</li>
       </ul>
     </nav>
-    <div class="video"></div>
-    <div class="video_capture"></div>
-    <div class="banner">
-      <div>
-        <div class="banner_wrapper">
-          <span>* Capture a Story, Document a Memory</span>
-          <span>* Capture a Story, Document a Memory</span>
-          <span>* Capture a Story, Document a Memory</span>
-          <span>* Capture a Story, Document a Memory</span>
-          <span>* Capture a Story, Document a Memory</span>
-        </div>
-        <div class="banner_wrapper">
-          <span>* Capture a Story, Document a Memory</span>
-          <span>* Capture a Story, Document a Memory</span>
-          <span>* Capture a Story, Document a Memory</span>
-          <span>* Capture a Story, Document a Memory</span>
-          <span>* Capture a Story, Document a Memory</span>
-        </div>
-      </div>
-    </div>
+    <!-- <transition name=""> -->
+    <router-view></router-view>
+    <!-- </transition> -->
   </main>
 </template>
 
 <script>
 export default {
-  name: "app",
-  data() {
-    return {
-      msg: "Welcome to Your Vue.js App"
-    };
-  }
+  name: "app"
 };
 </script>
 
@@ -71,65 +51,6 @@ main {
 
   font-family: "Roboto", sans-serif;
   // font-family: 'Playfair Display', serif;
-  .banner {
-    grid-row: -2;
-    grid-column: 1 / -1;
-
-    display: flex;
-    flex-direction: row;
-
-    overflow: hidden;
-
-    > div {
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-
-      width: 100%;
-      height: 100%;
-    }
-
-    &_wrapper {
-      position: absolute;
-      bottom: var(--s_margin-top);
-      left: 0;
-      white-space: nowrap;
-
-      span {
-        display: inline-block;
-        font-size: 2rem;
-
-        animation: scroll 18s linear infinite;
-      }
-
-      &:last-of-type {
-        color: white;
-        clip: rect(0px, 50vw, 100px, 0px);
-      }
-    }
-  }
-}
-
-.video {
-  grid-row: 1 / -1;
-  grid-column: 1 / span 3;
-
-  background-color: orchid;
-
-  &_capture {
-    grid-row: 3 / span 2;
-    grid-column: 5;
-
-    background-color: orchid;
-  }
-}
-
-.video,
-.video_capture {
-  background-image: url("assets/img1.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
 }
 
 .logo {
@@ -156,16 +77,6 @@ nav {
     list-style: none;
 
     margin-top: var(--s_margin-top);
-  }
-}
-
-@keyframes scroll {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-
-  to {
-    transform: translate3d(-100%, 0, 0);
   }
 }
 </style>

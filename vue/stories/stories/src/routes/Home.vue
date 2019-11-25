@@ -1,0 +1,107 @@
+<template>
+  <div class="home">
+    <div class="video"></div>
+    <div class="video_capture"></div>
+    <div class="banner">
+      <div>
+        <div class="banner_wrapper">
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+        </div>
+        <div class="banner_wrapper">
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+          <span>* Capture a Story, Document a Memory</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "home"
+};
+</script>
+
+<style lang="scss">
+.home {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.banner {
+  grid-row: -2;
+  grid-column: 1 / -1;
+
+  display: flex;
+  flex-direction: row;
+
+  overflow: hidden;
+
+  > div {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+
+    width: 100%;
+    height: 100%;
+  }
+
+  &_wrapper {
+    position: absolute;
+    bottom: var(--s_margin-top);
+    left: 0;
+    white-space: nowrap;
+
+    span {
+      display: inline-block;
+      font-size: 2rem;
+
+      animation: scroll 18s linear infinite;
+    }
+
+    &:last-of-type {
+      color: white;
+      clip: rect(0px, 50vw, 100px, 0px);
+    }
+  }
+}
+
+.video {
+  grid-row: 1 / -1;
+  grid-column: 1 / span 3;
+
+  &_capture {
+    grid-row: 3 / span 2;
+    grid-column: 5;
+  }
+}
+
+.video,
+.video_capture {
+  background-image: url("../assets/img1.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+@keyframes scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+</style>
