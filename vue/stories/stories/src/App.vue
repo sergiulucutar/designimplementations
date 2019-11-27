@@ -1,24 +1,23 @@
 <template>
-  <main id="#app">
-    <span class="logo">Captured.</span>
-    <nav>
-      <ul>
-        <li>
-          <router-link to="/stories">Stories</router-link>
-        </li>
-        <li>About</li>
-        <li>Contact</li>
-      </ul>
-    </nav>
-    <!-- <transition name=""> -->
-    <router-view></router-view>
-    <!-- </transition> -->
-  </main>
+  <section id="#app">
+    <home></home>
+    <middle></middle>
+    <stories></stories>
+  </section>
 </template>
 
 <script>
+import Home from "./routes/Home.vue";
+import Middle from "./routes/Middle.vue";
+import Stories from "./routes/Stories.vue";
+
 export default {
-  name: "app"
+  name: "app",
+  components: {
+    home: Home,
+    middle: Middle,
+    stories: Stories
+  }
 };
 </script>
 
@@ -41,7 +40,7 @@ html {
   }
 }
 
-main {
+#app {
   width: 100vw;
   height: 100vh;
 
@@ -51,32 +50,7 @@ main {
 
   font-family: "Roboto", sans-serif;
   // font-family: 'Playfair Display', serif;
-}
 
-.logo {
-  grid-row: 1;
-  grid-column: 2 / span 2;
-
-  margin: var(--s_margin-top);
-
-  color: white;
-  font-size: 2em;
-
-  z-index: 2;
-}
-
-nav {
-  grid-row: 1;
-  grid-column: 5;
-
-  ul {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    list-style: none;
-
-    margin-top: var(--s_margin-top);
-  }
+  overflow-x: hidden;
 }
 </style>

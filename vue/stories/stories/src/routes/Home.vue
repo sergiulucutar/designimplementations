@@ -1,5 +1,15 @@
 <template>
   <div class="home">
+    <span class="logo">Captured.</span>
+    <nav>
+      <ul>
+        <li>
+          <router-link to="/stories">Stories</router-link>
+        </li>
+        <li>About</li>
+        <li>Contact</li>
+      </ul>
+    </nav>
     <div class="video"></div>
     <div class="video_capture"></div>
     <div class="banner">
@@ -30,6 +40,33 @@ export default {
 </script>
 
 <style lang="scss">
+.logo {
+  grid-row: 1;
+  grid-column: 2 / span 2;
+
+  margin: var(--s_margin-top);
+
+  color: white;
+  font-size: 2em;
+
+  z-index: 2;
+}
+
+nav {
+  grid-row: 1;
+  grid-column: 5;
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    list-style: none;
+
+    margin-top: var(--s_margin-top);
+  }
+}
+
 .home {
   grid-column: 1 / -1;
   grid-row: 1 / -1;
@@ -37,6 +74,9 @@ export default {
   display: grid;
   grid-template-rows: repeat(6, 1fr);
   grid-template-columns: repeat(6, 1fr);
+
+  width: 100vw;
+  height: 100vh;
 }
 
 .banner {
