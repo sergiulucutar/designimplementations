@@ -5,6 +5,8 @@ import App from "./App.vue";
 import Home from "./routes/Home.vue";
 import Stories from "./routes/Stories.vue";
 
+// import video from "./assets/video.mp4";
+
 Vue.use(VueRouter);
 
 const routes = [

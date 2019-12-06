@@ -292,16 +292,16 @@ export default {
   height: 100vh;
 
   overflow: hidden;
-  background-color: #aabd8c;
+  // background-color: #aabd8c;
 
   transition: background-color 1.2s var(--e_easing);
 
   &[data-sliderIndex="2"] {
-    background-color: #f39b6d;
+    // background-color: #f39b6d;
   }
 
   &[data-sliderIndex="3"] {
-    background-color: #f6bd60;
+    // background-color: #f6bd60;
   }
 
   &_background {
