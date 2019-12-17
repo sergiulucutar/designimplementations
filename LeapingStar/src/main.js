@@ -51,7 +51,6 @@ class Game {
       ease: Power4.easeIn,
       onComplete: () => {
         this.shakeScreen();
-        this.introFinished = true;
       }
     });
   }
@@ -78,7 +77,9 @@ class Game {
   }
 
   shakeScreen() {
-    new TimelineLite()
+    new TimelineLite({
+      onComplete: () => (this.introFinished = true)
+    })
       .to(this.vCanvasPosition, 0.1, { 0: -10 })
       .to(this.vCanvasPosition, 0.1, { 0: 8 })
       .to(this.vCanvasPosition, 0.1, { 0: -6 })

@@ -10,17 +10,19 @@ export default class Stage {
   draw() {
     this.game.ball.draw();
 
-    if (
-      this.game.camera.isPointInCameraView(
-        this.game.platforms.platforms[0].position
-      )
-    ) {
-      this.game.platforms.drawLastStarFluf();
-    }
+    if (this.game.introFinished) {
+      if (
+        this.game.camera.isPointInCameraView(
+          this.game.platforms.platforms[0].position
+        )
+      ) {
+        this.game.platforms.drawLastStarFluf();
+      }
 
-    for (let platform of this.game.platforms.platforms) {
-      if (this.game.camera.isPointInCameraView(platform.position)) {
-        platform.draw(this.game.platforms.alpha);
+      for (let platform of this.game.platforms.platforms) {
+        if (this.game.camera.isPointInCameraView(platform.position)) {
+          platform.draw(this.game.platforms.alpha);
+        }
       }
     }
 

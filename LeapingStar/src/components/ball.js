@@ -8,6 +8,7 @@ export default class Ball {
   }
 
   set host(host) {
+    this._lastHost = this._host;
     this._host = host;
     this.moveTo(host.position);
   }
@@ -21,14 +22,13 @@ export default class Ball {
 
     this.isInAir = false;
 
-    this._host = null;
+    this._host = null; //{ position };
 
     // animations
     this.a_maxRaySize = 100;
     this.a_rays = [0, 33, 66];
 
-    // tail
-    this.a_tail = [];
+    this.tail = [];
   }
 
   update() {
@@ -79,6 +79,21 @@ export default class Ball {
         this.ctx.stroke();
         this.ctx.restore();
       }
+
+      // TAIL
+      for (let i = 1; i < this.tail.length; i++) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.tail[i - 1][0], this.tail[i - 1][1]);
+        this.ctx.lineTo(this.tail[i][0], this.tail[i][1]);
+        this.ctx.stroke();
+      }
+
+      if (this.isInAir && this._lastHost) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.position[0], this.position[1]);
+        this.ctx.lineTo(this._lastHost.position[0], this._lastHost.position[1]);
+        this.ctx.stroke();
+      }
     }
 
     // Draw flash
@@ -125,6 +140,7 @@ export default class Ball {
         this.setDefaultFLash();
         this.fireFlash();
         this.game.ballMoveFinished();
+        this.tail.push(this.host.position);
       }
     });
   }

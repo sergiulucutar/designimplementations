@@ -8,9 +8,9 @@ class Platform {
     this.r = 20;
 
     // Animation
-    this.a_speed = Math.random() / 20;
-    this.a_r1 = 0;
-    this.a_r2 = 10;
+    this.a_speed = Math.max(Math.random() / 20, 0.04);
+    this.a_r1 = -10;
+    this.a_r2 = 0;
   }
 
   moveDown(speed) {
@@ -24,9 +24,17 @@ class Platform {
     this.ctx.strokeStyle = `hsla(1, 100%, 100%, ${alpha})`;
     this.ctx.lineWidth = 1;
 
-    this.ctx.beginPath();
-    this.ctx.arc(this.position[0], this.position[1], this.a_r1, 0, 2 * Math.PI);
-    this.ctx.stroke();
+    if (this.a_r1 > 0) {
+      this.ctx.beginPath();
+      this.ctx.arc(
+        this.position[0],
+        this.position[1],
+        this.a_r1,
+        0,
+        2 * Math.PI
+      );
+      this.ctx.stroke();
+    }
 
     this.ctx.beginPath();
     this.ctx.arc(this.position[0], this.position[1], this.a_r2, 0, 2 * Math.PI);
