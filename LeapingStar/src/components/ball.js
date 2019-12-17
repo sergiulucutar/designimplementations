@@ -25,7 +25,10 @@ export default class Ball {
 
     // animations
     this.a_maxRaySize = 100;
-    this.a_rays = [0, 50, 75];
+    this.a_rays = [0, 33, 66];
+
+    // tail
+    this.a_tail = [];
   }
 
   update() {
