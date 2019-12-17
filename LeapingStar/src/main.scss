@@ -1,7 +1,13 @@
 body {
   margin: 0;
 
-  background-color: #F09D51;
+  background-color: #f09d51;
+
+  transition: background-color 0.5s cubic-bezier(0.5, 0, 0.1, 1);
+
+  &.dead {
+    background-color: black;
+  }
 }
 
 main {

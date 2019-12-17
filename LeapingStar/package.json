@@ -15,5 +15,8 @@
     "parcel": "^1.12.3",
     "parcel-bundler": "^1.12.3",
     "sass": "^1.22.9"
+  },
+  "dependencies": {
+    "gsap": "^3.0.2"
   }
 }
