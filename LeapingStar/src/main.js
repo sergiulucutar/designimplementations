@@ -142,7 +142,12 @@ class Game {
   checkForLevelFinished() {
     if (this.ball.host === this.platforms.lastPlatform) {
       this.camera.speed = 0;
+      this.playEndGameAnimation();
     }
+  }
+
+  playEndGameAnimation() {
+    this.platforms.lastPlatform.position[1] = this.bounds.height / 2;
   }
 }
 
