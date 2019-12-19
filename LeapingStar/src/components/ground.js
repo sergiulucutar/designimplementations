@@ -6,15 +6,14 @@ export class Ground {
   }
 
   draw() {
-    const { bounds, ctx, height } = this.game;
-    ctx.beginPath();
-    ctx.rect(
+    this.game.ctx.beginPath();
+    this.game.ctx.rect(
       0,
-      -height + bounds.height - this.height,
-      bounds.width,
+      -this.game.height + this.game.bounds.height - this.height,
+      this.game.bounds.width,
       this.height * 2
     );
-    ctx.fillStyle = "#A44200";
-    ctx.fill();
+    this.game.ctx.fillStyle = "#A44200";
+    this.game.ctx.fill();
   }
 }

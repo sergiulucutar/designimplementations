@@ -33,12 +33,16 @@ export default class Ball {
 
   update() {
     if (this._host && !this.isInAir) {
-      this.position = [...this._host.position];
+      this.position[0] = this._host.position[0];
+      this.position[1] = this._host.position[1];
     }
 
-    this.a_rays = this.a_rays.map(ray =>
-      ray > this.a_maxRaySize ? 0 : (ray += 0.5)
-    );
+    for (let i = 0; i < this.a_rays.length; i++) {
+      if (this.a_rays[i] > this.a_maxRaySize) {
+        this.a_rays[i] = 0;
+      }
+      this.a_rays[i] += 0.5;
+    }
   }
 
   draw() {

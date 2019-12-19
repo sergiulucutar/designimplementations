@@ -75,46 +75,44 @@ export default class Platforms {
   }
 
   drawLastStarFluf() {
-    const { ctx } = this.game;
-
-    ctx.beginPath();
-    ctx.rect(
+    this.game.ctx.beginPath();
+    this.game.ctx.rect(
       this.platforms[0].position[0] - 50,
       this.platforms[0].position[1] - 50,
       100,
       100
     );
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    this.game.ctx.lineWidth = 1;
+    this.game.ctx.stroke();
 
-    ctx.beginPath();
-    ctx.rect(
+    this.game.ctx.beginPath();
+    this.game.ctx.rect(
       this.platforms[0].position[0] - 150,
       this.platforms[0].position[1] - 150,
       300,
       300
     );
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    this.game.ctx.lineWidth = 1;
+    this.game.ctx.stroke();
 
-    ctx.save();
-    ctx.translate(this.platforms[0].position[0], this.platforms[0].position[1]);
-    ctx.rotate(Math.PI / 4);
-    ctx.beginPath();
-    ctx.rect(-200, -200, 400, 400);
-    ctx.lineWidth = 1;
-    ctx.stroke();
-    ctx.restore();
+    this.game.ctx.save();
+    this.game.ctx.translate(this.platforms[0].position[0], this.platforms[0].position[1]);
+    this.game.ctx.rotate(Math.PI / 4);
+    this.game.ctx.beginPath();
+    this.game.ctx.rect(-200, -200, 400, 400);
+    this.game.ctx.lineWidth = 1;
+    this.game.ctx.stroke();
+    this.game.ctx.restore();
 
-    ctx.beginPath();
-    ctx.arc(
+    this.game.ctx.beginPath();
+    this.game.ctx.arc(
       this.platforms[0].position[0],
       this.platforms[0].position[1],
       300,
       0,
       2 * Math.PI
     );
-    ctx.stroke();
+    this.game.ctx.stroke();
   }
 
   moveDown(speed) {

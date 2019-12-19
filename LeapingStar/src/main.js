@@ -157,11 +157,13 @@ game.init();
 
 const interval = 1000 / 60;
 let then = Date.now();
+let now;
+let delta;
 (function loop() {
   requestAnimationFrame(loop);
 
-  const now = Date.now();
-  const delta = now - then;
+  now = Date.now();
+  delta = now - then;
   if (delta > interval) {
     then = now - (delta % interval);
     game.update();
