@@ -116,9 +116,7 @@ export default class Platforms {
   }
 
   moveDown(speed) {
-    for (let platform of this.platforms) {
-      platform.moveDown(speed);
-    }
+    this.platforms.map(platform => platform.moveDown(speed));
   }
 
   isPointInPlatform(point) {

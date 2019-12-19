@@ -2,7 +2,7 @@ import "./main.scss";
 
 import Ball from "./components/ball";
 import Platforms from "./components/platforms";
-import { TweenLite } from "gsap/gsap-core";
+import { TweenLite, Tween } from "gsap/gsap-core";
 import { Power4 } from "gsap/gsap-core";
 import Camera from "./components/camera";
 import { TimelineLite } from "gsap/gsap-core";
@@ -140,14 +140,18 @@ class Game {
   }
 
   checkForLevelFinished() {
-    if (this.ball.host === this.platforms.lastPlatform) {
+    if (this.ball.host === this.platforms.lastPlatform && !this.ball.isInAir) {
       this.camera.speed = 0;
       this.playEndGameAnimation();
+      this.isGameOver = true;
     }
   }
 
   playEndGameAnimation() {
     this.platforms.lastPlatform.position[1] = this.bounds.height / 2;
+    const foreGround = document.querySelector('.foreground');
+    foreGround.style = 'opacity: 1';
+    TweenLite.to(foreGround.style, 2, { opacity: 0, ease: Power4.easeIn });
   }
 }
 
@@ -160,8 +164,6 @@ let then = Date.now();
 let now;
 let delta;
 (function loop() {
-  requestAnimationFrame(loop);
-
   now = Date.now();
   delta = now - then;
   if (delta > interval) {
@@ -169,6 +171,8 @@ let delta;
     game.update();
     game.draw();
   }
+
+  requestAnimationFrame(loop);
 })();
 
 window.addEventListener("resize", () => game.resize());
