@@ -149,8 +149,8 @@ class Game {
 
   playEndGameAnimation() {
     this.platforms.lastPlatform.position[1] = this.bounds.height / 2;
-    const foreGround = document.querySelector('.foreground');
-    foreGround.style = 'opacity: 1';
+    const foreGround = document.querySelector(".foreground");
+    foreGround.style = "opacity: 1";
     TweenLite.to(foreGround.style, 2, { opacity: 0, ease: Power4.easeIn });
   }
 }
@@ -178,6 +178,9 @@ let delta;
 window.addEventListener("resize", () => game.resize());
 
 document.addEventListener("click", event => {
+  if (game.ball.isInAir) {
+    return;
+  }
   const hasHost = game.platforms.isPointInPlatform([
     event.clientX,
     event.clientY
