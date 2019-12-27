@@ -1,8 +1,22 @@
 <template>
   <div class="home">
-    <div class="video"></div>
-    <div class="video_capture"></div>
-    <div class="banner">
+    <span class="logo">Captured.</span>
+    <nav>
+      <ul>
+        <li>
+          <router-link to="/stories">Stories</router-link>
+        </li>
+        <li>About</li>
+        <li>Contact</li>
+      </ul>
+    </nav>
+    <div class="title">
+      <h1>
+        Capture with a
+        <span>click.</span>
+      </h1>
+    </div>
+    <!-- <div class="banner">
       <div>
         <div class="banner_wrapper">
           <span>* Capture a Story, Document a Memory</span>
@@ -19,7 +33,7 @@
           <span>* Capture a Story, Document a Memory</span>
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -30,6 +44,36 @@ export default {
 </script>
 
 <style lang="scss">
+.logo {
+  grid-row: 1;
+  grid-column: 1;
+
+  padding: 5vh;
+  margin: var(--s_margin-top);
+
+  color: black;
+  // font-size: 2em;
+
+  z-index: 2;
+}
+
+nav {
+  grid-row: 1;
+  grid-column: 4 / span 3;
+
+  padding: 5vh;
+
+  ul {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    list-style: none;
+
+    margin-top: var(--s_margin-top);
+  }
+}
+
 .home {
   grid-column: 1 / -1;
   grid-row: 1 / -1;
@@ -37,6 +81,9 @@ export default {
   display: grid;
   grid-template-rows: repeat(6, 1fr);
   grid-template-columns: repeat(6, 1fr);
+
+  width: 100vw;
+  height: 100vh;
 }
 
 .banner {
@@ -77,23 +124,22 @@ export default {
   }
 }
 
-.video {
-  grid-row: 1 / -1;
+.title {
+  grid-row: 2 / span 4;
   grid-column: 1 / span 3;
 
-  &_capture {
-    grid-row: 3 / span 2;
-    grid-column: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 3rem;
+
+  h1 span {
+    color: #f39b6d;
   }
 }
 
-.video,
-.video_capture {
-  background-image: url("../assets/img1.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
+// .video,
 
 @keyframes scroll {
   from {

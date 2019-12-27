@@ -1,44 +1,160 @@
+import { TweenLite } from "gsap/gsap-core";
+import { Power2 } from "gsap/gsap-core";
+import { Power4 } from "gsap/gsap-core";
+
 export default class Ball {
+  get host() {
+    return this._host;
+  }
+
+  set host(host) {
+    this._lastHost = this._host;
+    this._host = host;
+    this.moveTo(host.position);
+  }
+
   constructor(game, position) {
     this.game = game;
     this.ctx = game.ctx;
 
     this.position = position;
-    this.radius = 30;
+    this.radius = 12;
 
     this.isInAir = false;
-    this.velocity = 0;
+
+    this._host = null; //{ position };
+
+    // animations
+    this.a_maxRaySize = 100;
+    this.a_rays = [0, 33, 66];
+
+    this.tail = [];
   }
 
   update() {
-    if(this.position[1] > this.game.bounds.height && this.velocity < 0) {
-      this.isInAir = false;
+    if (this._host && !this.isInAir) {
+      this.position[0] = this._host.position[0];
+      this.position[1] = this._host.position[1];
     }
 
-    if(this.isInAir) {
-      this.position[1] -= this.velocity;
-      this.velocity -= this.game.gravity;
+    for (let i = 0; i < this.a_rays.length; i++) {
+      if (this.a_rays[i] > this.a_maxRaySize) {
+        this.a_rays[i] = 0;
+      }
+      this.a_rays[i] += 0.5;
     }
   }
 
   draw() {
-    this.ctx.beginPath();
-    this.ctx.arc(this.position[0], this.position[1], this.radius, 0, 2 * Math.PI);
-    this.ctx.fillStyle = 'white';
-    this.ctx.fill();
-  }
+    if (!this.dead) {
+      this.ctx.beginPath();
+      this.ctx.arc(
+        this.position[0],
+        this.position[1],
+        this.radius,
+        0,
+        2 * Math.PI
+      );
+      this.ctx.fillStyle = "white";
+      this.ctx.fill();
 
-  jump() {
-    if(!this.isInAir) {
-      this.velocity = 30;
-      this.isInAir = true;
+      // this.ctx.beginPath();
+      // this.ctx.arc(
+      //   this.position[0],
+      //   this.position[1],
+      //   this.radius * 3,
+      //   0,
+      //   2 * Math.PI
+      // );
+      // this.ctx.strokeStyle = `hsla(1, 100%, 100%, 0.5)`;
+      // this.ctx.fillStyle = `hsla(1, 100%, 100%, 0.1)`;
+      // this.ctx.fill();
+      // this.ctx.stroke();
+
+      // Shine
+      for (let ray of this.a_rays) {
+        this.ctx.save();
+
+        this.ctx.translate(this.position[0], this.position[1]);
+        this.ctx.rotate(2 * Math.PI * (ray / this.a_maxRaySize));
+        this.ctx.rect(-ray / 2, -ray / 2, ray, ray);
+        this.ctx.strokeStyle = "white";
+        this.ctx.lineWidth = 0.5;
+        this.ctx.stroke();
+        this.ctx.restore();
+      }
+
+      // TAIL
+      for (let i = 1; i < this.tail.length; i++) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.tail[i - 1][0], this.tail[i - 1][1]);
+        this.ctx.lineTo(this.tail[i][0], this.tail[i][1]);
+        this.ctx.stroke();
+      }
+
+      if (this.isInAir && this._lastHost) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.position[0], this.position[1]);
+        this.ctx.lineTo(this._lastHost.position[0], this._lastHost.position[1]);
+        this.ctx.stroke();
+      }
+    }
+
+    // Draw flash
+    if (this._flash) {
+      this.ctx.beginPath();
+      this.ctx.arc(
+        this.position[0],
+        this.position[1],
+        this._flash.radius,
+        0,
+        2 * Math.PI
+      );
+      this.ctx.lineWidth = this._flash.width;
+      this.ctx.strokeStyle = `white`;
+      this.ctx.stroke();
     }
   }
 
-  collide() {
-    if(this.isInAir && this.velocity < 0) {
-      this.velocity = 0;
-      this.isInAir = false;
-    }
+  fireFlash() {
+    TweenLite.to(this._flash, 0.5, {
+      radius: this._flash.maxRadius,
+      width: 0,
+      ease: Power4.easeInOut,
+      onComplete: () => (this._flash = null)
+    });
+  }
+
+  setDefaultFLash() {
+    this._flash = {
+      width: 100,
+      radius: 1,
+      maxRadius: 150
+    };
+  }
+
+  moveTo(position) {
+    this.isInAir = true;
+    TweenLite.to(this.position, 0.6, {
+      0: position[0],
+      1: position[1] + 18,
+      ease: Power4.easeOut,
+      onComplete: () => {
+        this.isInAir = false;
+        this.setDefaultFLash();
+        this.fireFlash();
+        this.game.ballMoveFinished();
+        this.tail.push(this.host.position);
+      }
+    });
+  }
+
+  destroy() {
+    this.setDefaultFLash();
+    this._flash.maxRadius = 500;
+    setTimeout(() => {
+      this.fireFlash();
+      this.dead = true;
+    }, 300);
   }
 }
