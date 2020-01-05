@@ -13,10 +13,13 @@ export default class Camera {
   }
 
   isPointOutsideInnerBounds(point) {
-    if (point[1] < this.innerBounds) {
+    if (point[1] - this.position[1] < this.innerBounds) {
       return -1;
     }
-    if (point[1] > this.game.bounds.height - this.innerBounds) {
+    if (
+      point[1] - this.position[1] >
+      this.game.bounds.height - this.innerBounds
+    ) {
       return 1;
     }
     return 0;

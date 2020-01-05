@@ -17,8 +17,9 @@ export function isLineInCircle(linePosition, circle) {
 export function isPointInCircle(point, circle) {
   return (
     Math.sqrt(
-      Math.pow(point[0] - circle.position[0], 2) +
-        Math.pow(point[1] - circle.position[1], 2)
-    ) < circle.r
+      (point[0] - circle.position[0]) * (point[0] - circle.position[0]) +
+        (point[1] - circle.position[1]) * (point[1] - circle.position[1])
+    ) <=
+    circle.r + 0.1 * circle.r
   );
 }

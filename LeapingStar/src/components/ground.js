@@ -5,15 +5,15 @@ export class Ground {
     this.position = [0, game.bounds.height - this.height];
   }
 
-  draw() {
+  draw(offset) {
     this.game.ctx.beginPath();
     this.game.ctx.rect(
       0,
-      -this.game.height + this.game.bounds.height - this.height,
+      -offset + this.game.bounds.height - this.height,
       this.game.bounds.width,
       this.height * 2
     );
-    this.game.ctx.fillStyle = "#A44200";
+    this.game.ctx.fillStyle = "#32936F";
     this.game.ctx.fill();
   }
 }

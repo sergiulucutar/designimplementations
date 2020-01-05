@@ -5,26 +5,25 @@ export default class Stage {
 
   update() {
     this.game.ball.update();
+    this.game.platforms.update();
+    this.game.shooter.update();
   }
 
   draw() {
-    this.game.ball.draw();
+    this.game.ball.draw(this.game.camera.position[1]);
 
     if (this.game.introFinished) {
-      if (
-        this.game.camera.isPointInCameraView(
-          this.game.platforms.platforms[0].position
-        )
-      ) {
-        this.game.platforms.drawLastStarFluf();
-      }
-
       for (let platform of this.game.platforms.platforms) {
         if (this.game.camera.isPointInCameraView(platform.position)) {
-          platform.draw(this.game.platforms.alpha);
+          platform.draw(
+            this.game.camera.position[1],
+            this.game.platforms.alpha
+          );
         }
       }
     }
+
+    this.game.shooter.draw();
 
     this.game.ground.draw(this.game.camera.position[1]);
   }
