@@ -1,37 +1,40 @@
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>The Leaping Star</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>The Leaping Star</title>
-</head>
-
-<body>
-  <div class="score">0</div>
-  <main>
-    <section class="paralax">
-      <canvas></canvas>
-      <svg viewbox="0 0 100 50" preserveAspectRatio="xMidYMid slice">
-        <g id="b_mountains">
-          <path d="M 0 40 L 10 20 20 40 50 10 80 40 100 50 0 50 Z"></path>
-          <path d="M 0 50 L 20 16 40 50 65 14 80 30 85 15 100 50 0 50 Z"></path>
-          <path d="M 0 16 L 45 45 100 12 100 50 0 50 Z"></path>
-        </g>
-        <g id="b_bush" fill="#32936F">
-          <circle cx="100" cy="50" r="20" />
-          <circle cx="20" cy="50" r="14" />
-          <circle cx="70" cy="50" r="11" />
-          <circle cx="0" cy="50" r="25" />
-        </g>
-      </svg>
-    </section>
-    <canvas id="game"></canvas>
-    <button class="button button-continue hide">Continue</button>
-    <div class="foreground"></div>
-  </main>
-  <div class="overlay overlay-on"></div>
-  <script src="main.js"></script>
-</body>
-
+  <body>
+    <div class="score">
+      <div class="score_frame"></div>
+      <span>0</span>
+    </div>
+    <main>
+      <section class="paralax">
+        <canvas></canvas>
+        <svg viewbox="0 0 100 50" preserveAspectRatio="xMidYMid slice">
+          <g id="b_mountains">
+            <path d="M 0 40 L 10 20 20 40 50 10 80 40 100 50 0 50 Z"></path>
+            <path
+              d="M 0 50 L 20 16 40 50 65 14 80 30 85 15 100 50 0 50 Z"
+            ></path>
+            <path d="M 0 16 L 45 45 100 12 100 50 0 50 Z"></path>
+          </g>
+          <g id="b_bush" fill="#32936F">
+            <circle cx="100" cy="50" r="20" />
+            <circle cx="20" cy="50" r="14" />
+            <circle cx="70" cy="50" r="11" />
+            <circle cx="0" cy="50" r="25" />
+          </g>
+        </svg>
+      </section>
+      <canvas id="game"></canvas>
+      <button class="button button-continue hide">Continue</button>
+      <div class="foreground"></div>
+    </main>
+    <div class="overlay overlay-on"></div>
+    <script src="main.js"></script>
+  </body>
 </html>

@@ -14,7 +14,7 @@ import Shooter from "./components/shooter";
 import { TweenMax } from "gsap/src/all";
 
 const continueBtn = document.querySelector(".button-continue");
-const overlayEl = document.querySelector('.overlay');
+const overlayEl = document.querySelector(".overlay");
 
 const domCanvas = document.querySelector("#game");
 const domCtx = domCanvas.getContext("2d");
@@ -52,7 +52,8 @@ class Game {
 
   init() {
     this.score = 0;
-    this.scoreEl = document.querySelector(".score");
+    this.scoreEl = document.querySelector(".score span");
+    this.scoreEl.innerText = this.score;
 
     this.ball.init();
     this.platforms.init();
@@ -66,7 +67,7 @@ class Game {
 
     this.background.init();
 
-    overlayEl.classList.remove('overlay-on');
+    overlayEl.classList.remove("overlay-on");
 
     // Set intro
     TweenLite.to(this.ball.position, 1, {
@@ -111,7 +112,7 @@ class Game {
     new TimelineLite({
       onComplete: () => {
         this.introFinished = true;
-        TweenLite.to(this.platforms, 1, { alpha: 3, ease: Power4.easeOut })
+        TweenLite.to(this.platforms, 1, { alpha: 3, ease: Power4.easeOut });
       }
     })
       .to(this.vCanvasPosition, 0.1, { 0: -10 })
@@ -201,13 +202,15 @@ class Game {
     const foreGround = document.querySelector(".foreground");
     foreGround.style = "opacity: 1";
     TweenLite.to(foreGround.style, 2, { opacity: 0, ease: Power4.easeIn });
-    this.camera.position[1] = this.maxHeight;
+    this.camera.position[1] = this.maxHeight + this.bounds.height / 8;
     continueBtn.classList.add("show");
   }
 
   updateScore() {
     this.score += 1;
     this.scoreEl.innerText = this.score;
+    TweenMax.set(".score", { fontSize: 90 });
+    TweenMax.to(".score", 0.4, { fontSize: 48, ease: Power4.easeOut });
   }
 }
 
@@ -259,7 +262,7 @@ document.addEventListener("click", event => {
 continueBtn.addEventListener("click", () => {
   // document.body.style.background = "#011638";
   continueBtn.classList.remove("show");
-  overlayEl.classList.add('overlay-on');
+  overlayEl.classList.add("overlay-on");
 
   // Wait for overlay transition to be finished
   setTimeout(() => {
