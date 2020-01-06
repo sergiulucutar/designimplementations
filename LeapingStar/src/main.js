@@ -11,8 +11,10 @@ import Sound from "./components/sound";
 import { Ground } from "./components/ground";
 import Background from "./components/background";
 import Shooter from "./components/shooter";
+import { TweenMax } from "gsap/src/all";
 
 const continueBtn = document.querySelector(".button-continue");
+const overlayEl = document.querySelector('.overlay');
 
 const domCanvas = document.querySelector("#game");
 const domCtx = domCanvas.getContext("2d");
@@ -64,6 +66,8 @@ class Game {
 
     this.background.init();
 
+    overlayEl.classList.remove('overlay-on');
+
     // Set intro
     TweenLite.to(this.ball.position, 1, {
       1: this.bounds.height - this.groudHeight,
@@ -105,7 +109,10 @@ class Game {
   shakeScreen() {
     this.background.shake();
     new TimelineLite({
-      onComplete: () => (this.introFinished = true)
+      onComplete: () => {
+        this.introFinished = true;
+        TweenLite.to(this.platforms, 1, { alpha: 3, ease: Power4.easeOut })
+      }
     })
       .to(this.vCanvasPosition, 0.1, { 0: -10 })
       .to(this.vCanvasPosition, 0.1, { 0: 8 })
@@ -148,10 +155,6 @@ class Game {
   ballMoveFinished() {
     this.audio.play("magic");
     this.shakeScreen();
-    if (!this.ball.host.visited) {
-      this.updateScore();
-      this.ball.host.visited = true;
-    }
 
     if (this.camera.isPointOutsideInnerBounds(this.ball.position) < 0) {
       TweenLite.to(this.camera.position, 2, {
@@ -161,9 +164,14 @@ class Game {
       });
     }
 
-    if (this.ball.host instanceof ShootingPlatform) {
+    if (this.ball.host instanceof ShootingPlatform && !this.ball.host.visited) {
       this.isAccendingPaused = true;
       this.shooter.start();
+    }
+
+    if (!this.ball.host.visited) {
+      this.updateScore();
+      this.ball.host.visited = true;
     }
   }
 
@@ -249,6 +257,12 @@ document.addEventListener("click", event => {
 });
 
 continueBtn.addEventListener("click", () => {
-  document.body.style.background = "#011638";
+  // document.body.style.background = "#011638";
   continueBtn.classList.remove("show");
+  overlayEl.classList.add('overlay-on');
+
+  // Wait for overlay transition to be finished
+  setTimeout(() => {
+    game.init();
+  }, 2000);
 });

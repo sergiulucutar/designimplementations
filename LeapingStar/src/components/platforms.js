@@ -165,7 +165,7 @@ export class Platforms {
     this.platformsCount = 60;
 
     this.padding = 500;
-    this.alpha = 1;
+    this.alpha = 0;
 
     this.lastPlatform = null;
     this.maxHeight = 0;
@@ -201,20 +201,19 @@ export class Platforms {
 
     for (let i = this.platforms.length; i < this.platformsCount; i++) {
       let platform;
-      if (random(1, 3) == 1) {
+      if (random(1, 5) == 1) {
         platform = new ShootingPlatform(ctx, [
           random(this.padding, bounds.width - this.padding),
-          bounds.height - i * offset
+          -random(this.game.bounds.height * 2, this.maxHeight)
         ]);
       } else {
         platform = new Platform(ctx, [
           random(this.padding, bounds.width - this.padding),
-          bounds.height - random(0, this.maxHeight)
+          bounds.height - random(this.game.bounds.height * .3, this.maxHeight)
         ]);
       }
       this.platforms.push(platform);
     }
-    debugger;
   }
 
   update() {

@@ -51,7 +51,7 @@ export default class Background {
 
     this.bushLayer.style.transform = `translateY(${this.progres * 500}%)`;
 
-    document.body.style.background = `linear-gradient(#e66465, ${this.progres *
+    document.body.style.background = `linear-gradient(#e66465, ${(.1 + this.progres) *
       70}%, #f09d51)`;
   }
 
