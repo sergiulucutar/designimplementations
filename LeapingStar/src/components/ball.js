@@ -1,5 +1,4 @@
 import { TweenLite } from "gsap/gsap-core";
-import { Power2 } from "gsap/gsap-core";
 import { Power4 } from "gsap/gsap-core";
 
 export default class Ball {
@@ -31,6 +30,12 @@ export default class Ball {
     this.tail = [];
   }
 
+  init() {
+    this._host = null;
+    this.position[1] = 0;
+    this.tail = [];
+  }
+
   update() {
     if (this._host && !this.isInAir) {
       this.position[0] = this._host.position[0];
@@ -45,12 +50,12 @@ export default class Ball {
     }
   }
 
-  draw() {
+  draw(offset) {
     if (!this.dead) {
       this.ctx.beginPath();
       this.ctx.arc(
         this.position[0],
-        this.position[1],
+        this.position[1] - offset,
         this.radius,
         0,
         2 * Math.PI
@@ -58,44 +63,32 @@ export default class Ball {
       this.ctx.fillStyle = "white";
       this.ctx.fill();
 
-      // this.ctx.beginPath();
-      // this.ctx.arc(
-      //   this.position[0],
-      //   this.position[1],
-      //   this.radius * 3,
-      //   0,
-      //   2 * Math.PI
-      // );
-      // this.ctx.strokeStyle = `hsla(1, 100%, 100%, 0.5)`;
-      // this.ctx.fillStyle = `hsla(1, 100%, 100%, 0.1)`;
-      // this.ctx.fill();
-      // this.ctx.stroke();
-
       // Shine
       for (let ray of this.a_rays) {
-        this.ctx.save();
-
-        this.ctx.translate(this.position[0], this.position[1]);
+        this.ctx.translate(this.position[0], this.position[1] - offset);
         this.ctx.rotate(2 * Math.PI * (ray / this.a_maxRaySize));
         this.ctx.rect(-ray / 2, -ray / 2, ray, ray);
         this.ctx.strokeStyle = "white";
         this.ctx.lineWidth = 0.5;
         this.ctx.stroke();
-        this.ctx.restore();
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
       }
 
       // TAIL
       for (let i = 1; i < this.tail.length; i++) {
         this.ctx.beginPath();
-        this.ctx.moveTo(this.tail[i - 1][0], this.tail[i - 1][1]);
-        this.ctx.lineTo(this.tail[i][0], this.tail[i][1]);
+        this.ctx.moveTo(this.tail[i - 1][0], this.tail[i - 1][1] - offset);
+        this.ctx.lineTo(this.tail[i][0], this.tail[i][1] - offset);
         this.ctx.stroke();
       }
 
       if (this.isInAir && this._lastHost) {
         this.ctx.beginPath();
-        this.ctx.moveTo(this.position[0], this.position[1]);
-        this.ctx.lineTo(this._lastHost.position[0], this._lastHost.position[1]);
+        this.ctx.moveTo(this.position[0], this.position[1] - offset);
+        this.ctx.lineTo(
+          this._lastHost.position[0],
+          this._lastHost.position[1] - offset
+        );
         this.ctx.stroke();
       }
     }
@@ -105,7 +98,7 @@ export default class Ball {
       this.ctx.beginPath();
       this.ctx.arc(
         this.position[0],
-        this.position[1],
+        this.position[1] - offset,
         this._flash.radius,
         0,
         2 * Math.PI
@@ -129,7 +122,7 @@ export default class Ball {
     this._flash = {
       width: 100,
       radius: 1,
-      maxRadius: 150
+      maxRadius: 250
     };
   }
 
@@ -137,14 +130,14 @@ export default class Ball {
     this.isInAir = true;
     TweenLite.to(this.position, 0.6, {
       0: position[0],
-      1: position[1] + 18,
+      1: position[1],
       ease: Power4.easeOut,
       onComplete: () => {
-        this.isInAir = false;
-        this.setDefaultFLash();
-        this.fireFlash();
         this.game.ballMoveFinished();
         this.tail.push(this.host.position);
+        this.setDefaultFLash();
+        this.fireFlash();
+        this.isInAir = false;
       }
     });
   }

@@ -1,15 +1,20 @@
 import "./main.scss";
 
 import Ball from "./components/ball";
-import Platforms from "./components/platforms";
-import { TweenLite, Tween } from "gsap/gsap-core";
+import { Platforms, ShootingPlatform } from "./components/platforms";
+import { TweenLite } from "gsap/gsap-core";
 import { Power4 } from "gsap/gsap-core";
 import Camera from "./components/camera";
 import { TimelineLite } from "gsap/gsap-core";
 import Stage from "./components/stage";
+import Sound from "./components/sound";
 import { Ground } from "./components/ground";
+import Background from "./components/background";
+import Shooter from "./components/shooter";
 
-const domCanvas = document.querySelector("canvas");
+const continueBtn = document.querySelector(".button-continue");
+
+const domCanvas = document.querySelector("#game");
 const domCtx = domCanvas.getContext("2d");
 
 // Off-screen canvas
@@ -22,28 +27,42 @@ class Game {
     this.ctx = ctx;
     this.bounds = {};
 
+    this.audio = new Sound();
     this.camera = new Camera(this);
     this.stage = new Stage(this);
 
-    this.ball = new Ball(this, [0, 0]);
+    this.ball = new Ball(this, [0, -100]);
     this.platforms = new Platforms(this);
     this.ground = null;
 
     this.cameraSpeed = 0.5;
     this.isAccendingPaused = true;
 
-    this.height = 0;
+    this.isGameOver = false;
+    this.introFinished = false;
+
+    this.background = new Background(this);
+    // TODO: rethink this
+    this.vCanvasPosition = [0, 0];
+
+    this.shooter = new Shooter(this);
+  }
+
+  init() {
+    this.score = 0;
+    this.scoreEl = document.querySelector(".score");
+
+    this.ball.init();
+    this.platforms.init();
+    this.camera.position[1] = 0;
+    this.ground = new Ground(this);
 
     this.isGameOver = false;
     this.introFinished = false;
 
-    // TODO: rethink this
-    this.vCanvasPosition = [0, 0];
-  }
+    this.maxHeight = -this.platforms.maxHeight - this.bounds.height / 2;
 
-  init() {
-    this.ground = new Ground(this);
-    this.platforms.init();
+    this.background.init();
 
     // Set intro
     TweenLite.to(this.ball.position, 1, {
@@ -51,8 +70,22 @@ class Game {
       ease: Power4.easeIn,
       onComplete: () => {
         this.shakeScreen();
+
+        // set the ball position as the start of it's tail
+        this.ball.tail.push([
+          this.bounds.width / 2,
+          this.bounds.height - this.groudHeight
+        ]);
+        this.ball._host = {
+          position: [
+            this.bounds.width / 2,
+            this.bounds.height - this.groudHeight
+          ]
+        };
       }
     });
+
+    this.audio.init();
   }
 
   update() {
@@ -61,22 +94,16 @@ class Game {
       this.checkGameOver();
       this.checkForLevelFinished();
 
-      this.stage.update();
-
       if (!this.isAccendingPaused) {
-        this.platforms.moveDown(this.camera.speed);
-        this.height -= this.camera.speed;
-      }
-      if (
-        this.camera.speed > 0.5 &&
-        this.camera.isPointOutsideInnerBounds(this.ball.position) === 1
-      ) {
-        this.camera.speed = 0.5;
+        this.camera.moveUp();
+        this.background.update();
       }
     }
+    this.stage.update();
   }
 
   shakeScreen() {
+    this.background.shake();
     new TimelineLite({
       onComplete: () => (this.introFinished = true)
     })
@@ -92,9 +119,6 @@ class Game {
     this.ctx.clearRect(0, 0, this.bounds.width, this.bounds.height);
     domCtx.clearRect(0, 0, this.bounds.width, this.bounds.height);
 
-    // this.ball.draw();
-    // this.platforms.draw();
-    // this.drawGround();
     this.stage.draw();
 
     domCtx.drawImage(canvas, this.vCanvasPosition[0], this.vCanvasPosition[1]);
@@ -122,48 +146,71 @@ class Game {
   }
 
   ballMoveFinished() {
+    this.audio.play("magic");
+    this.shakeScreen();
+    if (!this.ball.host.visited) {
+      this.updateScore();
+      this.ball.host.visited = true;
+    }
+
     if (this.camera.isPointOutsideInnerBounds(this.ball.position) < 0) {
-      this.camera.speed = 5;
-    } else {
-      this.camera.speed = 0.5;
+      TweenLite.to(this.camera.position, 2, {
+        1: this.camera.position[1] - this.bounds.height / 2,
+        ease: Power4.easeOut,
+        onUpdate: () => this.background.update()
+      });
+    }
+
+    if (this.ball.host instanceof ShootingPlatform) {
+      this.isAccendingPaused = true;
+      this.shooter.start();
     }
   }
 
   checkGameOver() {
-    if (!this.isAccendingPaused && this.ball.position[1] > this.bounds.height) {
+    if (
+      !this.isAccendingPaused &&
+      this.ball.position[1] > this.camera.position[1] + this.bounds.height
+    ) {
       this.isAccendingPaused = true;
       this.isGameOver = true;
       document.body.classList.add("dead");
       this.ball.destroy();
-      TweenLite.to(this.platforms, 1, { alpha: 0, ease: Power4.easeInOut });
+      TweenLite.to(this.platforms, 0.5, { alpha: 0, ease: Power4.easeInOut });
     }
   }
 
   checkForLevelFinished() {
     if (this.ball.host === this.platforms.lastPlatform && !this.ball.isInAir) {
-      this.camera.speed = 0;
       this.playEndGameAnimation();
+      this.platforms.lastPlatform.isAnimated = true;
+      this.isAccendingPaused = true;
       this.isGameOver = true;
     }
   }
 
   playEndGameAnimation() {
-    this.platforms.lastPlatform.position[1] = this.bounds.height / 2;
-    const foreGround = document.querySelector('.foreground');
-    foreGround.style = 'opacity: 1';
+    const foreGround = document.querySelector(".foreground");
+    foreGround.style = "opacity: 1";
     TweenLite.to(foreGround.style, 2, { opacity: 0, ease: Power4.easeIn });
+    this.camera.position[1] = this.maxHeight;
+    continueBtn.classList.add("show");
+  }
+
+  updateScore() {
+    this.score += 1;
+    this.scoreEl.innerText = this.score;
   }
 }
 
-const game = new Game(canvas, ctx);
+var game = new Game(canvas, ctx);
 game.resize();
-game.init();
 
 const interval = 1000 / 60;
 let then = Date.now();
 let now;
 let delta;
-(function loop() {
+function loop() {
   now = Date.now();
   delta = now - then;
   if (delta > interval) {
@@ -173,17 +220,35 @@ let delta;
   }
 
   requestAnimationFrame(loop);
-})();
+}
 
+window.addEventListener("load", () => {
+  game.init();
+  loop();
+});
 window.addEventListener("resize", () => game.resize());
 
 document.addEventListener("click", event => {
-  const hasHost = game.platforms.isPointInPlatform([
-    event.clientX,
-    event.clientY
-  ]);
-  if (hasHost && game.introFinished) {
-    game.isAccendingPaused = false;
-    game.ball.host = hasHost;
+  if (game.ball.isInAir) {
+    return;
   }
+
+  if (game.shooter.isShooting) {
+    game.shooter.handleClick(event);
+    return;
+  }
+
+  const nextHost = game.platforms.isPointInPlatform([
+    event.clientX,
+    event.clientY + game.camera.position[1]
+  ]);
+  if (nextHost && nextHost !== game.ball.host && game.introFinished) {
+    game.isAccendingPaused = false;
+    game.ball.host = nextHost;
+  }
+});
+
+continueBtn.addEventListener("click", () => {
+  document.body.style.background = "#011638";
+  continueBtn.classList.remove("show");
 });

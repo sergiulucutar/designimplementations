@@ -1,122 +1,224 @@
 import { random, isPointInCircle } from "./utils";
 
 class Platform {
+  /**
+   * @param {number} value
+   */
+  set radius(value) {
+    this.r = value;
+    this.a_r1 = 0;
+    this.a_r2 = this.r / 2;
+  }
+
   constructor(ctx, position) {
     this.ctx = ctx;
 
     this.position = position;
     this.r = 20;
+    this.c_light = 100;
 
     // Animation
-    this.a_speed = Math.max(Math.random() / 20, 0.04);
-    this.a_r1 = -10;
-    this.a_r2 = 0;
+    this.a_speed = Math.max(Math.random() / this.r, 0.04);
+    this.a_r1 = 0;
+    this.a_r2 = this.r / 2;
+
+    this.visited = false;
   }
 
-  moveDown(speed) {
-    this.position[1] += speed;
-  }
+  draw(offset, alpha) {
+    this.a_r1 = (this.a_r1 > this.r ? 0 : this.a_r1) + this.a_speed;
+    this.a_r2 = (this.a_r2 > this.r ? 0 : this.a_r2) + this.a_speed;
 
-  draw(alpha) {
-    this.a_r1 = (this.a_r1 > 20 ? 0 : this.a_r1) + this.a_speed;
-    this.a_r2 = (this.a_r2 > 20 ? 0 : this.a_r2) + this.a_speed;
-
-    this.ctx.strokeStyle = `hsla(1, 100%, 100%, ${alpha})`;
+    this.ctx.strokeStyle = `hsla(1, 100%, ${this.c_light}%, ${alpha})`;
     this.ctx.lineWidth = 1;
 
-    if (this.a_r1 > 0) {
-      this.ctx.beginPath();
-      this.ctx.arc(
-        this.position[0],
-        this.position[1],
-        this.a_r1,
-        0,
-        2 * Math.PI
-      );
-      this.ctx.stroke();
-    }
+    this.ctx.beginPath();
+    this.ctx.arc(
+      this.position[0],
+      this.position[1] - offset,
+      this.r + 10,
+      0,
+      2 * Math.PI
+    );
+
+    this.ctx.fillStyle = `hsla(1, 100%, ${this.c_light}%, ${0.1})`;
+    this.ctx.fill();
 
     this.ctx.beginPath();
-    this.ctx.arc(this.position[0], this.position[1], this.a_r2, 0, 2 * Math.PI);
+    this.ctx.arc(
+      this.position[0],
+      this.position[1] - offset,
+      this.a_r1,
+      0,
+      2 * Math.PI
+    );
+    this.ctx.stroke();
+
+    this.ctx.beginPath();
+    this.ctx.arc(
+      this.position[0],
+      this.position[1] - offset,
+      this.a_r2,
+      0,
+      2 * Math.PI
+    );
     this.ctx.stroke();
   }
 }
 
-export default class Platforms {
+class LastPlatform extends Platform {
+  constructor(ctx, position) {
+    super(ctx, position);
+
+    this.isAnimated = false;
+
+    this._animation = {
+      r_smallRotation: 0,
+      r_bigRotation: 0,
+      c_radius: 300
+    };
+  }
+
+  update() {
+    if (this.isAnimated) {
+      // Change the radius, once the star is in place
+      if (this.r !== 300) {
+        this.radius = 300;
+        this.a_speed = 0.4;
+      }
+
+      this._animation.r_bigRotation += 0.001;
+      this._animation.r_smallRotation += 0.005;
+    }
+
+    if (this._animation.r_bigRotation >= 1) {
+      this._animation.r_bigRotation -= 1;
+    }
+
+    if (this._animation.r_smallRotation >= 1) {
+      this._animation.r_smallRotation -= 1;
+    }
+  }
+
+  draw(offset, alpha) {
+    super.draw(offset, alpha);
+
+    // Smallest rectangle
+    this.ctx.beginPath();
+    this.ctx.rect(
+      this.position[0] - 50,
+      this.position[1] - 50 - offset,
+      100,
+      100
+    );
+    this.ctx.lineWidth = 1;
+    this.ctx.stroke();
+
+    // Small rectangle
+    // this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.translate(this.position[0], this.position[1] - offset);
+    this.ctx.rotate(2 * Math.PI * this._animation.r_smallRotation);
+    this.ctx.rect(-150, -150, 300, 300);
+    this.ctx.lineWidth = 1;
+    this.ctx.stroke();
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    // this.ctx.restore();
+
+    // Big rectangle
+    // this.ctx.save();
+    this.ctx.translate(this.position[0], this.position[1] - offset);
+    this.ctx.rotate(2 * Math.PI * -this._animation.r_bigRotation);
+    this.ctx.beginPath();
+    this.ctx.rect(-200, -200, 400, 400);
+    this.ctx.lineWidth = 1;
+    this.ctx.stroke();
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    // this.ctx.restore();
+
+    // Last circle
+    this.ctx.beginPath();
+    this.ctx.arc(
+      this.position[0],
+      this.position[1] - offset,
+      this._animation.c_radius,
+      0,
+      2 * Math.PI
+    );
+    this.ctx.stroke();
+  }
+}
+
+export class ShootingPlatform extends Platform {
+  constructor(ctx, position) {
+    super(ctx, position);
+
+    this.c_light = 50;
+  }
+}
+
+export class Platforms {
   constructor(game) {
     this.game = game;
 
     this.platforms = [];
-    this.platformsCount = 30;
+    this.platformsCount = 60;
 
     this.padding = 500;
     this.alpha = 1;
 
     this.lastPlatform = null;
-    // this.ctx.strokeStyle = `hsl(270, 100%, 50%)`;
+    this.maxHeight = 0;
   }
 
   init() {
     const { bounds, ctx } = this.game;
+    this.platforms = [];
+    this.maxHeight = this.platformsCount * 150 - this.game.bounds.height;
 
-    this.lastPlatform = new Platform(ctx, [
+    this.lastPlatform = new LastPlatform(ctx, [
       bounds.width / 2,
-      bounds.height - this.platformsCount * 150
+      -this.maxHeight
     ]);
     this.platforms.push(this.lastPlatform);
 
-    for (let i = 0; i < this.platformsCount; i++) {
-      const platform = new Platform(ctx, [
-        random(this.padding, bounds.width - this.padding),
-        bounds.height - (i + 1) * random(100, 200)
-      ]);
+    const offset = bounds.height / 4;
+    for (let i = 1; i <= (bounds.height + this.maxHeight) / offset; i++) {
+      let platform;
+      if (i === 8) {
+        platform = new ShootingPlatform(ctx, [
+          random(this.padding, bounds.width - this.padding),
+          bounds.height - i * offset
+        ]);
+      } else {
+        platform = new Platform(ctx, [
+          random(this.padding, bounds.width - this.padding),
+          bounds.height - i * offset
+        ]);
+      }
       this.platforms.push(platform);
     }
+
+    for (let i = this.platforms.length; i < this.platformsCount; i++) {
+      let platform;
+      if (random(1, 3) == 1) {
+        platform = new ShootingPlatform(ctx, [
+          random(this.padding, bounds.width - this.padding),
+          bounds.height - i * offset
+        ]);
+      } else {
+        platform = new Platform(ctx, [
+          random(this.padding, bounds.width - this.padding),
+          bounds.height - random(0, this.maxHeight)
+        ]);
+      }
+      this.platforms.push(platform);
+    }
+    debugger;
   }
 
-  drawLastStarFluf() {
-    this.game.ctx.beginPath();
-    this.game.ctx.rect(
-      this.platforms[0].position[0] - 50,
-      this.platforms[0].position[1] - 50,
-      100,
-      100
-    );
-    this.game.ctx.lineWidth = 1;
-    this.game.ctx.stroke();
-
-    this.game.ctx.beginPath();
-    this.game.ctx.rect(
-      this.platforms[0].position[0] - 150,
-      this.platforms[0].position[1] - 150,
-      300,
-      300
-    );
-    this.game.ctx.lineWidth = 1;
-    this.game.ctx.stroke();
-
-    this.game.ctx.save();
-    this.game.ctx.translate(this.platforms[0].position[0], this.platforms[0].position[1]);
-    this.game.ctx.rotate(Math.PI / 4);
-    this.game.ctx.beginPath();
-    this.game.ctx.rect(-200, -200, 400, 400);
-    this.game.ctx.lineWidth = 1;
-    this.game.ctx.stroke();
-    this.game.ctx.restore();
-
-    this.game.ctx.beginPath();
-    this.game.ctx.arc(
-      this.platforms[0].position[0],
-      this.platforms[0].position[1],
-      300,
-      0,
-      2 * Math.PI
-    );
-    this.game.ctx.stroke();
-  }
-
-  moveDown(speed) {
-    this.platforms.map(platform => platform.moveDown(speed));
+  update() {
+    this.lastPlatform.update();
   }
 
   isPointInPlatform(point) {
