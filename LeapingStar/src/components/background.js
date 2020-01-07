@@ -45,11 +45,10 @@ export default class Background {
 
   update() {
     this.progres = this.game.camera.position[1] / this.game.maxHeight;
-    this.layers[0].style.transform = `translateY(${this.progres * 50}%)`;
-    this.layers[1].style.transform = `translateY(${this.progres * 140}%)`;
-    this.layers[2].style.transform = `translateY(${this.progres * 250}%)`;
-
-    this.bushLayer.style.transform = `translateY(${this.progres * 500}%)`;
+    this.layers[0].style.transform = `translate3d(0, ${this.progres * 50}%, 0)`;
+    this.layers[1].style.transform = `translate3d(0, ${this.progres * 140}%, 0)`;
+    this.layers[2].style.transform = `translate3d(0, ${this.progres * 250}%, 0)`;
+    this.bushLayer.style.transform = `translate3d(0, ${this.progres * 500}%, 0)`;
 
     document.body.style.background = `linear-gradient(#e66465, ${(.1 + this.progres) *
       70}%, #f09d51)`;
