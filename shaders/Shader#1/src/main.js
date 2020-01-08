@@ -9,11 +9,11 @@ const interval = 1000 / 60;
 let then = Date.now();
 let now, delta;
 function loop() {
-  // now = Date.now();
-  // delta = now - then;
-  // if (delta > interval) {
-  //   then = now - (delta % interval);
-  // }
+  now = Date.now();
+  delta = now - then;
+  if (delta > interval) {
+    then = now - (delta % interval);
+  }
   slider.draw();
   requestAnimationFrame(loop);
 }
