@@ -13,8 +13,11 @@ export default class Shape {
     this.sprite.x = this.position[0];
     this.sprite.y = this.position[1];
 
+    this.filterWrapper = new PIXI.Container();
+    this.filterWrapper.addChild(this.sprite);
+
     this.maskWrapper = new PIXI.Container();
-    this.maskWrapper.addChild(this.sprite);
+    this.maskWrapper.addChild(this.filterWrapper);
 
     // this.ellipse = new PIXI.Ellipse(this.position[0], this.position[1], , window.innerHeight / 2);
 
@@ -37,10 +40,14 @@ export default class Shape {
     this.sprite.y += Math.sign(delta) * 10;
   }
 
-  update(offset) {
-    this.position[1] = this.initalPosition[1] + offset;
-    this.sprite.y = this.initalPosition[1] + offset;
+  update(velocity) {
+    // this.position[1] = this.initalPosition[1] + offset;
+    // this.sprite.y = this.initalPosition[1] + offset;
+    this.position[1] += velocity;
+    this.sprite.y = this.position[1];
+  }
 
+  draw() {
     this.mask.clear();
     this.mask.beginTextureFill(this.sprite);
     this.mask.drawEllipse(

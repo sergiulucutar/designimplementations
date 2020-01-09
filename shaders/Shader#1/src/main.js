@@ -13,8 +13,9 @@ function loop() {
   delta = now - then;
   if (delta > interval) {
     then = now - (delta % interval);
+    slider.update();
+    slider.draw();
   }
-  slider.draw();
   requestAnimationFrame(loop);
 }
 

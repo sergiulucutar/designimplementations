@@ -3,7 +3,9 @@ import { TimelineLite, TweenLite } from "gsap";
 import { Power4 } from "gsap/src/all";
 import Shape from "./shape";
 
-const vertexShader = ``;
+const vertexShader = `
+
+`;
 const fragmentShader = `
 uniform float time;
 
@@ -55,6 +57,7 @@ export default class Slider {
     };
     this.padding = window.innerHeight / 4;
     this.offsetY = 0;
+    this.velocity = 0;
 
     // this.shapes = [new Shape(, this.bounds[0] / 2, 0, this.ellipse), new Shape("img/img2.jpg", this.bounds[0] / 2, this.bounds[1] / 2, this.ellipse), new Shape("img/img3.jpg", this.bounds[0] / 2, this.bounds[1], this.ellipse)];
 
@@ -87,8 +90,15 @@ export default class Slider {
     this.registerEventHandlers();
   }
 
+  update() {
+    for (let shape of this.shapes) {
+      shape.update(this.velocity);
+      this.repositionShape(shape);
+    }
+  }
+
   draw() {
-    this.shapes.map(shape => shape.update(this.offsetY));
+    this.shapes.map(shape => shape.draw());
     this.renderer.render(this.stage);
   }
 
@@ -99,19 +109,42 @@ export default class Slider {
       (this.bounds[0] / 4 + this.padding) * this.shapes.length,
       this.ellipse
     );
-    // shape.sprite.filters = [this.shaderFilter];
+    // shape.filterWrapper.filters = [this.shaderFilter];
     this.stage.addChild(shape.maskWrapper);
     this.shapes.push(shape);
+  }
+
+  repositionShape(shape) {
+    if (shape.position[1] < -this.ellipse.height * 2 - this.padding) {
+      debugger;
+      const prevIndex =
+        (this.shapes.length + this.shapes.indexOf(shape) - 1) %
+        this.shapes.length;
+      shape.position[1] =
+        this.shapes[prevIndex].position[1] +
+        this.ellipse.height * 2 +
+        this.padding;
+    }
+    // else if (shape.position[1] > this.bounds[1]) {
+    //   shape.position[1] = -this.ellipse.height * 2 - this.padding;
+    // }
   }
 
   registerEventHandlers() {
     document.addEventListener("wheel", event => {
       // this.a_timeline.kill();
       // this.shapes.map(shape => shape.move(event.deltaY));
+
+      // TweenLite.to(this, 1, {
+      //   offsetY: `+=${(Math.sign(event.deltaY) * window.innerHeight) / 2}`,
+      //   ease: Power4.easeOut
+      // });
+      this.velocity = Math.sign(event.deltaY) * 100;
       TweenLite.to(this, 1, {
-        offsetY: `+=${(Math.sign(event.deltaY) * window.innerHeight) / 2}`,
+        velocity: 0,
         ease: Power4.easeOut
       });
+
       this.a_timeline.restart();
     });
   }
