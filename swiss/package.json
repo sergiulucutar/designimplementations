@@ -1,0 +1,24 @@
+{
+  "name": "swiss",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel serve watch src/design1/design1.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "parcel": "^1.12.3",
+    "parcel-bundler": "^1.12.3",
+    "parcel-plugin-asset-copier": "^1.0.0",
+    "sass": "^1.22.9"
+  },
+  "dependencies": {
+    "gsap": "^3.0.2",
+    "img": "^3.0.3",
+    "pixi.js": "^5.1.1"
+  }
+}

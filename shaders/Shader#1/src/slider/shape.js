@@ -2,7 +2,6 @@ import * as PIXI from "pixi.js";
 
 export default class Shape {
   constructor(imgUrl, x, y, maskShape) {
-    this.initalPosition = [x, y];
     this.position = [x, y];
     this.ellipse = maskShape;
 
@@ -41,18 +40,16 @@ export default class Shape {
   }
 
   update(velocity) {
-    // this.position[1] = this.initalPosition[1] + offset;
-    // this.sprite.y = this.initalPosition[1] + offset;
     this.position[1] += velocity;
     this.sprite.y = this.position[1];
   }
 
-  draw() {
+  draw(offset = 0) {
     this.mask.clear();
     this.mask.beginTextureFill(this.sprite);
     this.mask.drawEllipse(
       this.position[0],
-      this.position[1],
+      this.position[1] + offset,
       this.ellipse.width,
       this.ellipse.height
     );
