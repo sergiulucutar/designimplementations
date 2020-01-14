@@ -48,18 +48,17 @@ const fragmentShaders = [
     vec4 fromColor = texture2D( uSampler, vTextureCoord );
     vec4 toColor = vec4( 0.0, 0.0, 0.0, 0.0 );
   
-    vec2 divide = fract(vTextureCoord * vec2(10, 10));
+    vec2 divide = fract(vTextureCoord * vec2(10.0, 1.0));
 
-    vec4 disp = texture2D(uSampler, vTextureCoord + getRotM(PI) * divide * u_progress * 0.1);
+    vec4 disp = texture2D(uSampler, vTextureCoord - divide * u_progress * 0.1);
     
     gl_FragColor = mix(disp, toColor, u_progress);
   }
   `
-]
+];
 
 export default class Slider {
   constructor() {
-
     // Setup canvas
     this.bounds = [window.innerWidth, window.innerHeight];
     this.renderer = new PIXI.autoDetectRenderer({
@@ -112,32 +111,46 @@ export default class Slider {
         this.sprites.getChildAt(this.index).filters[0].uniforms.u_progress = 0;
         this.sprites.getChildAt(this.index).alpha = 0;
         this.index = nextSlide;
-        this.sprites.getChildAt(this.index).alpha = 1;
+        // this.sprites.getChildAt(this.index).alpha = 1;
         this.isTransitioning = false;
       }
     });
     this.timeline
-      .to(this.sprites.getChildAt(this.index).filters[0].uniforms, 1, {
-        u_progress: 1,
-        ease: Power4.easeInOut
-      }, 0)
       .to(
-      this.sprites.getChildAt(nextSlide),
-      0.5,
-      { alpha: 1, ease: Power4.easeInOut },
-      0)
-      .fromTo(this.sprites.getChildAt(nextSlide).filters[0].uniforms, 1, { u_progress: 1 }, {
-        u_progress: 0,
-        ease: Power4.easeInOut
-      }, 0);
+        this.sprites.getChildAt(this.index).filters[0].uniforms,
+        1,
+        {
+          u_progress: 1,
+          ease: Power4.easeInOut
+        },
+        0
+      )
+      .to(
+        this.sprites.getChildAt(nextSlide),
+        0.5,
+        { alpha: 1, ease: Power4.easeInOut },
+        0
+      )
+      .fromTo(
+        this.sprites.getChildAt(nextSlide).filters[0].uniforms,
+        1,
+        { u_progress: 1 },
+        {
+          u_progress: 0,
+          ease: Power4.easeInOut
+        },
+        0
+      );
   }
 
   // Update shader
   changeEffect(index) {
     for (let i = 0; i < this.maxSprites; i++) {
-      this.sprites.getChildAt(i).filters = [new PIXI.Filter(null, fragmentShaders[index], {
-        u_progress: 0.0
-      })]
+      this.sprites.getChildAt(i).filters = [
+        new PIXI.Filter(null, fragmentShaders[index], {
+          u_progress: 0.0
+        })
+      ];
     }
   }
 }
