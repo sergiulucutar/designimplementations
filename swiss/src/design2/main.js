@@ -29,45 +29,21 @@ function init() {
   });
 }
 
-// Draw flower
 function draw() {
   ctx.clearRect(0, 0, canvasEl.offsetWidth, canvasEl.offsetHeight);
 
+  ctx.font = "bold 110px Arial";
+  ctx.fillText("undertones", 0, 100);
+
   ctx.save();
-  ctx.translate(shapeState.position[0], shapeState.position[1]);
-  // ctx.globalAlpha = 0.8;
-  for (let i = 0; i < 9; i++) {
-    ctx.rotate(shapeState.angle + animation.rotatetionAngle);
-    ctx.beginPath();
-    ctx.rect(
-      -shapeState.r,
-      -shapeState.rHeight / 2,
-      shapeState.r * 2,
-      shapeState.rHeight
-    );
-    ctx.fillStyle = shapeState.color[i % 3];
-    ctx.fill();
+  ctx.translate(0, 100);
+  for (let i = 0; i < 20; i++) {
+    ctx.rotate(Math.PI / 2 / 20);
+    ctx.fillStyle = `hsla(0, 0%, 0%, ${0.9 - i / 30})`;
+    ctx.fillText("undertones", 0, 0);
   }
   ctx.restore();
 }
 
-// Update flowerroatation
-function update() {
-  animation.rotatetionAngle += 0.001;
-}
-
-function loop() {
-  requestAnimationFrame(loop);
-
-  update();
-  draw();
-}
-
 init();
-loop();
-
-// Text animation
-var h1El = document.querySelector("header");
-setTimeout(() => {
-  h1El.classList.add("show");
-}, 2000);
+draw();
