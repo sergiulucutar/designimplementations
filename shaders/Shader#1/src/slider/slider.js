@@ -1,22 +1,13 @@
 import * as PIXI from "pixi.js";
-import { TimelineLite, TweenLite } from "gsap";
+import { TweenLite } from "gsap";
 import { Power4 } from "gsap/src/all";
-import Shape from "./shape";
 import { Timeline } from "gsap/src/gsap-core";
 
-const vertexShader = `
-
-`;
 const fragmentShader = `
-uniform float time;
+uniform float u_progress;
 
 varying vec2 vTextureCoord;
-
 uniform sampler2D uSampler;
-uniform sampler2D pattern;
-
-uniform sampler2D texture1;
-uniform sampler2D texture2;
 
 mat2 getRotM(float angle) {
   float s = sin(angle);
@@ -25,16 +16,17 @@ mat2 getRotM(float angle) {
 }
 
 const float PI = 3.1415;
-const float angle = PI *0.25;
+const float angle = PI * 0.25;
 
 void main() {
-  vec4 d = texture2D(pattern, vTextureCoord);
+  vec4 fromColor = texture2D( uSampler, vTextureCoord );
+  vec4 toColor = vec4( 0.0, 0.0, 0.0, 0.0 );
 
-  vec2 dispVec = vec2(d.g, d.b);
+  vec2 dispVec = vec2(fromColor.r, fromColor.g);
 
-  gl_FragColor = texture2D(pattern, vTextureCoord + getRotM(angle) * dispVec * time * 0.1);
+  vec4 disp = texture2D(uSampler, vTextureCoord - dispVec * getRotM(angle) * u_progress * 0.1);
   
-  // gl_FragColor = vec4(1.0, 1.0, 0.0, 0.0);
+  gl_FragColor = mix(disp, toColor, u_progress);
 }`;
 
 export default class Slider {
@@ -53,8 +45,10 @@ export default class Slider {
 
     this.stage.addChild(this.sprites);
 
-    this.index = 1;
+    this.index = 0;
     this.timeline = null;
+
+    this.isTransitioning = false;
   }
 
   init() {
@@ -63,48 +57,17 @@ export default class Slider {
       sprite.anchor.set(0.5);
       sprite.x = this.bounds[0] / 2;
       sprite.y = this.bounds[1] / 2;
+      sprite.alpha = 0;
       sprite.filters = [
         new PIXI.Filter(null, fragmentShader, {
-          time: 1.0,
-          pattern: PIXI.Sprite.from("img/pattern.png")
+          u_progress: 0.0
         })
       ];
-      sprite.alpha = 0;
 
       this.sprites.addChild(sprite);
     }
 
-    this.sprites.getChildAt(0).alpha = 1;
-
-    this.timeline = new Timeline({
-      onUpdate: () => {
-        console.log(this.sprites.getChildAt(this.index).alpha);
-      }
-    });
-    this.timeline
-      // .to(this.sprites.getChildAt(this.index - 1).filters[0].uniforms, 1, {
-      //   time: 1,
-      //   ease: Power4.easeInOut,
-      //   onComplete: () => {
-      //     this.sprites.getChildAt(this.index).alpha = 1;
-      //   }
-      // })
-      .to(
-        this.sprites.getChildAt(this.index - 1),
-        3,
-        { alpha: 0, ease: Power4.easeInOut },
-        0
-      )
-      // .to(this.sprites.getChildAt(this.index).filters[0].uniforms, 1, {
-      //   time: 0,
-      //   ease: Power4.easeInOut
-      // })
-      .to(
-        this.sprites.getChildAt(this.index),
-        3,
-        { alpha: 1, ease: Power4.easeInOut },
-        1
-      );
+    this.sprites.getChildAt(this.index).alpha = 1;
 
     document.addEventListener("click", () => this.handleClick());
   }
@@ -114,7 +77,33 @@ export default class Slider {
   }
 
   handleClick() {
-    this.index += 1;
-    this.timeline.restart();
+    const nextSlide = (this.index + 1) % 3;
+    if (this.isTransitioning) {
+      return;
+    }
+    this.isTransitioning = true;
+    this.timeline = new Timeline({
+      onComplete: () => {
+        this.sprites.getChildAt(this.index).filters[0].uniforms.u_progress = 0;
+        this.sprites.getChildAt(this.index).alpha = 0;
+        this.index = nextSlide;
+        this.sprites.getChildAt(this.index).alpha = 1;
+        this.isTransitioning = false;
+      }
+    });
+    this.timeline
+      .to(this.sprites.getChildAt(this.index).filters[0].uniforms, 1, {
+        u_progress: 1,
+        ease: Power4.easeInOut
+      }, 0)
+      .to(
+      this.sprites.getChildAt(nextSlide),
+      0.5,
+      { alpha: 1, ease: Power4.easeInOut },
+      0)
+      .fromTo(this.sprites.getChildAt(nextSlide).filters[0].uniforms, 1, { u_progress: 1 }, {
+        u_progress: 0,
+        ease: Power4.easeInOut
+      }, 0);
   }
 }
