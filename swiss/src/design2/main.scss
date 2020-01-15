@@ -33,7 +33,7 @@ body {
   header {
     display: grid;
     grid-template-rows: 1fr 1fr;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     padding: 24px;
     padding-bottom: 0;
     grid-gap: 10px;
@@ -42,8 +42,24 @@ body {
       display: flex;
       flex-direction: column;
 
-      &:last-of-type {
-        grid-column: -2;
+      &:nth-of-type(1) {
+        grid-column: 1 / span 2;
+      }
+
+      &:nth-of-type(2) {
+        grid-column: 3 / span 2;
+      }
+
+      &:nth-of-type(3) {
+        grid-column: 6 / span 2;
+      }
+
+      &:nth-of-type(4) {
+        grid-column: 1 / span 2;
+      }
+
+      &:nth-of-type(5) {
+        grid-column: 3 / span 2;
       }
 
       span {

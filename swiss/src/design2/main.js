@@ -14,7 +14,8 @@ const shapeState = {
   color: ["#CF246C", "#DBB215", "#00A8A8"]
 };
 const animation = {
-  rotatetionAngle: 0
+  rotatetionAngle: 0,
+  angle: Math.PI / 2 / 20
 };
 
 // Initialize canvas and start animation
@@ -29,6 +30,13 @@ function init() {
   });
 }
 
+function update() {
+  animation.rotatetionAngle += animation.angle / 10;
+  if (animation.rotatetionAngle > animation.angle) {
+    animation.rotatetionAngle = 0;
+  }
+}
+
 function draw() {
   ctx.clearRect(0, 0, canvasEl.offsetWidth, canvasEl.offsetHeight);
 
@@ -37,8 +45,14 @@ function draw() {
 
   ctx.save();
   ctx.translate(0, 100);
-  for (let i = 0; i < 20; i++) {
-    ctx.rotate(Math.PI / 2 / 20);
+
+  ctx.rotate(animation.rotatetionAngle);
+  ctx.font = "bold 110px Arial";
+  ctx.fillStyle = `hsla(0, 0%, 0%, 0.9)`;
+  ctx.fillText("undertones", 0, 0);
+
+  for (let i = 0; i < 30; i++) {
+    ctx.rotate(animation.angle);
     ctx.fillStyle = `hsla(0, 0%, 0%, ${0.9 - i / 30})`;
     ctx.fillText("undertones", 0, 0);
   }
@@ -46,4 +60,12 @@ function draw() {
 }
 
 init();
-draw();
+
+function loop() {
+  requestAnimationFrame(loop);
+
+  update();
+  draw();
+}
+
+loop();
