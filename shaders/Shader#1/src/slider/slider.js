@@ -48,11 +48,39 @@ const fragmentShaders = [
     vec4 fromColor = texture2D( uSampler, vTextureCoord );
     vec4 toColor = vec4( 0.0, 0.0, 0.0, 0.0 );
   
-    vec2 divide = fract(vTextureCoord * vec2(10.0, 1.0));
+    vec2 divide = fract(vTextureCoord * vec2(8.0, 1.0));
 
     vec4 disp = texture2D(uSampler, vTextureCoord - divide * u_progress * 0.1);
     
     gl_FragColor = mix(disp, toColor, u_progress);
+  }
+  `,
+  `
+  uniform float u_progress;
+  uniform sampler2D u_displacement;
+  
+  varying vec2 vTextureCoord;
+  uniform sampler2D uSampler;
+
+  mat2 getRotM(float angle) {
+    float s = sin(angle);
+    float c = cos(angle);
+    return mat2(c, -s, s, c);
+  }
+  
+  const float PI = 3.1415;
+  const float angle = PI * 0.25;
+  
+  void main() {
+    vec4 fromColor = texture2D(uSampler, vTextureCoord );
+    vec4 toColor = vec4( 0.0, 0.0, 0.0, 0.0 );
+
+    vec4 disp = texture2D(u_displacement, vTextureCoord);
+    vec2 dispVec = vec2(disp.r, disp.g);
+  
+    vec4 dispTxt = texture2D(uSampler, vTextureCoord + dispVec * u_progress * 0.1);
+    
+    gl_FragColor = mix(dispTxt, toColor, u_progress);
   }
   `
 ];
@@ -73,7 +101,7 @@ export default class Slider {
     this.stage.addChild(this.sprites);
 
     // Slider state variables
-    this.maxSprites = 3;
+    this.maxSprites = 4;
     this.index = 0;
     this.timeline = null;
 
@@ -86,11 +114,13 @@ export default class Slider {
       sprite.anchor.set(0.5);
       sprite.x = this.bounds[0] / 2;
       sprite.y = this.bounds[1] / 2;
+      // sprite.width = 800;
+      // sprite.height = 800;
       sprite.alpha = 0;
 
       this.sprites.addChild(sprite);
     }
-    this.changeEffect(1);
+    this.changeEffect(2);
     this.sprites.getChildAt(this.index).alpha = 1;
 
     document.addEventListener("click", () => this.handleClick());
@@ -111,35 +141,34 @@ export default class Slider {
         this.sprites.getChildAt(this.index).filters[0].uniforms.u_progress = 0;
         this.sprites.getChildAt(this.index).alpha = 0;
         this.index = nextSlide;
-        // this.sprites.getChildAt(this.index).alpha = 1;
         this.isTransitioning = false;
       }
     });
     this.timeline
       .to(
-        this.sprites.getChildAt(this.index).filters[0].uniforms,
-        1,
-        {
-          u_progress: 1,
-          ease: Power4.easeInOut
-        },
-        0
+      this.sprites.getChildAt(this.index).filters[0].uniforms,
+      1,
+      {
+        u_progress: 1,
+        ease: Power4.easeInOut
+      },
+      0
       )
       .to(
-        this.sprites.getChildAt(nextSlide),
-        0.5,
-        { alpha: 1, ease: Power4.easeInOut },
-        0
+      this.sprites.getChildAt(nextSlide),
+      0.5,
+      { alpha: 1, ease: Power4.easeInOut },
+      0
       )
       .fromTo(
-        this.sprites.getChildAt(nextSlide).filters[0].uniforms,
-        1,
-        { u_progress: 1 },
-        {
-          u_progress: 0,
-          ease: Power4.easeInOut
-        },
-        0
+      this.sprites.getChildAt(nextSlide).filters[0].uniforms,
+      1,
+      { u_progress: 1 },
+      {
+        u_progress: 0,
+        ease: Power4.easeInOut
+      },
+      0
       );
   }
 
@@ -147,10 +176,22 @@ export default class Slider {
   changeEffect(index) {
     for (let i = 0; i < this.maxSprites; i++) {
       this.sprites.getChildAt(i).filters = [
-        new PIXI.Filter(null, fragmentShaders[index], {
+        this.createFilterObject(index)
+      ];
+    }
+  }
+
+  createFilterObject(index) {
+    switch (index) {
+      case 2:
+        return new PIXI.Filter(null, fragmentShaders[index], {
+          u_progress: 0.0,
+          u_displacement: PIXI.Sprite.from(`img/texture1.jpg`)
+        })
+      default:
+        return new PIXI.Filter(null, fragmentShaders[index], {
           u_progress: 0.0
         })
-      ];
     }
   }
 }
