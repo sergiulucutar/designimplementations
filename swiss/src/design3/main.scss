@@ -1,0 +1,267 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:700&display=swap");
+
+:root {
+  * {
+    box-sizing: border-box;
+    font-size: 10px;
+  }
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #f0edee;
+
+  font-size: 10px;
+}
+
+.poster {
+  display: grid;
+  grid-template-rows: 7fr 2fr;
+
+  width: 67.8vmin;
+  height: 95vmin;
+
+  background-color: #DCE0D3;
+
+  font-family: "Roboto", sans-serif;
+
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+
+  overflow: hidden;
+
+  header {
+    grid-row: 2;
+
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 24px;
+    padding-bottom: 0;
+    grid-gap: 10px;
+
+    .info {
+      display: flex;
+      flex-direction: column;
+
+      grid-row: 2;
+
+      overflow: hidden;
+
+      &:nth-of-type(1) {
+        grid-column: 1 / span 2;
+      }
+
+      &:nth-of-type(2) {
+        grid-column: 3 / span 2;
+      }
+
+      &:nth-of-type(3) {
+        grid-column: 6 / span 2;
+      }
+
+      &:nth-of-type(4) {
+        grid-column: 1 / span 2;
+      }
+
+      &:nth-of-type(5) {
+        grid-column: 3 / span 2;
+      }
+
+      span {
+        color: #24217A;
+        font-size: 0.9rem;
+        font-weight: bold;
+        line-height: 1.4;
+
+        opacity: 0;
+        transform: rotate(-90deg);
+        transform-origin: left;
+
+        transition: all 1s linear;
+      }
+    }
+
+    &.show {
+      span {
+        opacity: 1;
+        transform: rotate(0);
+      }
+    }
+  }
+
+  .hero {
+    grid-row: 1;
+    grid-column: 1 / -1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    line-height: 0.7;
+
+    span {
+      position: relative;
+
+      color: #24217A;
+      font-size: 10rem;
+
+      z-index: 3;
+
+      @for $i from 1 through 6 {
+        &:nth-child(#{$i}) {
+          &:before, &:after {
+            animation-delay: $i * .2s;
+          }
+        }
+      }
+
+      &:before, &::after {
+        content: 'ramones';
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        font-size: 10rem;
+        z-index: -1;
+
+        filter: opacity(.8);
+      }
+
+      &:before {
+        color: #0099CA;
+
+        animation: move 5s ease-in-out infinite;
+      }
+
+      &:after {
+        color: #CD0071;
+
+        animation: move-reverse 5s ease-in-out infinite;
+      }
+    }
+  }
+}
+
+// ONE WAY
+
+@keyframes move {
+  15% {
+    transform: translate3d(0, -10%, 0);
+  }
+
+  30% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes move-reverse {
+  15% {
+    transform: translate3d(0, 10%, 0);
+  }
+  
+  30% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+
+
+// UP & DOWN
+
+// @keyframes move {
+//   5% {
+//     transform: translate3d(0, -10%, 0);
+//   }
+
+//   15% {
+//     transform: translate3d(0, 10%, 0);
+//   }
+
+//   20% {
+//     transform: translate3d(0, 0, 0);
+//   }
+// }
+
+// @keyframes move-reverse {
+//   5% {
+//     transform: translate3d(0, 10%, 0);
+//   }
+  
+//   15% {
+//     transform: translate3d(0, -10%, 0);
+//   }
+
+//   20% {
+//     transform: translate3d(0, 0, 0);
+//   }
+// }
+
+// ROTATION
+
+
+// @keyframes move {
+//   2.8% {
+//     transform: translate3d(2%, -4%, 0);
+//   }
+
+//   5.6% {
+//     transform: translate3d(4%, 0%, 0);
+//   }
+
+//   8.4% {
+//     transform: translate3d(2%, 4%, 0);
+//   }
+
+//   11.2% {
+//     transform: translate3d(-2%, 4%, 0);
+//   }
+
+//   14% {
+//     transform: translate3d(-4%, 0%, 0);
+//   }
+
+//   16.8% {
+//     transform: translate3d(-2%, -4%, 0);
+//   }
+
+//   20% {
+//     transform: translate3d(0, 0, 0);
+//   }
+// }
+
+// @keyframes move-reverse {
+//   2.8% {
+//     transform: translate3d(-2%, 4%, 0);
+//   }
+  
+//   5.6% {
+//     transform: translate3d(-4%, 0%, 0);
+//   }
+  
+//   8.4% {
+//     transform: translate3d(-2%, -4%, 0);
+//   }
+  
+//   11.2% {
+//     transform: translate3d(2%, -4%, 0);
+//   }
+  
+//   14% {
+//     transform: translate3d(4%, 0%, 0);
+//   }
+  
+//   16.8% {
+//     transform: translate3d(2%, 4%, 0);
+//   }
+
+//   20% {
+//     transform: translate3d(0, 0, 0);
+//   }
+// }

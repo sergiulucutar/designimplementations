@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel serve watch src/design2/index.html"
+    "dev": "parcel serve watch src/design3/index.html"
   },
   "keywords": [],
   "author": "",
