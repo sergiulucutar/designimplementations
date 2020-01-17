@@ -49,6 +49,8 @@ body {
       grid-row: 2;
 
       overflow: hidden;
+      transform: translate3d(0, 100%, 0);
+      transition: all 3s cubic-bezier(0.23, 1, 0.32, 1) 3s;
 
       &:nth-of-type(1) {
         grid-column: 1 / span 2;
@@ -75,19 +77,6 @@ body {
         font-size: 0.9rem;
         font-weight: bold;
         line-height: 1.4;
-
-        opacity: 0;
-        transform: rotate(-90deg);
-        transform-origin: left;
-
-        transition: all 1s linear;
-      }
-    }
-
-    &.show {
-      span {
-        opacity: 1;
-        transform: rotate(0);
       }
     }
   }
@@ -112,12 +101,15 @@ body {
       color: #24217A;
       font-size: 10rem;
 
+      transform: translate3d(100%, 0, 0);
+      transition: transform 3s cubic-bezier(0.23, 1, 0.32, 1);
       z-index: 3;
 
       @for $i from 1 through 6 {
         &:nth-child(#{$i}) {
+          transition-delay: $i * .1s;
           &:before, &:after {
-            animation-delay: $i * .2s;
+            animation-delay: $i * .25s + 4s;
           }
         }
       }
@@ -137,40 +129,48 @@ body {
       &:before {
         color: #0099CA;
 
-        animation: move 5s ease-in-out infinite;
+        animation: move 6s ease-in-out infinite;
       }
 
       &:after {
         color: #CD0071;
 
-        animation: move-reverse 5s ease-in-out infinite;
+        animation: move-reverse 6s ease-in-out infinite;
       }
+    }
+  }
+
+  &.show {
+    header .info {
+      transform: translate3d(0, 0, 0);
+    }
+
+    .hero span {
+      transform: translate3d(0, 0, 0);
     }
   }
 }
 
 // ONE WAY
-
 @keyframes move {
-  15% {
+  20% {
     transform: translate3d(0, -10%, 0);
   }
 
-  30% {
+  40% {
     transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes move-reverse {
-  15% {
+  20% {
     transform: translate3d(0, 10%, 0);
   }
   
-  30% {
+  40% {
     transform: translate3d(0, 0, 0);
   }
 }
-
 
 
 // UP & DOWN
