@@ -1,30 +1,47 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto:700&display=swap");
+<template>
+  <section ref="poster" class="poster3">
+    <section class="hero">
+      <span>ramones</span>
+      <span>ramones</span>
+      <span>ramones</span>
+      <span>ramones</span>
+      <span>ramones</span>
+      <span>ramones</span>
+    </section>
+    <header class="show">
+      <div class="info">
+        <span>straight music presents</span>
+        <span>the undertones</span>
+      </div>
+      <div class="info">
+        <span>victoria hall hanley</span>
+        <span>stroke-on-trent, england</span>
+      </div>
+      <div class="info">
+        <span>advance tickets: $3.00</span>
+        <span>at door: $4.50</span>
+      </div>
+    </header>
+  </section>
+</template>
 
-:root {
-  * {
-    box-sizing: border-box;
-    font-size: 10px;
+<script>
+export default {
+  mounted() {
+    setTimeout(() => this.$refs.poster.classList.add("show"), 10);
   }
-}
+};
+</script>
 
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background-color: #f0edee;
-
-  font-size: 10px;
-}
-
-.poster {
+<style lang="scss">
+.poster3 {
   display: grid;
   grid-template-rows: 7fr 2fr;
 
   width: 67.8vmin;
   height: 95vmin;
 
-  background-color: #DCE0D3;
+  background-color: #dce0d3;
 
   font-family: "Roboto", sans-serif;
 
@@ -73,7 +90,7 @@ body {
       }
 
       span {
-        color: #24217A;
+        color: #24217a;
         font-size: 0.9rem;
         font-weight: bold;
         line-height: 1.4;
@@ -98,8 +115,10 @@ body {
     span {
       position: relative;
 
-      color: #24217A;
+      color: #24217a;
+      // font-family: "Roboto", sans-serif;
       font-size: 10rem;
+      font-weight: bold;
 
       transform: translate3d(100%, 0, 0);
       transition: transform 3s cubic-bezier(0.23, 1, 0.32, 1);
@@ -107,15 +126,17 @@ body {
 
       @for $i from 1 through 6 {
         &:nth-child(#{$i}) {
-          transition-delay: $i * .1s;
-          &:before, &:after {
-            animation-delay: $i * .25s + 4s;
+          transition-delay: $i * 0.1s;
+          &:before,
+          &:after {
+            animation-delay: $i * 0.25s + 4s;
           }
         }
       }
 
-      &:before, &::after {
-        content: 'ramones';
+      &:before,
+      &::after {
+        content: "ramones";
         position: absolute;
         top: 0;
         left: 0;
@@ -123,17 +144,17 @@ body {
         font-size: 10rem;
         z-index: -1;
 
-        filter: opacity(.8);
+        filter: opacity(0.8);
       }
 
       &:before {
-        color: #0099CA;
+        color: #0099ca;
 
         animation: move 6s ease-in-out infinite;
       }
 
       &:after {
-        color: #CD0071;
+        color: #cd0071;
 
         animation: move-reverse 6s ease-in-out infinite;
       }
@@ -166,12 +187,11 @@ body {
   20% {
     transform: translate3d(0, 10%, 0);
   }
-  
+
   40% {
     transform: translate3d(0, 0, 0);
   }
 }
-
 
 // UP & DOWN
 
@@ -193,7 +213,7 @@ body {
 //   5% {
 //     transform: translate3d(0, 10%, 0);
 //   }
-  
+
 //   15% {
 //     transform: translate3d(0, -10%, 0);
 //   }
@@ -204,7 +224,6 @@ body {
 // }
 
 // ROTATION
-
 
 // @keyframes move {
 //   2.8% {
@@ -240,23 +259,23 @@ body {
 //   2.8% {
 //     transform: translate3d(-2%, 4%, 0);
 //   }
-  
+
 //   5.6% {
 //     transform: translate3d(-4%, 0%, 0);
 //   }
-  
+
 //   8.4% {
 //     transform: translate3d(-2%, -4%, 0);
 //   }
-  
+
 //   11.2% {
 //     transform: translate3d(2%, -4%, 0);
 //   }
-  
+
 //   14% {
 //     transform: translate3d(4%, 0%, 0);
 //   }
-  
+
 //   16.8% {
 //     transform: translate3d(2%, 4%, 0);
 //   }
@@ -265,3 +284,5 @@ body {
 //     transform: translate3d(0, 0, 0);
 //   }
 // }
+</style>
+

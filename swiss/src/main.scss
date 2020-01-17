@@ -1,0 +1,17 @@
+:root {
+  * {
+    box-sizing: border-box;
+    font-size: 10px;
+  }
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // background-color: #424c55;
+  background-color: #f0edee;
+
+  font-size: 10px;
+}

@@ -4,21 +4,31 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel serve watch src/design3/index.html"
+    "dev": "parcel serve watch src/design3/index.html",
+    "vue": "parcel serve watch src/index.html"
+  },
+  "alias": {
+    "vue": "./node_modules/vue/dist/vue.common.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@vue/component-compiler-utils": "^3.1.1",
     "eslint": "^6.1.0",
     "parcel": "^1.12.3",
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-asset-copier": "^1.0.0",
-    "sass": "^1.22.9"
+    "sass": "^1.22.9",
+    "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
     "gsap": "^3.0.2",
     "img": "^3.0.3",
-    "pixi.js": "^5.1.1"
+    "pixi.js": "^5.1.1",
+    "reset.scss": "^1.0.0",
+    "src": "^1.1.2",
+    "vue": "^2.6.11",
+    "vue-hot-reload-api": "^2.3.4"
   }
 }
