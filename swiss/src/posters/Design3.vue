@@ -91,7 +91,7 @@ export default {
 
       span {
         color: #24217a;
-        font-size: 0.9rem;
+        font-size: 1.4rem;
         font-weight: bold;
         line-height: 1.4;
       }
@@ -117,7 +117,7 @@ export default {
 
       color: #24217a;
       // font-family: "Roboto", sans-serif;
-      font-size: 10rem;
+      font-size: 16rem;
       font-weight: bold;
 
       transform: translate3d(100%, 0, 0);
@@ -141,7 +141,7 @@ export default {
         top: 0;
         left: 0;
 
-        font-size: 10rem;
+        font-size: 16rem;
         z-index: -1;
 
         filter: opacity(0.8);

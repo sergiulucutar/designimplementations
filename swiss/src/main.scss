@@ -1,17 +1,60 @@
 :root {
-  * {
-    box-sizing: border-box;
-    font-size: 10px;
-  }
+  font-size: 10px;
+  box-sizing: border-box;
 }
 
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   // background-color: #424c55;
   background-color: #f0edee;
 
   font-size: 10px;
+
+  #app {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    width: 100vw;
+    height: 100vh;
+  }
+
+  button {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    font-size: 3rem;
+    // letter-spacing: 5px;
+  
+    background: none;
+    border: none;
+  
+    cursor: pointer;
+    outline: none;
+
+    transition: letter-spacing .4s ease-in-out;
+
+    span {
+      position: absolute;
+    }
+
+    &:hover {
+      letter-spacing: 0;
+    }
+  
+    &::before {
+      content: ' ';
+      position: absolute;
+  
+      width: 90px;
+      height: 90px;
+
+      border: 1px solid black;
+      border-radius: 50%;
+    }
+  }
 }
+

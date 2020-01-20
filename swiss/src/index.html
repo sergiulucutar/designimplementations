@@ -10,9 +10,13 @@
 
 <body>
   <section id="app">
-    <!-- <design1></design1> -->
-    <!-- <design2></design2> -->
-    <design3></design3>
+    <button v-on:click="changePoster(-1)">
+      <span>PREV</span>
+    </button>
+    <router-view></router-view>
+    <button v-on:click="changePoster(1)">
+      <span>NEXT</span>
+    </button>
   </section>
   <script src="./main.js"></script>
 </body>
