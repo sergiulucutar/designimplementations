@@ -9,46 +9,31 @@ import Design1 from './posters/Design1.vue';
 import Design2 from './posters/Design2.vue';
 import Design3 from './posters/Design3.vue';
 
-// const routes = {
-//   '/': Design1,
-//   '/poster2': Design2,
-//   '/poster3': Design3
-// }
-
 const routes = [
   { path: '/', component: Design1 },
-  { path: '/poster1', component: Design1 },
-  { path: '/poster2', component: Design2 },
-  { path: '/poster3', component: Design3 }
+  { path: '/poster/1', component: Design1 },
+  { path: '/poster/2', component: Design2 },
+  { path: '/poster/3', component: Design3 }
 ];
 
-const router = new VueRouter({ routes });
+const router = new VueRouter({ mode: 'history', routes });
 
 const app = new Vue({
   router,
+  data() {
+    return {
+      sliderIndex: 0
+    }
+  },
+  created() {
+    // Update the slider index if the app has been accessed by directly going to a certain poster
+    const index = parseInt(this.$router.currentRoute.path.split('/').pop()) - 1;
+    this.sliderIndex = index || this.sliderIndex;
+  },
   methods: {
     changePoster(delta) {
-      const nextSlide = (3 + delta) % 3 + 1;
-      console.log(nextSlide);
-      this.$router.push({ path: `/poster${nextSlide}` });
+      this.sliderIndex = (this.sliderIndex + 3 + delta) % 3;
+      this.$router.push({ path: `/poster/${this.sliderIndex + 1}` });
     }
   }
 }).$mount('#app');
-
-// var app = new Vue({
-//   el: '#app',
-//   data: {
-//     currentRoute: window.location.pathname
-//   },
-//   methods: {
-//     changePoster(delta) {
-//       console.log(delta);
-//     }
-//   },
-//   computed: {
-//     ViewComponent() {
-//       return routes[this.currentRoute];
-//     }
-//   },
-//   render(h) { return h(this.ViewComponent) }
-// });

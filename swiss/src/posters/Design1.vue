@@ -28,6 +28,7 @@ import { TweenLite, Power4 } from "gsap";
 export default {
   data() {
     return {
+      requestAnimationFrameId: null,
       ctx: null,
       position: [0, 0],
       r: 0,
@@ -83,11 +84,16 @@ export default {
       this.rotatetionAngle += 0.001;
     },
     loop() {
-      requestAnimationFrame(this.loop.bind(this));
+      this.requestAnimationFrameId = requestAnimationFrame(
+        this.loop.bind(this)
+      );
 
       this.update();
       this.draw();
     }
+  },
+  beforeDestroy() {
+    cancelAnimationFrame(this.requestAnimationFrameId);
   }
 };
 </script>

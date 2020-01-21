@@ -33,6 +33,7 @@ export default {
   data() {
     return {
       ctx: null,
+      requestAnimationFrameId: null,
       animation: {
         intro: {
           angle: -Math.PI,
@@ -120,11 +121,16 @@ export default {
       }
     },
     loop() {
-      requestAnimationFrame(this.loop.bind(this));
+      this.requestAnimationFrameId = requestAnimationFrame(
+        this.loop.bind(this)
+      );
 
       this.update();
       this.draw();
     }
+  },
+  beforeDestroy() {
+    cancelAnimationFrame(this.requestAnimationFrameId);
   }
 };
 </script>
