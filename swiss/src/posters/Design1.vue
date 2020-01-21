@@ -131,7 +131,7 @@ export default {
       span {
         color: black;
         line-height: 1.4;
-        font-size: 0.9rem;
+        font-size: 1.2rem;
 
         font-weight: bold;
       }
@@ -145,7 +145,8 @@ export default {
       grid-column: 1 / -1;
 
       span {
-        font-size: 3.5rem;
+        font-size: 6rem;
+        font-weight: bold;
       }
 
       align-self: flex-start;

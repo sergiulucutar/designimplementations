@@ -185,7 +185,7 @@ export default {
 
       span {
         color: white;
-        font-size: 0.9rem;
+        font-size: 1.4rem;
         font-weight: bold;
         line-height: 1.4;
 
