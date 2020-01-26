@@ -11,17 +11,46 @@
   </head>
 
   <body>
+    <svg viewbox="0 0 100 100">
+      <g stroke="black" stroke-width="10" stroke-opacity=".9">
+        <circle cx="40" cy="00" r="50" fill="transparent" />
+        <circle cx="40" cy="00" r="30" fill="transparent" />
+        <circle cx="40" cy="00" r="10" fill="transparent" />
+      </g>
+
+      <g stroke="white" stroke-width="10" stroke-opacity=".9">
+        <circle cx="0" cy="100" r="90" fill="transparent" />
+        <circle cx="0" cy="100" r="70" fill="transparent" />
+        <circle cx="0" cy="100" r="50" fill="transparent" />
+        <circle cx="0" cy="100" r="30" fill="transparent" />
+        <circle cx="0" cy="100" r="10" fill="transparent" />
+      </g>
+    </svg>
     <section id="app">
       <transition :name="transitionName">
         <router-view></router-view>
       </transition>
       <button v-on:click="changePoster(-1)">
-        <span>PREV</span>
+        <span><<<</span>
       </button>
       <button v-on:click="changePoster(1)">
-        <span>NEXT</span>
+        <span>>>></span>
       </button>
     </section>
+    <svg viewbox="0 0 100 100">
+      <g stroke="black" stroke-width="10" stroke-opacity=".9">
+        <circle cx="40" cy="00" r="90" fill="transparent" />
+        <circle cx="40" cy="00" r="70" fill="transparent" />
+        <circle cx="40" cy="00" r="50" fill="transparent" />
+        <circle cx="40" cy="00" r="30" fill="transparent" />
+        <circle cx="40" cy="00" r="10" fill="transparent" />
+      </g>
+
+      <g stroke="white" stroke-width="10" stroke-opacity=".9">
+        <circle cx="100" cy="100" r="30" fill="transparent" />
+        <circle cx="100" cy="100" r="10" fill="transparent" />
+      </g>
+    </svg>
     <script src="./main.js"></script>
   </body>
 </html>
