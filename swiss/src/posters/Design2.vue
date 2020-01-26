@@ -1,29 +1,31 @@
 <template>
-  <section class="poster2">
-    <header ref="header">
-      <div class="info">
-        <span>straight music presents</span>
-        <span>the undertones</span>
-      </div>
-      <div class="info">
-        <span>victoria hall hanley</span>
-        <span>stroke-on-trent, england</span>
-      </div>
-      <div class="info">
-        <span>advance tickets: $3.00</span>
-        <span>at door: $4.50</span>
-      </div>
-      <div class="info">
-        <span>with special guests</span>
-        <span>the chords</span>
-      </div>
-      <div class="info">
-        <span>tuesday</span>
-        <span>june 5 1979 / 7:30 pm</span>
-      </div>
-    </header>
-    <canvas ref="canvas"></canvas>
-  </section>
+  <div class="poster_wrapper">
+    <section class="poster2">
+      <header ref="header">
+        <div class="info">
+          <span>straight music presents</span>
+          <span>the undertones</span>
+        </div>
+        <div class="info">
+          <span>victoria hall hanley</span>
+          <span>stroke-on-trent, england</span>
+        </div>
+        <div class="info">
+          <span>advance tickets: $3.00</span>
+          <span>at door: $4.50</span>
+        </div>
+        <div class="info">
+          <span>with special guests</span>
+          <span>the chords</span>
+        </div>
+        <div class="info">
+          <span>tuesday</span>
+          <span>june 5 1979 / 7:30 pm</span>
+        </div>
+      </header>
+      <canvas ref="canvas"></canvas>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -40,7 +42,7 @@ export default {
           intensity: 0,
           isFinished: false
         },
-        angle: Math.PI / 2 / 20,
+        angle: Math.PI / 2 / 15,
         rotatetionAngle: 0,
         shadows: {
           current: 1,

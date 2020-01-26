@@ -1,28 +1,30 @@
 <template>
-  <section ref="poster" class="poster3">
-    <section class="hero">
-      <span>ramones</span>
-      <span>ramones</span>
-      <span>ramones</span>
-      <span>ramones</span>
-      <span>ramones</span>
-      <span>ramones</span>
+  <div class="poster_wrapper">
+    <section ref="poster" class="poster3">
+      <section class="hero">
+        <span>ramones</span>
+        <span>ramones</span>
+        <span>ramones</span>
+        <span>ramones</span>
+        <span>ramones</span>
+        <span>ramones</span>
+      </section>
+      <header class="show">
+        <div class="info">
+          <span>straight music presents</span>
+          <span>the undertones</span>
+        </div>
+        <div class="info">
+          <span>victoria hall hanley</span>
+          <span>stroke-on-trent, england</span>
+        </div>
+        <div class="info">
+          <span>advance tickets: $3.00</span>
+          <span>at door: $4.50</span>
+        </div>
+      </header>
     </section>
-    <header class="show">
-      <div class="info">
-        <span>straight music presents</span>
-        <span>the undertones</span>
-      </div>
-      <div class="info">
-        <span>victoria hall hanley</span>
-        <span>stroke-on-trent, england</span>
-      </div>
-      <div class="info">
-        <span>advance tickets: $3.00</span>
-        <span>at door: $4.50</span>
-      </div>
-    </header>
-  </section>
+  </div>
 </template>
 
 <script>

@@ -1,5 +1,6 @@
 <template>
-  <section class="poster1">
+  <div class="poster_wrapper">
+    <section class="poster1">
       <header ref="header">
         <div class="info">
           <span>monday</span>
@@ -16,10 +17,13 @@
           <span>815 v street nw at 8th st.</span>
           <span>washington, dc</span>
         </div>
-        <h1><span>dead kennedys</span></h1>
+        <h1>
+          <span>dead kennedys</span>
+        </h1>
       </header>
       <canvas ref="canvas"></canvas>
     </section>
+  </div>
 </template>
 
 <script>
@@ -33,7 +37,7 @@ export default {
       position: [0, 0],
       r: 0,
       rHeight: 45,
-      angle: 2 * Math.PI / 18,
+      angle: (2 * Math.PI) / 18,
       color: ["#CF246C", "#DBB215", "#00A8A8"],
       rotatetionAngle: 0
     };
