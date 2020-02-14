@@ -1,13 +1,9 @@
 import './main.scss';
 
 import Vue from 'vue';
-import Slider from './Slider.vue';
+import App from '/components/App.vue';
 
 var app = new Vue({
-  data: {
-    sliderIndex: 0
-  },
-  components: {
-    Slider
-  }
-}).$mount("#app");
+  el: '#app',
+  render: h => h(App)
+});
