@@ -8,7 +8,7 @@ import Hero from './componnets/hero';
 import Utils from './componnets/utils';
 import Barrier from './componnets/barrier';
 import Collectables from './componnets/collectanbles';
-import { Sun } from './componnets/sun';
+import { Sun, Sky } from './componnets/sun';
 
 var scene, camera, renderer, domEl;
 
@@ -42,13 +42,16 @@ function handleResize() {
 
 // Objects
 var world, hero, spires, barrier, collectables;
-
+var sky;
 function createWorld() {
+  sky = new Sky(document.querySelector('.sky'));
+
   world = new World();
   scene.add(world.mesh);
 
-  const sun = new Sun();
+  const sun = new Sun(camera);
   scene.add(sun.mesh);
+  scene.add(sun.glowMesh);
 
   spires = new Spires();
   world.mesh.add(spires.mesh);
@@ -67,24 +70,24 @@ function createWorld() {
 }
 
 function createLights() {
-  const generalLight = new THREE.AmbientLight(0xFF26D4, .5);
+  const generalLight = new THREE.AmbientLight(0xFF26D4, 1);
   scene.add(generalLight);
 
   const dirLight = new THREE.DirectionalLight(0x0CFFFF, 2);
-  dirLight.position.set(200, 250, -500);
+  dirLight.position.set(200, 450, -600);
   dirLight.castShadow = true;
   // define the visible area of the projected shadow
-	dirLight.shadow.camera.left = -400;
-	dirLight.shadow.camera.right = 400;
-	dirLight.shadow.camera.top = 400;
-	dirLight.shadow.camera.bottom = -400;
-	dirLight.shadow.camera.near = 1;
-	dirLight.shadow.camera.far = 1000;
+  dirLight.shadow.camera.left = -400;
+  dirLight.shadow.camera.right = 400;
+  dirLight.shadow.camera.top = 400;
+  dirLight.shadow.camera.bottom = -400;
+  dirLight.shadow.camera.near = 1;
+  dirLight.shadow.camera.far = 1000;
 
-	// define the resolution of the shadow; the higher the better, 
-	// but also the more expensive and less performant
-	dirLight.shadow.mapSize.width = 2048;
-	dirLight.shadow.mapSize.height = 2048;
+  // define the resolution of the shadow; the higher the better, 
+  // but also the more expensive and less performant
+  dirLight.shadow.mapSize.width = 2048;
+  dirLight.shadow.mapSize.height = 2048;
   scene.add(dirLight);
 }
 
@@ -103,14 +106,14 @@ function init() {
 
     camera.position.z = 150 + 40 * normalizedPosition[0];
     speed = normalizedPosition[0];
-    
-    hero.move(event);
+
+    hero.move(normalizedPosition);
   });
 
   loop();
 }
 
-const interval = 1000/60;
+const interval = 1000 / 60;
 let then = Date.now();
 function loop() {
   requestAnimationFrame(loop);
@@ -133,17 +136,17 @@ window.onload = init.bind(this);
 
 function collect() {
   const ids = [];
-  for(let i = 0; i < collectables.total; i++) {
+  for (let i = 0; i < collectables.total; i++) {
     const part = collectables.mesh.children[i];
-    if(part) {
+    if (part) {
       console.log(hero.mesh.position.x, part.position.x);
       console.log(hero.mesh.position.y, part.position.y);
       console.log('--------------------------------------')
       // debugger;
-      if(part && Math.abs(hero.mesh.position.x - part.position.x) < 10 &&
+      if (part && Math.abs(hero.mesh.position.x - part.position.x) < 10 &&
         Math.abs(hero.mesh.position.y - part.position.y) < 10) {
-          ids.push(i);
-        }
+        ids.push(i);
+      }
     }
   }
 

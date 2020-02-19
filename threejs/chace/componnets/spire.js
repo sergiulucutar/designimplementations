@@ -4,6 +4,7 @@ import Utils from './utils';
 class Spire {
   constructor() {
     this.mesh = new THREE.Object3D();
+    this.mesh.castShadow = true;
 
     const partGeom = new THREE.BoxGeometry(10, 10, 10);
     const partMat = new THREE.MeshPhongMaterial({
@@ -14,7 +15,7 @@ class Spire {
       color: 0xDC493A
     })
 
-    const piecesCount = Utils.random(5, 15) 
+    const piecesCount = Utils.random(5, 15)
     for (let i = 0; i < piecesCount; i++) {
       const mat = i === 14 ? specialMat : partMat;
 
@@ -36,7 +37,7 @@ class Spire {
   }
 
   update() {
-    if(this.piecesCount > 13) {
+    if (this.piecesCount > 13) {
       this.mesh.children[this.piecesCount - 1].rotation.y += .1;
     }
   }
@@ -45,6 +46,7 @@ class Spire {
 export default class Spires {
   constructor() {
     this.mesh = new THREE.Object3D();
+    this.mesh.castShadow = true;
     this.spiresCount = 30;
     const height = 100;
 
@@ -66,7 +68,7 @@ export default class Spires {
     this.mesh.children.forEach(spire => {
       // debugger;
       const childCount = spire.children.length;
-      if(childCount > 13) {
+      if (childCount > 13) {
         spire.children[childCount - 1].rotation.y += .01;
         // spire.children[childCount - 1].position.y += Math.cos(spire.children[childCount - 1].position.y + 1);
       }

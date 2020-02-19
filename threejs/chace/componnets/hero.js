@@ -1,59 +1,38 @@
 import * as THREE from 'three';
 import Utils from './utils';
 
-class Aux {
-    static getAux() {
-        const mesh = new THREE.Group();
-
-        const mainGeo = new THREE.SphereGeometry(1.5, 10, 10);
-        const mainMat = new THREE.MeshPhongMaterial({color: 0xffffff, shininess:1});
-        const mainMesh = new THREE.Mesh(mainGeo, mainMat);
-
-        const partGeom =  new THREE.BoxGeometry(.2, 2, 5);
-        const partMesh = new THREE.Mesh(partGeom, mainMat);
-        partMesh.position.x = 2.5;
-        partMesh.rotation.y = 80;
-        partMesh.position.z = -.75;
-
-        mesh.add(mainMesh);
-        mesh.add(partMesh);
-
-        return mesh;
-    }
-}
-
 export default class Hero {
     constructor() {
         this.mesh = new THREE.Group();
 
         const geomMain = new THREE.SphereGeometry(3, 20, 20);
-        const matMain = new THREE.MeshPhongMaterial({color: 0x000000});
+        const matMain = new THREE.MeshPhongMaterial({ color: 0x000000 });
         const meshMain = new THREE.Mesh(geomMain, matMain);
         // this.createBoat();
         this.mesh.add(meshMain);
 
-        // auxs
-        const geomPart = new THREE.SphereBufferGeometry(1, 10, 10);
-        const matPart = new THREE.MeshPhongMaterial({color: 0xffffff, shininess: 1});
+        // // auxs
+        // const geomPart = new THREE.SphereBufferGeometry(1, 10, 10);
+        // const matPart = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 1 });
 
-        const aux1Mesh = new THREE.Mesh(geomPart, matPart);
-        const aux2Mesh = new THREE.Mesh(geomPart, matPart);
+        // const aux1Mesh = new THREE.Mesh(geomPart, matPart);
+        // const aux2Mesh = new THREE.Mesh(geomPart, matPart);
 
+        // // this.mesh.add(aux1Mesh);
         // this.mesh.add(aux1Mesh);
-        this.mesh.add(aux1Mesh);
-        this.mesh.add(aux2Mesh);
+        // this.mesh.add(aux2Mesh);
 
-        this.auxDistance = 5;
+        // this.auxDistance = 5;
 
-        this.mesh.children[1].position.x += 5;
-        this.mesh.children[2].position.x += 5;
-        this.mesh.children[1].position.y -= 2;
-        this.mesh.children[2].position.y -= 2;
-        this.mesh.children[1].position.z -= this.auxDistance;
-        this.mesh.children[2].position.z += this.auxDistance;
+        // this.mesh.children[1].position.x += 5;
+        // this.mesh.children[2].position.x += 5;
+        // this.mesh.children[1].position.y -= 2;
+        // this.mesh.children[2].position.y -= 2;
+        // this.mesh.children[1].position.z -= this.auxDistance;
+        // this.mesh.children[2].position.z += this.auxDistance;
 
         // Mesh positioning
-        const angle = Math.PI / 2 - Math.PI /2 * .2;
+        const angle = Math.PI / 2 - Math.PI / 2 * .2;
 
         this.mesh.position.x = Math.cos(angle) * 100;
         this.mesh.position.y = Math.sin(angle) * 100;
@@ -78,7 +57,7 @@ export default class Hero {
     //     // this.mesh.position.x = Math.cos(angle) * height;
     //     // this.mesh.position.y = Math.sin(angle) * height;
     //     // this.mesh.position.z = 75 * normalizeY;
-        
+
     //     // this.mesh.rotation.z = angle + Math.PI / 2;
     //     // this.mesh.rotation.x = normalizeY -.5 * (1 - normalizeY);
 
@@ -87,25 +66,25 @@ export default class Hero {
     //     this.mesh.children[2].position.z = 5 - this.auxDistance;
     // }
 
-    move(x, y) {
-        this.mesh.position.x = normalize(x, -1, 1, -100, 100);
-        this.mesh.position.y = normalize(y, -1, 1, 25, 175);
+    move(normalizeCoords) {
+        this.mesh.position.x = normalize(normalizeCoords[0], -1, 1, -100, 100);
+        this.mesh.position.y = normalize(normalizeCoords[1], -1, 1, 80, 140);
     }
 
     update() {
-        
+
     }
 
-    
+
 }
 
-function normalize(v,vmin,vmax,tmin, tmax){
+function normalize(v, vmin, vmax, tmin, tmax) {
 
-	var nv = Math.max(Math.min(v,vmax), vmin);
-	var dv = vmax-vmin;
-	var pc = (nv-vmin)/dv;
-	var dt = tmax-tmin;
-	var tv = tmin + (pc*dt);
-	return tv;
+    var nv = Math.max(Math.min(v, vmax), vmin);
+    var dv = vmax - vmin;
+    var pc = (nv - vmin) / dv;
+    var dt = tmax - tmin;
+    var tv = tmin + (pc * dt);
+    return tv;
 
 }
