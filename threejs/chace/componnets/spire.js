@@ -7,7 +7,7 @@ class Spire {
 
     const partGeom = new THREE.BoxGeometry(10, 10, 10);
     const partMat = new THREE.MeshPhongMaterial({
-      color: 0xFFFFFF
+      color: 0x434343
     });
 
     const specialMat = new THREE.MeshPhongMaterial({
@@ -45,7 +45,7 @@ class Spire {
 export default class Spires {
   constructor() {
     this.mesh = new THREE.Object3D();
-    this.spiresCount = 50;
+    this.spiresCount = 30;
     const height = 100;
 
     const angle = Math.PI * 2 / this.spiresCount;

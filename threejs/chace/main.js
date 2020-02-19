@@ -8,6 +8,7 @@ import Hero from './componnets/hero';
 import Utils from './componnets/utils';
 import Barrier from './componnets/barrier';
 import Collectables from './componnets/collectanbles';
+import { Sun } from './componnets/sun';
 
 var scene, camera, renderer, domEl;
 
@@ -15,7 +16,7 @@ function createScene() {
   domEl = document.querySelector('main');
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0xd6eae6, 10,350);
+  // scene.fog = new THREE.Fog(0x000000, 10,350);
 
   camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2000);
   camera.position.x = 0;
@@ -46,29 +47,31 @@ function createWorld() {
   world = new World();
   scene.add(world.mesh);
 
+  const sun = new Sun();
+  scene.add(sun.mesh);
+
   spires = new Spires();
-  // scene.add(spires.mesh);
   world.mesh.add(spires.mesh);
 
-  barrier = new Barrier();
-  world.mesh.add(barrier.mesh);
+  // barrier = new Barrier();
+  // world.mesh.add(barrier.mesh);
 
   hero = new Hero();
   scene.add(hero.mesh);
 
-  collectables = new Collectables();
-  world.mesh.add(collectables.mesh);
+  // collectables = new Collectables();
+  // world.mesh.add(collectables.mesh);
 
   // const enemy = new Enemy();
   // scene.add(enemy.mesh);
 }
 
 function createLights() {
-  const generalLight = new THREE.AmbientLight(0xffffff, .5);
+  const generalLight = new THREE.AmbientLight(0xFF26D4, .5);
   scene.add(generalLight);
 
-  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-  dirLight.position.set(20, 40, 20);
+  const dirLight = new THREE.DirectionalLight(0x0CFFFF, 2);
+  dirLight.position.set(200, 250, -500);
   dirLight.castShadow = true;
   // define the visible area of the projected shadow
 	dirLight.shadow.camera.left = -400;

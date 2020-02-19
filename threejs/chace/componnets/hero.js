@@ -27,7 +27,7 @@ export default class Hero {
         this.mesh = new THREE.Group();
 
         const geomMain = new THREE.SphereGeometry(3, 20, 20);
-        const matMain = new THREE.MeshPhongMaterial({color: 0xffffff});
+        const matMain = new THREE.MeshPhongMaterial({color: 0x000000});
         const meshMain = new THREE.Mesh(geomMain, matMain);
         // this.createBoat();
         this.mesh.add(meshMain);
@@ -65,29 +65,47 @@ export default class Hero {
         this.mesh.receiveShadow = true;
     }
 
-    move(event) {
-        this.tagret = [event.clientX, event.clientY];
-        const normalizedTarget = Utils.normalizeMousePosition(this.tagret);
+    // move(event) {
+    //     this.tagret = [event.clientX, event.clientY];
+    //     const normalizedTarget = Utils.normalizeMousePosition(this.tagret);
 
-        const normalizeY = event.clientY / window.innerHeight;
+    //     const normalizeY = event.clientY / window.innerHeight;
 
-        const angle = Math.PI / 2 - Math.PI /2 * (.2 * normalizedTarget[0]);
-        // const height = 100 + this.tagret[1] * 25 > 110 ? 110 : 100 + this.tagret[1] * 25;
-        const height = Math.min(105 + normalizedTarget[1] * 25, 105)
+    //     // const angle = Math.PI / 2 - Math.PI /2 * (.2 * normalizedTarget[0]);
+    //     // const height = 100 + this.tagret[1] * 25 > 110 ? 110 : 100 + this.tagret[1] * 25;
+    //     const height = Math.min(105 + normalizedTarget[1] * 25, 105)
 
-        this.mesh.position.x = Math.cos(angle) * height;
-        this.mesh.position.y = Math.sin(angle) * height;
-        this.mesh.position.z = 75 * normalizeY;
+    //     // this.mesh.position.x = Math.cos(angle) * height;
+    //     // this.mesh.position.y = Math.sin(angle) * height;
+    //     // this.mesh.position.z = 75 * normalizeY;
         
-        this.mesh.rotation.z = angle + Math.PI / 2;
-        this.mesh.rotation.x = normalizeY -.5 * (1 - normalizeY);
+    //     // this.mesh.rotation.z = angle + Math.PI / 2;
+    //     // this.mesh.rotation.x = normalizeY -.5 * (1 - normalizeY);
 
-        this.auxDistance = normalizedTarget[0] * 4;
-        this.mesh.children[1].position.z = -5 + this.auxDistance;
-        this.mesh.children[2].position.z = 5 - this.auxDistance;
+    //     this.auxDistance = normalizedTarget[0] * 4;
+    //     this.mesh.children[1].position.z = -5 + this.auxDistance;
+    //     this.mesh.children[2].position.z = 5 - this.auxDistance;
+    // }
+
+    move(x, y) {
+        this.mesh.position.x = normalize(x, -1, 1, -100, 100);
+        this.mesh.position.y = normalize(y, -1, 1, 25, 175);
     }
 
     update() {
         
     }
+
+    
+}
+
+function normalize(v,vmin,vmax,tmin, tmax){
+
+	var nv = Math.max(Math.min(v,vmax), vmin);
+	var dv = vmax-vmin;
+	var pc = (nv-vmin)/dv;
+	var dt = tmax-tmin;
+	var tv = tmin + (pc*dt);
+	return tv;
+
 }
