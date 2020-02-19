@@ -32,13 +32,13 @@ export default class Hero {
         // this.mesh.children[2].position.z += this.auxDistance;
 
         // Mesh positioning
-        const angle = Math.PI / 2 - Math.PI / 2 * .2;
+        // const angle = Math.PI / 2 - Math.PI / 2 * .2;
 
-        this.mesh.position.x = Math.cos(angle) * 100;
-        this.mesh.position.y = Math.sin(angle) * 100;
-        this.mesh.rotation.z = angle;
+        // this.mesh.position.x = Math.cos(angle) * 100;
+        // this.mesh.position.y = Math.sin(angle) * 100;
+        // this.mesh.rotation.z = angle;
 
-        this.mesh.position.z = 50;
+        this.mesh.position.z = 60;
 
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
@@ -67,14 +67,15 @@ export default class Hero {
     // }
 
     move(normalizeCoords) {
-        this.mesh.position.x = normalize(normalizeCoords[0], -1, 1, -100, 100);
+        this.mesh.position.x = normalize(normalizeCoords[0], -1, 1, -100 + this.mesh.position.z, 100 - this.mesh.position.z);
         this.mesh.position.y = normalize(normalizeCoords[1], -1, 1, 80, 140);
+
+        console.log(this.mesh.position.x);
     }
 
     update() {
 
     }
-
 
 }
 

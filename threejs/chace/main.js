@@ -16,12 +16,12 @@ function createScene() {
   domEl = document.querySelector('main');
 
   scene = new THREE.Scene();
-  // scene.fog = new THREE.Fog(0x000000, 10,350);
+  scene.fog = new THREE.Fog(0x0CFFFF, 1,1000);
 
   camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2000);
   camera.position.x = 0;
   camera.position.y = 100;
-  camera.position.z = 220;
+  camera.position.z = 200;
 
   renderer = new THREE.WebGLRenderer({
     alpha: true,
@@ -46,12 +46,13 @@ var sky;
 function createWorld() {
   sky = new Sky(document.querySelector('.sky'));
 
-  world = new World();
+  world = new World(camera);
   scene.add(world.mesh);
+  // scene.add(world.glowMesh);
 
   const sun = new Sun(camera);
   scene.add(sun.mesh);
-  scene.add(sun.glowMesh);
+  // scene.add(sun.glowMesh);
 
   spires = new Spires();
   world.mesh.add(spires.mesh);
@@ -122,7 +123,7 @@ function loop() {
   const delta = now - then;
   if (delta > interval) {
     then = now - (delta % interval);
-    world.mesh.rotation.z += .008 + .003 * speed;
+    world.mesh.rotation.z += .005 + .003 * speed;
     // collect();
     spires.update();
     hero.update();
@@ -134,23 +135,23 @@ function loop() {
 window.onload = init.bind(this);
 
 
-function collect() {
-  const ids = [];
-  for (let i = 0; i < collectables.total; i++) {
-    const part = collectables.mesh.children[i];
-    if (part) {
-      console.log(hero.mesh.position.x, part.position.x);
-      console.log(hero.mesh.position.y, part.position.y);
-      console.log('--------------------------------------')
-      // debugger;
-      if (part && Math.abs(hero.mesh.position.x - part.position.x) < 10 &&
-        Math.abs(hero.mesh.position.y - part.position.y) < 10) {
-        ids.push(i);
-      }
-    }
-  }
+// function collect() {
+//   const ids = [];
+//   for (let i = 0; i < collectables.total; i++) {
+//     const part = collectables.mesh.children[i];
+//     if (part) {
+//       console.log(hero.mesh.position.x, part.position.x);
+//       console.log(hero.mesh.position.y, part.position.y);
+//       console.log('--------------------------------------')
+//       // debugger;
+//       if (part && Math.abs(hero.mesh.position.x - part.position.x) < 10 &&
+//         Math.abs(hero.mesh.position.y - part.position.y) < 10) {
+//         ids.push(i);
+//       }
+//     }
+//   }
 
-  ids.forEach(id => {
-    collectables.mesh.remove(collectables.mesh.children[id]);
-  })
-}
+//   ids.forEach(id => {
+//     collectables.mesh.remove(collectables.mesh.children[id]);
+//   })
+// }
