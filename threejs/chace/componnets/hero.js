@@ -5,66 +5,53 @@ export default class Hero {
     constructor() {
         this.mesh = new THREE.Group();
 
-        const geomMain = new THREE.SphereGeometry(3, 20, 20);
-        const matMain = new THREE.MeshPhongMaterial({ color: 0x000000 });
+        const matMain = new THREE.MeshStandardMaterial({ color: 0x434343, metalness: 0.5, roughness: 0.5 });
+
+        // Geoms
+        const geomMain = new THREE.CylinderGeometry(3, 3, 5, 8);
+
+        //Geom Tip
+        const geomTip1 = new THREE.CylinderGeometry(3, 2.5, 2, 8);
+        const geomTip2 = new THREE.CylinderGeometry(2.5, 1.5, 2, 8);
+        const geomTip3 = new THREE.CylinderGeometry(1.5, 0, 2, 8);
+
+        //Game Tail
+        const geomTail = new THREE.CylinderGeometry(1.5, 1.5, 2, 8);
+
+        //Mesh
         const meshMain = new THREE.Mesh(geomMain, matMain);
-        // this.createBoat();
+
+        const meshTip1 = new THREE.Mesh(geomTip1, matMain);
+        const meshTip2 = new THREE.Mesh(geomTip2, matMain);
+        const meshTip3 = new THREE.Mesh(geomTip3, matMain);
+
+        const tailMesh = new THREE.Mesh(geomTail, matMain);
+
+        meshTip1.position.y = -3;
+        meshTip2.position.y = -5;
+        meshTip3.position.y = -7;
+
+        tailMesh.position.y = 2;
+
         this.mesh.add(meshMain);
+        this.mesh.add(meshTip1);
+        this.mesh.add(meshTip2);
+        this.mesh.add(meshTip3);
 
-        // // auxs
-        // const geomPart = new THREE.SphereBufferGeometry(1, 10, 10);
-        // const matPart = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 1 });
-
-        // const aux1Mesh = new THREE.Mesh(geomPart, matPart);
-        // const aux2Mesh = new THREE.Mesh(geomPart, matPart);
-
-        // // this.mesh.add(aux1Mesh);
-        // this.mesh.add(aux1Mesh);
-        // this.mesh.add(aux2Mesh);
-
-        // this.auxDistance = 5;
-
-        // this.mesh.children[1].position.x += 5;
-        // this.mesh.children[2].position.x += 5;
-        // this.mesh.children[1].position.y -= 2;
-        // this.mesh.children[2].position.y -= 2;
-        // this.mesh.children[1].position.z -= this.auxDistance;
-        // this.mesh.children[2].position.z += this.auxDistance;
+        this.mesh.add(tailMesh);
 
         // Mesh positioning
         const angle = Math.PI / 2 - Math.PI / 2 * .2;
 
         this.mesh.position.x = Math.cos(angle) * 100;
         this.mesh.position.y = Math.sin(angle) * 100;
-        this.mesh.rotation.z = angle;
+        this.mesh.rotation.z = Math.PI / 2;
 
         this.mesh.position.z = 50;
 
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
     }
-
-    // move(event) {
-    //     this.tagret = [event.clientX, event.clientY];
-    //     const normalizedTarget = Utils.normalizeMousePosition(this.tagret);
-
-    //     const normalizeY = event.clientY / window.innerHeight;
-
-    //     // const angle = Math.PI / 2 - Math.PI /2 * (.2 * normalizedTarget[0]);
-    //     // const height = 100 + this.tagret[1] * 25 > 110 ? 110 : 100 + this.tagret[1] * 25;
-    //     const height = Math.min(105 + normalizedTarget[1] * 25, 105)
-
-    //     // this.mesh.position.x = Math.cos(angle) * height;
-    //     // this.mesh.position.y = Math.sin(angle) * height;
-    //     // this.mesh.position.z = 75 * normalizeY;
-
-    //     // this.mesh.rotation.z = angle + Math.PI / 2;
-    //     // this.mesh.rotation.x = normalizeY -.5 * (1 - normalizeY);
-
-    //     this.auxDistance = normalizedTarget[0] * 4;
-    //     this.mesh.children[1].position.z = -5 + this.auxDistance;
-    //     this.mesh.children[2].position.z = 5 - this.auxDistance;
-    // }
 
     move(normalizeCoords) {
         this.mesh.position.x = normalize(normalizeCoords[0], -1, 1, -100, 100);
