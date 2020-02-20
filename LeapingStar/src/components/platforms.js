@@ -153,7 +153,7 @@ export class ShootingPlatform extends Platform {
   constructor(ctx, position) {
     super(ctx, position);
 
-    this.c_light = 50;
+    this.c_light = 0;
   }
 }
 

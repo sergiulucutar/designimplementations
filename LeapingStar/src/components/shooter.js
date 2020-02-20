@@ -127,8 +127,8 @@ export default class Shooter {
     if (!this.isShooting) {
       return;
     }
-    this.ctx.strokeStyle = "red";
-    this.ctx.fillStyle = "red";
+    this.ctx.strokeStyle = "black";
+    this.ctx.fillStyle = "black";
     for (let enemy of this.enemies) {
       if (enemy.alive) {
         enemy.draw(this.ctx);

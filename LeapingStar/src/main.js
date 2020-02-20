@@ -217,7 +217,7 @@ class Game {
 var game = new Game(canvas, ctx);
 game.resize();
 
-const interval = 1000 / 60;
+const interval = 1000 / 90;
 let then = Date.now();
 let now;
 let delta;
