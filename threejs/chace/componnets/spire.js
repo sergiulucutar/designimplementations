@@ -20,7 +20,6 @@ class Spire {
       const mat = i === 14 ? specialMat : partMat;
 
       const tempMesh = new THREE.Mesh(partGeom, mat);
-      // tempMesh.scale.set(1 / i, 1 / i, 1 / i);
       tempMesh.scale.set(1 - i * .06, 1 - i * .06, 1 - i * .06);
       tempMesh.position.z = -i * 5;
       tempMesh.rotation.x = Math.random() * Math.PI * 2;
@@ -48,22 +47,11 @@ export default class Spires {
     this.mesh = new THREE.Object3D();
     this.mesh.castShadow = true;
     this.spiresCount = 30;
-    // const height = 80;
-
-    // const stepAngle = Math.PI * 2 / this.spiresCount;
 
     for (let i = 0; i < this.spiresCount; i++) {
       const spire = new Spire();
-      // const a = stepAngle * i;
-      // spire.mesh.position.x = Math.cos(a) * height;
-      // spire.mesh.position.y = Math.sin(a) * height;
-      // spire.mesh.position.z = 20 + -1 * Math.random() * 150;
-      // spire.mesh.rotation.z = a - Math.PI / 2;
-
-
       const pos = Utils.getPositionOnSphere(150);
       spire.mesh.position.set(pos[0], pos[1], pos[2]);
-      // spire.mesh.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI));
       spire.mesh.lookAt(0, 0, 0);
 
       this.mesh.add(spire.mesh);
