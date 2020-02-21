@@ -5,7 +5,7 @@ export default class Enemy {
         this.mesh = new THREE.Group();
 
         this.geom = new THREE.BoxGeometry(8, 8, 8);
-        this.mat = new THREE.MeshPhongMaterial({color: 0x000033});
+        this.mat = new THREE.MeshPhongMaterial({ color: 0x000033 });
         this.mesh = new THREE.Mesh(this.geom, this.mat);
 
         // this.mesh.position.x = Math.cos(-Math.PI / 2) * 100;
@@ -17,9 +17,6 @@ export default class Enemy {
         this.mesh.position.y = Math.sin(90) * 100;
         this.mesh.rotation.x = 10 - Math.PI / 2;
         this.mesh.rotation.z = -30 - Math.PI / 2;
-
-        console.log(this.mesh.position);
-        
 
         this.mesh.position.z = 50;
     }

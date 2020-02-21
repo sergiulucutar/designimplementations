@@ -16,12 +16,12 @@ function createScene() {
   domEl = document.querySelector('main');
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x0CFFFF, 1,1000);
+  scene.fog = new THREE.Fog(0x0CFFFF, 1, 1000);
 
   camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2000);
   camera.position.x = 0;
-  camera.position.y = 100;
-  camera.position.z = 200;
+  camera.position.y = 0;
+  camera.position.z = 300;
 
   renderer = new THREE.WebGLRenderer({
     alpha: true,
@@ -48,34 +48,20 @@ function createWorld() {
 
   world = new World(camera);
   scene.add(world.mesh);
-  // scene.add(world.glowMesh);
-
-  const sun = new Sun(camera);
-  scene.add(sun.mesh);
-  // scene.add(sun.glowMesh);
 
   spires = new Spires();
   world.mesh.add(spires.mesh);
 
-  // barrier = new Barrier();
-  // world.mesh.add(barrier.mesh);
-
   hero = new Hero();
   scene.add(hero.mesh);
-
-  // collectables = new Collectables();
-  // world.mesh.add(collectables.mesh);
-
-  // const enemy = new Enemy();
-  // scene.add(enemy.mesh);
 }
 
 function createLights() {
-  const generalLight = new THREE.AmbientLight(0xFF26D4, 1);
+  const generalLight = new THREE.AmbientLight(0xffffff, 1);
   scene.add(generalLight);
 
-  const dirLight = new THREE.DirectionalLight(0x0CFFFF, 2);
-  dirLight.position.set(200, 450, -600);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+  dirLight.position.set(100, 450, 100);
   dirLight.castShadow = true;
   // define the visible area of the projected shadow
   dirLight.shadow.camera.left = -400;
@@ -105,7 +91,7 @@ function init() {
   document.addEventListener('mousemove', event => {
     const normalizedPosition = Utils.normalizeMousePosition([event.clientX, event.clientY]);
 
-    camera.position.z = 150 + 40 * normalizedPosition[0];
+    // camera.position.z = 150 + 40 * normalizedPosition[0];
     speed = normalizedPosition[0];
 
     hero.move(normalizedPosition);
@@ -123,7 +109,7 @@ function loop() {
   const delta = now - then;
   if (delta > interval) {
     then = now - (delta % interval);
-    world.mesh.rotation.z += .005 + .003 * speed;
+    world.mesh.rotation.y += .005 + .003 * speed;
     // collect();
     spires.update();
     hero.update();
@@ -133,25 +119,3 @@ function loop() {
 }
 
 window.onload = init.bind(this);
-
-
-// function collect() {
-//   const ids = [];
-//   for (let i = 0; i < collectables.total; i++) {
-//     const part = collectables.mesh.children[i];
-//     if (part) {
-//       console.log(hero.mesh.position.x, part.position.x);
-//       console.log(hero.mesh.position.y, part.position.y);
-//       console.log('--------------------------------------')
-//       // debugger;
-//       if (part && Math.abs(hero.mesh.position.x - part.position.x) < 10 &&
-//         Math.abs(hero.mesh.position.y - part.position.y) < 10) {
-//         ids.push(i);
-//       }
-//     }
-//   }
-
-//   ids.forEach(id => {
-//     collectables.mesh.remove(collectables.mesh.children[id]);
-//   })
-// }

@@ -56,8 +56,6 @@ export default class Hero {
     move(normalizeCoords) {
         this.mesh.position.x = normalize(normalizeCoords[0], -1, 1, -100 + this.mesh.position.z, 100 - this.mesh.position.z);
         this.mesh.position.y = normalize(normalizeCoords[1], -1, 1, 80, 140);
-
-        console.log(this.mesh.position.x);
     }
 
     update() {

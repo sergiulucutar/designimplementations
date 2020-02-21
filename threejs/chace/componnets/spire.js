@@ -22,7 +22,7 @@ class Spire {
       const tempMesh = new THREE.Mesh(partGeom, mat);
       // tempMesh.scale.set(1 / i, 1 / i, 1 / i);
       tempMesh.scale.set(1 - i * .06, 1 - i * .06, 1 - i * .06);
-      tempMesh.position.y = i * 5;
+      tempMesh.position.z = -i * 5;
       tempMesh.rotation.x = Math.random() * Math.PI * 2;
       tempMesh.rotation.z = Math.random() * Math.PI * 2;
 
@@ -48,16 +48,24 @@ export default class Spires {
     this.mesh = new THREE.Object3D();
     this.mesh.castShadow = true;
     this.spiresCount = 30;
-    const height = 100;
+    const height = 80;
 
-    const angle = Math.PI * 2 / this.spiresCount;
+    const stepAngle = Math.PI * 2 / this.spiresCount;
+
     for (let i = 0; i < this.spiresCount; i++) {
       const spire = new Spire();
-      const a = angle * i;
-      spire.mesh.position.x = Math.cos(a) * height;
-      spire.mesh.position.y = Math.sin(a) * height;
-      spire.mesh.position.z = 20 + -1 * Math.random() * 150;
-      spire.mesh.rotation.z = a - Math.PI / 2;
+      // const a = stepAngle * i;
+      // spire.mesh.position.x = Math.cos(a) * height;
+      // spire.mesh.position.y = Math.sin(a) * height;
+      // spire.mesh.position.z = 20 + -1 * Math.random() * 150;
+      // spire.mesh.rotation.z = a - Math.PI / 2;
+
+
+      const pos = this.getPositionOnSphere();
+      spire.mesh.position.set(pos[0], pos[1], pos[2]);
+      // spire.mesh.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI));
+      spire.mesh.lookAt(0, 0, 0);
+
       this.mesh.add(spire.mesh);
     }
 
@@ -66,13 +74,20 @@ export default class Spires {
 
   update() {
     this.mesh.children.forEach(spire => {
-      // debugger;
       const childCount = spire.children.length;
       if (childCount > 13) {
         spire.children[childCount - 1].rotation.y += .01;
-        // spire.children[childCount - 1].position.y += Math.cos(spire.children[childCount - 1].position.y + 1);
       }
-      // spire.update();
-    })
+    });
+  }
+
+  getPositionOnSphere() {
+    const theta = 2 * Math.PI * Math.random();
+    const phi = Math.acos(2 * Math.random() - 1);
+    return [
+      150 * Math.sin(phi) * Math.cos(theta),
+      150 * Math.sin(phi) * Math.sin(theta),
+      150 * Math.cos(phi)
+    ];
   }
 }
