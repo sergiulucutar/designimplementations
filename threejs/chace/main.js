@@ -9,6 +9,7 @@ import Utils from './componnets/utils';
 import Barrier from './componnets/barrier';
 import Collectables from './componnets/collectanbles';
 import { Sun, Sky } from './componnets/sun';
+import { Clouds } from './componnets/clouds';
 
 var scene, camera, renderer, domEl;
 
@@ -21,7 +22,7 @@ function createScene() {
   camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2000);
   camera.position.x = 0;
   camera.position.y = 0;
-  camera.position.z = 300;
+  camera.position.z = 400;
 
   renderer = new THREE.WebGLRenderer({
     alpha: true,
@@ -42,7 +43,7 @@ function handleResize() {
 
 // Objects
 var world, hero, spires, barrier, collectables;
-var sky;
+var sky, clouds;
 function createWorld() {
   sky = new Sky(document.querySelector('.sky'));
 
@@ -51,6 +52,9 @@ function createWorld() {
 
   spires = new Spires();
   world.mesh.add(spires.mesh);
+
+  clouds = new Clouds();
+  world.mesh.add(clouds.mesh);
 
   hero = new Hero();
   scene.add(hero.mesh);
@@ -109,9 +113,9 @@ function loop() {
   const delta = now - then;
   if (delta > interval) {
     then = now - (delta % interval);
-    world.mesh.rotation.y += .005 + .003 * speed;
+    world.mesh.rotation.y -= .005 + .003 * speed;
     // collect();
-    spires.update();
+    // spires.update();
     hero.update();
 
     renderer.render(scene, camera);

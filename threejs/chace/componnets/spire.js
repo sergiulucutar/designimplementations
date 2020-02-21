@@ -8,7 +8,7 @@ class Spire {
 
     const partGeom = new THREE.BoxGeometry(10, 10, 10);
     const partMat = new THREE.MeshPhongMaterial({
-      color: 0x434343
+      color: 0xAB5C0F
     });
 
     const specialMat = new THREE.MeshPhongMaterial({
@@ -48,9 +48,9 @@ export default class Spires {
     this.mesh = new THREE.Object3D();
     this.mesh.castShadow = true;
     this.spiresCount = 30;
-    const height = 80;
+    // const height = 80;
 
-    const stepAngle = Math.PI * 2 / this.spiresCount;
+    // const stepAngle = Math.PI * 2 / this.spiresCount;
 
     for (let i = 0; i < this.spiresCount; i++) {
       const spire = new Spire();
@@ -61,7 +61,7 @@ export default class Spires {
       // spire.mesh.rotation.z = a - Math.PI / 2;
 
 
-      const pos = this.getPositionOnSphere();
+      const pos = Utils.getPositionOnSphere(150);
       spire.mesh.position.set(pos[0], pos[1], pos[2]);
       // spire.mesh.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI));
       spire.mesh.lookAt(0, 0, 0);
@@ -79,15 +79,5 @@ export default class Spires {
         spire.children[childCount - 1].rotation.y += .01;
       }
     });
-  }
-
-  getPositionOnSphere() {
-    const theta = 2 * Math.PI * Math.random();
-    const phi = Math.acos(2 * Math.random() - 1);
-    return [
-      150 * Math.sin(phi) * Math.cos(theta),
-      150 * Math.sin(phi) * Math.sin(theta),
-      150 * Math.cos(phi)
-    ];
   }
 }
