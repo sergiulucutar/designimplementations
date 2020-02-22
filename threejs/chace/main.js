@@ -58,6 +58,9 @@ function createWorld() {
 
   hero = new Hero();
   scene.add(hero.mesh);
+
+  collectables = new Collectables();
+  world.mesh.add(collectables.mesh);
 }
 
 function createLights() {

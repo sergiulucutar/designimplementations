@@ -9,37 +9,62 @@ export default class Hero {
 
     const matRed = new THREE.MeshStandardMaterial({ color: 0xBB2A27, metalness: 0.5, roughness: 0.5 });
     const matWhite = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.5, roughness: 0.5 });
+    const matBrown = new THREE.MeshStandardMaterial({ color: 0x554E44, metalness: 0.5, roughness: 0.5 });
+    const matGrey = new THREE.MeshStandardMaterial({ color: 0x7F939C, metalness: 0.5, roughness: 0.5 });
 
     //Geoms
-    const geomMain = new THREE.CylinderGeometry(3, 3, 5, 8);
+    const geomMain = new THREE.CylinderGeometry(3, 3, 5, 10);
+    const geomRing = new THREE.CylinderGeometry(3, 3, 1, 10);
 
     //Geom Tip
-    const geomTip1 = new THREE.CylinderGeometry(3, 2.5, 2, 8);
-    const geomTip2 = new THREE.CylinderGeometry(2.5, 1.5, 2, 8);
-    const geomTip3 = new THREE.CylinderGeometry(1.5, 0, 2, 8);
+    const geomTip1 = new THREE.CylinderGeometry(3, 2.5, 3, 10);
+    const geomTip2 = new THREE.CylinderGeometry(2.5, 1.5, 2, 10);
+    const geomTip3 = new THREE.CylinderGeometry(1.5, 0.5, 1, 10);
+    // const geomTip2 = new THREE.SphereGeometry(2., 10, 10);
+
+    const geomBack1 = new THREE.CylinderGeometry(2.5, 3, 4, 10);
+    const geomBack2 = new THREE.CylinderGeometry(2, 2.4, 2, 10);
 
     //Geom Tail
-    const geomTail = new THREE.CylinderGeometry(1.5, 1.5, 2, 8);
+    const geomTail = new THREE.CylinderGeometry(1.5, 1.5, 1, 10);
 
     //Mesh
-    const meshMain = new THREE.Mesh(geomMain, matWhite);
+    const meshMain = new THREE.Mesh(geomMain, matBrown);
+
+    const meshRing1 = new THREE.Mesh(geomRing, matWhite);
+    const meshRing2 = new THREE.Mesh(geomRing, matWhite);
 
     const meshTip1 = new THREE.Mesh(geomTip1, matRed);
     const meshTip2 = new THREE.Mesh(geomTip2, matRed);
     const meshTip3 = new THREE.Mesh(geomTip3, matRed);
 
-    const tailMesh = new THREE.Mesh(geomTail, matRed);
+    const meshBack1 = new THREE.Mesh(geomBack1, matRed);
+    const meshBack2 = new THREE.Mesh(geomBack2, matRed);
 
-    meshTip1.position.y = -3;
-    meshTip2.position.y = -5;
-    meshTip3.position.y = -7;
+    const tailMesh = new THREE.Mesh(geomTail, matGrey);
 
-    tailMesh.position.y = 2;
+    meshRing1.position.y = -3;
+    meshRing2.position.y = 3;
+
+    meshTip1.position.y = -5;
+    meshTip2.position.y = -7.5;
+    meshTip3.position.y = -9;
+
+    meshBack1.position.y = 5;
+    meshBack2.position.y = 8;
+
+    tailMesh.position.y = 9;
 
     this.mesh.add(meshMain);
+    this.mesh.add(meshRing1);
+    this.mesh.add(meshRing2);
+
     this.mesh.add(meshTip1);
     this.mesh.add(meshTip2);
     this.mesh.add(meshTip3);
+
+    this.mesh.add(meshBack1);
+    this.mesh.add(meshBack2);
 
     this.mesh.add(tailMesh);
 
@@ -56,8 +81,14 @@ export default class Hero {
   }
 
   update() {
-    this.mesh.position.x = normalize(this.position[0], -1, 1, -100, 100);
-    this.mesh.position.y = normalize(this.position[1], -1, 1, -50, 50);
+    const targetX = normalize(this.position[0], -1, 1, -100, 100);
+    const targetY = normalize(this.position[1], -1, 1, -50, 50);
+
+    this.mesh.position.x = targetX;
+    this.mesh.position.y += (targetY- this.mesh.position.y)*0.1;
+    
+    this.mesh.rotation.z = Math.PI / 2 + (targetY - this.mesh.position.y)*0.0128;
+	this.mesh.rotation.x = (this.mesh.position.y - targetY)*0.0064;
   }
 }
 
