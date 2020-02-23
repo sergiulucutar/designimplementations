@@ -17,6 +17,7 @@
     "sass": "^1.22.9"
   },
   "dependencies": {
+    "cannon": "^0.6.2",
     "three": "^0.109.0"
   }
 }

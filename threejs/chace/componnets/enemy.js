@@ -1,23 +1,51 @@
 import * as THREE from 'three';
 
-export default class Enemy {
-    constructor() {
-        this.mesh = new THREE.Group();
+const geom = new THREE.TetrahedronGeometry(5, 0);
+const mat = new THREE.MeshBasicMaterial({
+  color: 0xBB2A27
+});
 
-        this.geom = new THREE.BoxGeometry(8, 8, 8);
-        this.mat = new THREE.MeshPhongMaterial({ color: 0x000033 });
-        this.mesh = new THREE.Mesh(this.geom, this.mat);
+class Enemy {
 
-        // this.mesh.position.x = Math.cos(-Math.PI / 2) * 100;
-        // this.mesh.position.y = Math.sin(-Math.PI / 2) * 100;
-        // this.mesh.position.y = 90; 
-        // this.mesh.position.x = 10;
-
-        this.mesh.position.x = -30
-        this.mesh.position.y = Math.sin(90) * 100;
-        this.mesh.rotation.x = 10 - Math.PI / 2;
-        this.mesh.rotation.z = -30 - Math.PI / 2;
-
-        this.mesh.position.z = 50;
-    }
+  constructor() {
+    this.mesh = new THREE.Mesh(geom, mat);
+  }
 }
+
+export default class Enemies {
+    constructor() {
+      this.mesh = new THREE.Object3D();
+      this.height = 250;
+      this.mesh.rotation.x = Math.PI / 2;
+      this.mesh.position.y = 250;
+
+      this.maxEnemies = 20;
+    }
+
+    checkCollisions(playerPosition) {
+    //   const aux = new THREE.Vector3();
+    //   for(let batch of this.mesh.children) {
+    //     batch.children.forEach(coin => {
+    //       aux.setFromMatrixPosition(coin.matrixWorld);
+    //       if(playerPosition.distanceTo(aux) < 10) {
+    //         batch.remove(coin);
+    //       }
+    //     });
+    //   }
+    }
+
+    spawn(worldRotationAngle) {
+      if(this.mesh.children.length > this.maxEnemies) {
+        return
+      }
+      const part = new Enemy();
+      const a = worldRotationAngle - Math.PI / 2;
+
+      part.mesh.position.x = Math.cos(a) * this.height;
+      part.mesh.position.y = Math.sin(a) * this.height;
+      part.mesh.position.z = this.height - (100 * Math.random()) + 50;
+      part.mesh.rotation.z = a + Math.PI/2;
+
+      this.mesh.add(part.mesh);
+    }
+  }

@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import Utils from './utils';
 
 export default class Hero {
   constructor() {
@@ -74,6 +73,8 @@ export default class Hero {
 
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;
+
+    this.createSmoke();
   }
 
   move(normalizeCoords) {
@@ -88,7 +89,40 @@ export default class Hero {
     this.mesh.position.y += (targetY- this.mesh.position.y)*0.1;
     
     this.mesh.rotation.z = Math.PI / 2 + (targetY - this.mesh.position.y)*0.0128;
-	this.mesh.rotation.x = (this.mesh.position.y - targetY)*0.0064;
+    this.mesh.rotation.x = (this.mesh.position.y - targetY)*0.0064;
+    
+    this.updateSmoke();
+  }
+
+  createSmoke() {
+    const smokeGeom = new THREE.SphereGeometry(5, 5, 5);
+    const smokeMat = new THREE.MeshPhongMaterial({
+      color: 0xffffff
+    });
+
+    this.smokeMesh = new THREE.Object3D();
+    for(let i = 0; i < 6; i++) {
+      const part = new THREE.Mesh(smokeGeom, smokeMat);
+      part['sizeToScale'] = 0.1;
+      part.position.y = i * 10;
+      part.rotation.z = Math.random() * (Math.PI * 2)
+      part.scale.set(part.sizeToScale, part.sizeToScale, part.sizeToScale);
+      this.smokeMesh.add(part);
+    }
+
+    this.mesh.add(this.smokeMesh);
+  }
+
+  updateSmoke() {
+    for(let smoke of this.smokeMesh.children) {
+      smoke.position.y += 1;
+      smoke.sizeToScale += Math.random() * 0.1;
+      if(smoke.position.y > 75) {
+        smoke.position.y = 10;
+        smoke['sizeToScale'] = 0.1;
+      }
+      smoke.scale.set(smoke.sizeToScale, smoke.sizeToScale, smoke.sizeToScale);
+    }
   }
 }
 

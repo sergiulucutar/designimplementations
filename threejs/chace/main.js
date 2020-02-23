@@ -10,6 +10,7 @@ import Barrier from './componnets/barrier';
 import Collectables from './componnets/collectanbles';
 import { Sun, Sky } from './componnets/sun';
 import { Clouds } from './componnets/clouds';
+import Enemies from './componnets/enemy';
 
 var scene, camera, renderer, domEl;
 
@@ -42,8 +43,9 @@ function handleResize() {
 }
 
 // Objects
-var world, hero, spires, barrier, collectables;
+var world, hero, spires, enemies, collectables;
 var sky, clouds;
+var distance = 0, spawDistance = 0;
 function createWorld() {
   sky = new Sky(document.querySelector('.sky'));
 
@@ -58,6 +60,9 @@ function createWorld() {
 
   hero = new Hero();
   scene.add(hero.mesh);
+
+  enemies = new Enemies();
+  world.mesh.add(enemies.mesh);
 
   collectables = new Collectables();
   world.mesh.add(collectables.mesh);
@@ -86,6 +91,7 @@ function createLights() {
 }
 
 var speed = 0;
+var cliick = false;
 
 function init() {
 
@@ -104,23 +110,30 @@ function init() {
     hero.move(normalizedPosition);
   });
 
+  document.addEventListener('mousedown', () => cliick = true);
+  document.addEventListener('mouseup', () => cliick = false);
+
   loop();
 }
 
-const interval = 1000 / 60;
+const frameInterval = 1000 / 60;
 let then = Date.now();
 function loop() {
   requestAnimationFrame(loop);
 
   const now = Date.now();
   const delta = now - then;
-  if (delta > interval) {
-    then = now - (delta % interval);
+  if (delta > frameInterval) {
+    then = now - (delta % frameInterval);
     world.mesh.rotation.y -= .005 + .003 * speed;
-    // collect();
-    // spires.update();
+    distance += 1;
+    if(spawDistance + 100 < distance) {
+      spawDistance = distance;
+      collectables.spawn(world.mesh.rotation.y);
+      enemies.spawn(world.mesh.rotation.y)
+    }
     hero.update();
-
+    collectables.checkCollisions(new THREE.Vector3().setFromMatrixPosition(hero.mesh.matrixWorld));
     renderer.render(scene, camera);
   }
 }
