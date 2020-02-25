@@ -86,11 +86,11 @@ export default class Hero {
     const targetY = normalize(this.position[1], -1, 1, -50, 50);
 
     this.mesh.position.x = targetX;
-    this.mesh.position.y += (targetY- this.mesh.position.y)*0.1;
-    
-    this.mesh.rotation.z = Math.PI / 2 + (targetY - this.mesh.position.y)*0.0128;
-    this.mesh.rotation.x = (this.mesh.position.y - targetY)*0.0064;
-    
+    this.mesh.position.y += (targetY - this.mesh.position.y) * 0.1;
+
+    this.mesh.rotation.z = Math.PI / 2 + (targetY - this.mesh.position.y) * 0.0128;
+    this.mesh.rotation.x = (this.mesh.position.y - targetY) * 0.0064;
+
     this.updateSmoke();
   }
 
@@ -101,24 +101,28 @@ export default class Hero {
     });
 
     this.smokeMesh = new THREE.Object3D();
-    for(let i = 0; i < 6; i++) {
+    this.smokeMesh.rotation.z = Math.PI / 2;
+
+    for (let i = 0; i < 6; i++) {
       const part = new THREE.Mesh(smokeGeom, smokeMat);
       part['sizeToScale'] = 0.1;
-      part.position.y = i * 10;
+      part.position.x = this.mesh.position.x;
+      part.position.y = this.mesh.position.y - i * 10;
+      part.position.z = this.mesh.position.z;
       part.rotation.z = Math.random() * (Math.PI * 2)
       part.scale.set(part.sizeToScale, part.sizeToScale, part.sizeToScale);
       this.smokeMesh.add(part);
     }
-
-    this.mesh.add(this.smokeMesh);
   }
 
   updateSmoke() {
-    for(let smoke of this.smokeMesh.children) {
+    for (let smoke of this.smokeMesh.children) {
       smoke.position.y += 1;
       smoke.sizeToScale += Math.random() * 0.1;
-      if(smoke.position.y > 75) {
-        smoke.position.y = 10;
+      if (smoke.position.y > 65) {
+        smoke.position.x = this.mesh.position.y;
+        smoke.position.y = -this.mesh.position.x + 10;
+        smoke.position.z = this.mesh.position.z;
         smoke['sizeToScale'] = 0.1;
       }
       smoke.scale.set(smoke.sizeToScale, smoke.sizeToScale, smoke.sizeToScale);

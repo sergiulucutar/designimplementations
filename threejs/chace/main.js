@@ -59,6 +59,7 @@ function createWorld() {
   world.mesh.add(clouds.mesh);
 
   hero = new Hero();
+  scene.add(hero.smokeMesh);
   scene.add(hero.mesh);
 
   enemies = new Enemies();
@@ -127,7 +128,7 @@ function loop() {
     then = now - (delta % frameInterval);
     world.mesh.rotation.y -= .005 + .003 * speed;
     distance += 1;
-    if(spawDistance + 100 < distance) {
+    if (spawDistance + 100 < distance) {
       spawDistance = distance;
       collectables.spawn(world.mesh.rotation.y);
       enemies.spawn(world.mesh.rotation.y)
