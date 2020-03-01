@@ -3,6 +3,7 @@ import * as THREE from 'three';
 export default class Hero {
   constructor() {
     this.position = [0, 0];
+    this.energy = 100;
 
     this.mesh = new THREE.Group();
 
@@ -85,7 +86,7 @@ export default class Hero {
     const targetX = normalize(this.position[0], -1, 1, -100, 100);
     const targetY = normalize(this.position[1], -1, 1, -50, 50);
 
-    this.mesh.position.x = targetX;
+    // this.mesh.position.x = targetX;
     this.mesh.position.y += (targetY - this.mesh.position.y) * 0.1;
 
     this.mesh.rotation.z = Math.PI / 2 + (targetY - this.mesh.position.y) * 0.0128;
@@ -127,6 +128,10 @@ export default class Hero {
       }
       smoke.scale.set(smoke.sizeToScale, smoke.sizeToScale, smoke.sizeToScale);
     }
+  }
+
+  addEnergy() {
+    this.energy += 5;
   }
 }
 

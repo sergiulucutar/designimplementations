@@ -6,7 +6,6 @@ const mat = new THREE.MeshBasicMaterial({
 });
 
 class Enemy {
-
   constructor() {
     this.mesh = new THREE.Mesh(geom, mat);
   }
@@ -22,16 +21,15 @@ export default class Enemies {
       this.maxEnemies = 20;
     }
 
-    checkCollisions(playerPosition) {
-    //   const aux = new THREE.Vector3();
-    //   for(let batch of this.mesh.children) {
-    //     batch.children.forEach(coin => {
-    //       aux.setFromMatrixPosition(coin.matrixWorld);
-    //       if(playerPosition.distanceTo(aux) < 10) {
-    //         batch.remove(coin);
-    //       }
-    //     });
-    //   }
+    checkCollisions(player) {
+      const playerPosition = new THREE.Vector3().setFromMatrixPosition(player.mesh.matrixWorld);
+      const aux = new THREE.Vector3();
+      for(let enemy of this.mesh.children) {
+        aux.setFromMatrixPosition(enemy.matrixWorld);
+        if(playerPosition.distanceTo(aux) < 5) {
+          this.mesh.remove(enemy);
+        }
+      }
     }
 
     spawn(worldRotationAngle) {

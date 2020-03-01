@@ -6,7 +6,16 @@ html, body, main {
   margin: 0;
 }
 
+body {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+}
+
 main {
+  grid-row: 1 / -1;
+  grid-column: 1 / -1;
+
   position: relative;
 
   background-image: linear-gradient(#27AF79, #ABD5AD);
@@ -17,5 +26,21 @@ main {
     position: absolute;
     top: 0;
     left: 0;
+  }
+}
+
+.UI {
+  grid-row: 4;
+  grid-column: 2 / span 2;
+
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .card {
+    padding: 30px;
+    background-color: hsla(0, 0, 100, .8);
   }
 }

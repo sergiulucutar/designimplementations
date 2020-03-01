@@ -6,14 +6,20 @@ import World from './componnets/world';
 import Spires from './componnets/spire';
 import Hero from './componnets/hero';
 import Utils from './componnets/utils';
-import Barrier from './componnets/barrier';
 import Collectables from './componnets/collectanbles';
-import { Sun, Sky } from './componnets/sun';
+import { Sky } from './componnets/sun';
 import { Clouds } from './componnets/clouds';
 import Enemies from './componnets/enemy';
+import { UI } from './componnets/ui';
 
+
+class Game {
+  constructor() {
+    this.speed = .005;
+  }
+}
+var game = new Game();
 var scene, camera, renderer, domEl;
-
 function createScene() {
   domEl = document.querySelector('main');
 
@@ -29,6 +35,8 @@ function createScene() {
     alpha: true,
     antialias: true
   });
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMapSoft = true;
 
   renderer.setSize(window.innerWidth, window.innerHeight);
   domEl.appendChild(renderer.domElement);
@@ -45,6 +53,7 @@ function handleResize() {
 // Objects
 var world, hero, spires, enemies, collectables;
 var sky, clouds;
+var ui;
 var distance = 0, spawDistance = 0;
 function createWorld() {
   sky = new Sky(document.querySelector('.sky'));
@@ -67,6 +76,8 @@ function createWorld() {
 
   collectables = new Collectables();
   world.mesh.add(collectables.mesh);
+
+  ui = new UI();
 }
 
 function createLights() {
@@ -91,28 +102,19 @@ function createLights() {
   scene.add(dirLight);
 }
 
-var speed = 0;
-var cliick = false;
 
 function init() {
-
   createScene();
-
-  // objects
   createWorld();
   createLights();
-
   document.addEventListener('mousemove', event => {
     const normalizedPosition = Utils.normalizeMousePosition([event.clientX, event.clientY]);
 
-    // camera.position.z = 150 + 40 * normalizedPosition[0];
-    speed = normalizedPosition[0];
+    game.speed = .005 + 0.003 * normalizedPosition[0];
+    camera.position.z = 400 + (-50 * -normalizedPosition[0]);
 
     hero.move(normalizedPosition);
   });
-
-  document.addEventListener('mousedown', () => cliick = true);
-  document.addEventListener('mouseup', () => cliick = false);
 
   loop();
 }
@@ -126,17 +128,42 @@ function loop() {
   const delta = now - then;
   if (delta > frameInterval) {
     then = now - (delta % frameInterval);
-    world.mesh.rotation.y -= .005 + .003 * speed;
+    world.mesh.rotation.y -= game.speed;
     distance += 1;
+    hero.energy -= .05;
+
+    // if(distance % 1000 === 0) {
+    //   game.speed += 0.01;
+    // }
+
     if (spawDistance + 100 < distance) {
       spawDistance = distance;
       collectables.spawn(world.mesh.rotation.y);
       enemies.spawn(world.mesh.rotation.y)
     }
+    
     hero.update();
-    collectables.checkCollisions(new THREE.Vector3().setFromMatrixPosition(hero.mesh.matrixWorld));
+    enemies.checkCollisions(hero);
+    collectables.checkCollisions(hero);
+
+    checkForLevelComplete();
+    ui.setEvergy(hero.energy);
+
     renderer.render(scene, camera);
   }
 }
 
 window.onload = init.bind(this);
+
+
+// Stats
+var state = {
+  level: 1,
+  energy: 100
+}
+function checkForLevelComplete() {
+  if(distance > 4000) {
+    ui.setLevel(++state.level);
+    distance = 0;
+  }
+}
