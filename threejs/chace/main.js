@@ -119,6 +119,25 @@ function init() {
   loop();
 }
 
+function update() {
+  world.mesh.rotation.y -= game.speed;
+  distance += 1;
+  hero.energy -= .05;
+
+  if (spawDistance + 100 < distance) {
+    spawDistance = distance;
+    collectables.spawn(world.mesh.rotation.y);
+    enemies.spawn(world.mesh.rotation.y)
+  }
+
+  hero.update();
+  enemies.checkCollisions(hero, game);
+  collectables.checkCollisions(hero);
+
+  checkForLevelComplete();
+  ui.setEvergy(hero.energy);
+}
+
 const frameInterval = 1000 / 60;
 let then = Date.now();
 function loop() {
@@ -128,33 +147,13 @@ function loop() {
   const delta = now - then;
   if (delta > frameInterval) {
     then = now - (delta % frameInterval);
-    world.mesh.rotation.y -= game.speed;
-    distance += 1;
-    hero.energy -= .05;
-
-    // if(distance % 1000 === 0) {
-    //   game.speed += 0.01;
-    // }
-
-    if (spawDistance + 100 < distance) {
-      spawDistance = distance;
-      collectables.spawn(world.mesh.rotation.y);
-      enemies.spawn(world.mesh.rotation.y)
-    }
-
-    hero.update();
-    enemies.checkCollisions(hero);
-    collectables.checkCollisions(hero);
-
-    checkForLevelComplete();
-    ui.setEvergy(hero.energy);
-
+    
+    update();
     renderer.render(scene, camera);
   }
 }
 
 window.onload = init.bind(this);
-
 
 // Stats
 var state = {

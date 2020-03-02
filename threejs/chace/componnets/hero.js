@@ -5,6 +5,8 @@ export default class Hero {
     this.position = [0, 0];
     this.energy = 100;
 
+    this.enemyCollisionDistort = 0;
+
     this.mesh = new THREE.Group();
 
     const matRed = new THREE.MeshStandardMaterial({ color: 0xBB2A27, metalness: 0.5, roughness: 0.5 });
@@ -83,16 +85,20 @@ export default class Hero {
   }
 
   update() {
-    const targetX = normalize(this.position[0], -1, 1, -100, 100);
+    // const targetX = normalize(this.position[0], -1, 1, -100, 100);
     const targetY = normalize(this.position[1], -1, 1, -50, 50);
 
-    // this.mesh.position.x = targetX;
+    this.mesh.position.x = -this.enemyCollisionDistort;
     this.mesh.position.y += (targetY - this.mesh.position.y) * 0.1;
 
     this.mesh.rotation.z = Math.PI / 2 + (targetY - this.mesh.position.y) * 0.0128;
     this.mesh.rotation.x = (this.mesh.position.y - targetY) * 0.0064;
 
     this.updateSmoke();
+
+    if(this.enemyCollisionDistort > 1) {
+      this.enemyCollisionDistort -= 1;
+    }
   }
 
   createSmoke() {
@@ -132,6 +138,10 @@ export default class Hero {
 
   addEnergy() {
     this.energy += 5;
+  }
+
+  handleEnemyHit() {
+    this.enemyCollisionDistort = 20;
   }
 }
 
