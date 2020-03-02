@@ -111,7 +111,7 @@ export default class Hero {
       part.position.y = this.mesh.position.y - i * 10;
       part.position.z = this.mesh.position.z;
       part.rotation.z = Math.random() * (Math.PI * 2)
-      part.scale.set(part.sizeToScale, part.sizeToScale, part.sizeToScale);
+      // part.scale.set(part.sizeToScale, part.sizeToScale, part.sizeToScale);
       this.smokeMesh.add(part);
     }
   }

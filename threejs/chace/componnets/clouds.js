@@ -24,9 +24,6 @@ class Cloud {
       const randomScale = .1 + Math.random() * .9;
       mesh.scale.set(randomScale, randomScale, randomScale);
 
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-
       this.mesh.add(mesh);
     }
   }

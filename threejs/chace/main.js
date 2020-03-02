@@ -141,7 +141,7 @@ function loop() {
       collectables.spawn(world.mesh.rotation.y);
       enemies.spawn(world.mesh.rotation.y)
     }
-    
+
     hero.update();
     enemies.checkCollisions(hero);
     collectables.checkCollisions(hero);
@@ -162,7 +162,7 @@ var state = {
   energy: 100
 }
 function checkForLevelComplete() {
-  if(distance > 4000) {
+  if (distance > 4000) {
     ui.setLevel(++state.level);
     distance = 0;
   }
