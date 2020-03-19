@@ -1,0 +1,31 @@
+{
+  "name": "anagram",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel serve watch src/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.0",
+    "gsap": "^3.0.2",
+    "img": "^3.0.3",
+    "pixi.js": "^5.1.1",
+    "vue": "^2.6.11",
+    "vue-hot-reload-api": "^2.3.4"
+  },
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.1.1",
+    "eslint": "^6.1.0",
+    "parcel": "^1.12.3",
+    "parcel-bundler": "^1.12.3",
+    "parcel-plugin-asset-copier": "^1.0.0",
+    "sass": "^1.22.9",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "assetsPath": "src/assets"
+}
