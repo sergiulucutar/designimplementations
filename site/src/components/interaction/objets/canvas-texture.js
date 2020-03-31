@@ -139,3 +139,50 @@ export class CanvasTextureVL extends CanvasTexture {
     this.draw();
   }
 }
+
+/**
+ * Canvas text
+ */
+export class CanvasTextureText extends CanvasTexture {
+  constructor() {
+    super();
+
+    this.bgColor = '#ffffff';
+
+    this.textGrid = {
+      width: vCanvasSize / 3,
+      height: 150,
+      x: 3,
+      y: vCanvasSize / 150
+    };
+
+    this.a_offset = 0;
+  }
+
+  draw() {
+    this.ctx.clearRect(0, 0, vCanvasSize, vCanvasSize);
+
+    this.ctx.fillStyle = this.bgColor;
+    this.ctx.beginPath();
+    this.ctx.rect(0, 0, vCanvasSize, vCanvasSize);
+    this.ctx.fill();
+
+    this.ctx.fillStyle = 'black';
+    this.ctx.font = '60px Montserrat-Regular';
+
+    for (let i = 0; i < vCanvasSize; i += this.textGrid.width) {
+      for (let j = 0; j < vCanvasSize; j += this.textGrid.height) {
+        this.ctx.fillText('developer * ', i + this.a_offset, j);
+      }
+    }
+  }
+
+  update() {
+    this.draw();
+
+    this.a_offset -= 5;
+    if (this.a_offset < -this.textGrid.width) {
+      this.a_offset = 0;
+    }
+  }
+}

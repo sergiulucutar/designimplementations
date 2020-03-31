@@ -10,7 +10,7 @@ export class Utils {
   }
 
   static get paletteArray() {
-    return ['#E1073E', '#F9DC5C', '#F4FFFD', '#011936'];
+    return ['#E1073E', '#F9DC5C', '#011936'];
   }
 
   static random(min = 0, max = 1) {
