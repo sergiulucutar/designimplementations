@@ -77,7 +77,7 @@ body {
     width: 100vw;
     height: 100vh;
 
-    padding: 50px;
+    padding: 100px;
   }
 }
 
@@ -88,7 +88,24 @@ main {
   width: 100%;
   height: 100vh;
 
-  padding: 50px;
+  padding: 24px 100px;
+
+  .shape {
+    position: absolute;
+    top: 0;
+    left: 30%;
+
+    width: 70vmax;
+    height: 70vmax;
+
+    border-radius: 50%;
+
+    background-color: #011936;
+
+    transform: translate(-50%, -50%);
+
+    z-index: -1;
+  }
 
   .interaction {
     position: absolute;
@@ -99,15 +116,18 @@ main {
   }
 
   h1 {
-    grid-column: 1 / span 3;
+    grid-column: 2;
+
+    display: flex;
+    align-items: center;
 
     // font-family: 'Bebas Neue Bold', sans-serif;
     font-family: 'Monument Extended Bold', sans-serif;
-    font-size: 12rem;
+    font-size: 3rem;
 
     > span {
-      display: block;
-      height: 14rem;
+      display: inline-block;
+      height: 4rem;
 
       overflow: hidden;
 
@@ -124,7 +144,7 @@ main {
 
     &.hidden {
       span span {
-        transform: translateY(160%) skewY(10deg);
+        transform: translateY(200%) skewY(5deg);
       }
     }
   }
@@ -133,10 +153,14 @@ main {
     grid-column: 4;
 
     ul {
-      display: flex;
-      justify-content: space-between;
+      // display: flex;
+
+      // justify-content: space-between;
+      text-align: right;
 
       li {
+        padding: 5px;
+
         font-family: 'Montserrat-Bold', sans-serif;
         font-size: 1.8rem;
 
