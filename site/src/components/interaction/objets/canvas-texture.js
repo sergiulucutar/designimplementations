@@ -180,7 +180,7 @@ export class CanvasTextureText extends CanvasTexture {
   update() {
     this.draw();
 
-    this.a_offset -= 5;
+    this.a_offset -= 4;
     if (this.a_offset < -this.textGrid.width) {
       this.a_offset = 0;
     }

@@ -38,10 +38,15 @@
   font-display: swap;
 }
 
+:root {
+  --bezier: cubic-bezier(0.4, 0, 0.1, 1);
+
+  --c_black: #101110;
+  --c_blue: #011936;
+}
+
 * {
   box-sizing: border-box;
-
-  --bezier: cubic-bezier(0.4, 0, 0.1, 1);
 }
 
 html {
@@ -50,59 +55,49 @@ html {
 }
 
 body {
-  background-color: #101110;
+  background-color: var(--c_black);
 
   color: white;
 
   overflow-x: hidden;
+}
 
-  // &:before {
-  //   content: '';
-
-  //   position: fixed;
-  //   top: -10%;
-  //   left: -10%;
-  //   width: 110%;
-  //   height: 110%;
-
-  //   background-image: url('./assets/images/noise.png');
-
-  //   opacity: 0.02;
-  //   z-index: -1;
-
-  //   animation: bg_noise 1s steps(60) infinite;
-  // }
+.wrapper {
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: flex-start;
+  // align-items: flex-start;
 
   > section {
+    flex-shrink: 0;
+
     width: 100vw;
     height: 100vh;
   }
 }
 
-main {
+.shape {
+  border-radius: 50%;
+  background-color: var(--c_blue);
+  z-index: -1;
+}
+
+#home {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(6, 1fr);
 
-  width: 100%;
-  height: 100vh;
-
-  padding: 24px 100px;
+  padding: 24px 50px;
 
   .shape {
     position: absolute;
     top: 0;
-    left: 30%;
+    left: 27%;
 
     width: 70vmax;
     height: 70vmax;
 
-    border-radius: 50%;
-
-    background-color: #011936;
-
     transform: translate(-50%, -50%);
-
-    z-index: -1;
   }
 
   .interaction {
@@ -114,18 +109,18 @@ main {
   }
 
   h1 {
-    grid-column: 2;
+    grid-column: 2 / span 2;
 
     display: flex;
     align-items: center;
 
     // font-family: 'Bebas Neue Bold', sans-serif;
     font-family: 'Monument Extended Bold', sans-serif;
-    font-size: 3rem;
+    font-size: 5rem;
 
     > span {
       display: inline-block;
-      height: 4rem;
+      height: 6rem;
 
       overflow: hidden;
 
@@ -148,7 +143,7 @@ main {
   }
 
   nav {
-    grid-column: 4;
+    grid-column: -2;
 
     ul {
       // display: flex;
@@ -189,7 +184,7 @@ main {
   }
 }
 
-.about {
+#about {
   position: relative;
 
   display: grid;
@@ -197,10 +192,10 @@ main {
   grid-template-columns: 40% 20% auto;
   grid-gap: 4vw;
 
-  background-color: #011936;
+  overflow: hidden;
 
   > div {
-    font-size: 2.4rem;
+    font-size: 2rem;
 
     overflow: hidden;
 
@@ -230,28 +225,64 @@ main {
 
   .shape {
     position: absolute;
-    grid-column: 3;
-    grid-row: 3;
+    top: 0;
+    left: 0;
 
-    width: 20vmax;
-    height: 20vmax;
+    width: 100vmax;
+    height: 100vmax;
 
-    border-radius: 50%;
-
-    // transform: translate(0, 50%);
-
-    background-color: #101110;
-
-    z-index: 0;
+    transform: translate(0, -50%);
   }
 }
 
-@keyframes bg_noise {
-  from {
-    transform: translate3d(0, 0, 0);
+#work {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 24px 100px;
+
+  .shape {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+
+    width: 20vmax;
+    height: 20vmax;
   }
 
-  to {
-    transform: translate3d(5%, 5%, 0);
+  li {
+    font-family: 'Monument Extended Bold', sans-serif;
+    font-size: 3rem;
+
+    text-align: center;
+
+    &:not(:last-child) {
+      margin-bottom: 50px;
+    }
+
+    a {
+      color: white;
+
+      text-decoration: none;
+    }
+  }
+}
+
+#contact {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--c_blue);
+
+  font-size: 5rem;
+
+  span {
+    display: block;
   }
 }

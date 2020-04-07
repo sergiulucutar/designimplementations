@@ -147,12 +147,12 @@ export class Interaction3d {
   }
 
   addBalls() {
-    let sphere = new CanvasSphere(new CanvasTextureHL());
+    let sphere = new Sphere(Utils.paletteArray[Utils.random(0, 3)]); //new CanvasSphere(new CanvasTextureHL());
     sphere.body.position.x -= 3;
     sphere.body.position.y = 5;
     this.balls.push(sphere);
 
-    sphere = new CanvasSphere(new CanvasTextureVL());
+    sphere = new Sphere(Utils.paletteArray[Utils.random(0, 3)]); //new CanvasSphere(new CanvasTextureVL());
     sphere.mesh.rotation.z = Math.PI;
     this.balls.push(sphere);
 
