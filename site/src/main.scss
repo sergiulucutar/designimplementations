@@ -1,11 +1,11 @@
 @import './reset.scss';
 
-// @font-face {
-//   font-family: 'Monument Extended Regular';
-//   src: url('./assets/fonts/MonumentExtended-Regular.otf');
-//   font-weight: normal;
-//   font-style: normal;
-// }
+@font-face {
+  font-family: 'Monument Extended Regular';
+  src: url('./assets/fonts/MonumentExtended-Regular.otf');
+  font-weight: normal;
+  font-style: normal;
+}
 
 @font-face {
   font-family: 'Monument Extended Bold';
@@ -15,24 +15,25 @@
   font-display: swap;
 }
 
-// @font-face {
-//   font-family: 'Bebas Neue Bold';
-//   src: url('./assets/fonts/BebasNeueBold.ttf');
-//   font-weight: normal;
-//   font-style: normal;
-// }
-
 @font-face {
-  font-family: 'Montserrat-Bold';
-  src: url('./assets/fonts/Montserrat-Bold.ttf');
+  font-family: 'Prompt Bold';
+  src: url('./assets/fonts/Prompt-Bold.ttf');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat-Regular';
-  src: url('./assets/fonts/Montserrat-Regular.ttf');
+  font-family: 'Metropolis Black';
+  src: url('./assets/fonts/Metropolis-Black.otf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Prompt Regular';
+  src: url('./assets/fonts/Prompt-Regular.ttf');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -42,6 +43,7 @@
   --bezier: cubic-bezier(0.4, 0, 0.1, 1);
 
   --c_black: #101110;
+  --c_dark: #101010;
   --c_blue: #011936;
 }
 
@@ -50,7 +52,7 @@
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 0.7vw;
   scroll-behavior: smooth;
 }
 
@@ -63,10 +65,15 @@ body {
 }
 
 .wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
   // display: flex;
   // flex-direction: column;
   // justify-content: flex-start;
   // align-items: flex-start;
+
+  transition: transform 0.3s cubic-bezier(0, 0, 0.23, 1);
 
   > section {
     flex-shrink: 0;
@@ -88,7 +95,7 @@ body {
   grid-template-rows: repeat(6, 1fr);
   grid-template-columns: repeat(6, 1fr);
 
-  padding: 24px 50px;
+  padding: 24px 60px;
 
   .shape {
     position: absolute;
@@ -110,26 +117,18 @@ body {
   }
 
   > span {
+    display: flex;
+    align-items: flex-end;
+
+    font-family: 'Monument Extended Bold', sans-serif;
+    font-size: 7rem;
+
     &:first-of-type {
-      display: flex;
       justify-content: flex-end;
-      align-items: flex-end;
-
-      // height: 6rem;
-
-      font-family: 'Monument Extended Bold', sans-serif;
-      font-size: 7rem;
     }
 
     &:nth-of-type(2) {
-      display: flex;
       justify-content: flex-start;
-      align-items: flex-end;
-
-      // height: 4rem;
-
-      font-family: 'Monument Extended Bold', sans-serif;
-      font-size: 3rem;
     }
   }
 
@@ -164,19 +163,20 @@ body {
         color: var(--c_black);
         -webkit-text-stroke: 1px white;
 
-        transition-delay: 0.1s;
+        transition-delay: 0.5s;
       }
     }
 
     &.hidden {
       span span {
-        transform: translateY(200%) skewY(5deg);
+        transform: translateY(200%) skewY(15deg);
       }
     }
   }
 
   nav {
     grid-column: -2;
+    z-index: 5;
 
     ul {
       // display: flex;
@@ -187,7 +187,7 @@ body {
       li {
         padding: 5px;
 
-        font-family: 'Montserrat-Bold', sans-serif;
+        font-family: 'Prompt Bold', sans-serif;
         font-size: 1.8rem;
 
         overflow: hidden;
@@ -218,40 +218,42 @@ body {
 }
 
 #about {
-  position: relative;
+  // position: relative;
 
   display: grid;
-  grid-template-rows: repeat(5, 1fr);
-  grid-template-columns: 40% 20% auto;
-  grid-gap: 4vw;
+  grid-template-columns: 1fr 1fr;
+
+  padding: 24px 100px;
+
+  background-color: var(--c_blue);
 
   overflow: hidden;
 
   > div {
-    font-size: 2rem;
-
     overflow: hidden;
 
-    &:nth-of-type(2) {
-      grid-row: 2 / span 2;
-      grid-column: 2;
-
-      font-family: 'Montserrat-Regular', sans-serif;
-
-      line-height: 1.68;
-    }
-
-    &:nth-of-type(3) {
-      grid-column: 1;
-      grid-row: 2 / -1;
-
+    &:nth-of-type(1) {
       display: flex;
       justify-content: center;
       align-items: center;
 
       img {
-        width: 100%;
+        width: 60%;
         height: auto;
+      }
+    }
+
+    &:nth-of-type(2) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      font-family: 'Monument Extended Regular', sans-serif;
+      font-size: 2rem;
+
+      p {
+        line-height: 1.68;
+        margin: 20px 0;
       }
     }
   }

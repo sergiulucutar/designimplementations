@@ -1,7 +1,8 @@
 import { Interaction3d } from './components/interaction/interaction';
 
-var interaction; //= new Interaction3d();
+const wrapperEl = document.querySelector('.wrapper');
 
+var interaction;
 var fixedTimeStep = 1.0 / 60.0;
 function loop() {
   requestAnimationFrame(loop);
@@ -22,7 +23,12 @@ window.onresize = () => {
   interaction.reseize();
 };
 
+var scroll = 0;
 window.onload = () => {
+  window.addEventListener('scroll', (event) => {
+    wrapperEl.style = `transform: translateY(${-window.scrollY / 4}px)`;
+  });
+
   interaction = new Interaction3d();
   interaction.init();
   loop();
