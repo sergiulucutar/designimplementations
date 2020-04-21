@@ -133,9 +133,10 @@ nav {
 
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
 
-    font-size: 10rem;
+    font-size: 6rem;
 
     overflow: hidden;
     transform: translateY(-5%);
@@ -143,12 +144,12 @@ nav {
     span {
       display: block;
 
-      &:nth-of-type(2) {
-        align-self: center;
-      }
+      // &:nth-of-type(2) {
+      //   align-self: center;
+      // }
 
       &:last-child {
-        align-self: flex-end;
+        // align-self: flex-end;
         line-height: 1.1;
 
         color: var(--c_black);
