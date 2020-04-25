@@ -1,11 +1,7 @@
 import * as CANNON from 'cannon';
 import * as THREE from 'three';
 import { Sphere, CanvasSphere } from './objets/sphere';
-import {
-  CanvasTextureHL,
-  CanvasTextureVL,
-  CanvasTextureText
-} from './objets/canvas-texture';
+import { CanvasTextureText } from './objets/canvas-texture';
 import { Utils } from '../utils';
 
 import { TimelineLite, Power4, Power2 } from 'gsap';
@@ -48,7 +44,7 @@ export class Interaction3d {
 
     this.renderer = new THREE.WebGLRenderer({
       alpha: 1,
-      antialias: true
+      antialias: true,
     });
     this.renderer.setSize(this.bounds[0], this.bounds[1]);
     document
@@ -57,21 +53,24 @@ export class Interaction3d {
 
     // CannonJS
     this.world = new CANNON.World();
-    this.world.gravity.y = -9.8;
+    this.world.gravity.z = -9.8;
 
     const bounds = {
       top: new CANNON.Body({
-        mass: 0
+        mass: 0,
       }),
       bottom: new CANNON.Body({
-        mass: 0
+        mass: 0,
       }),
       left: new CANNON.Body({
-        mass: 0
+        mass: 0,
       }),
       right: new CANNON.Body({
-        mass: 0
-      })
+        mass: 0,
+      }),
+      floor: new CANNON.Body({
+        mass: 0,
+      }),
     };
 
     var groundShape = new CANNON.Plane();
@@ -79,6 +78,7 @@ export class Interaction3d {
     bounds.bottom.addShape(groundShape);
     bounds.left.addShape(groundShape);
     bounds.right.addShape(groundShape);
+    bounds.floor.addShape(groundShape);
 
     bounds.bottom.position.y = -this.bounds[1] / this.cameraSize;
     bounds.bottom.quaternion.setFromAxisAngle(
@@ -104,10 +104,13 @@ export class Interaction3d {
       -Math.PI / 2
     );
 
+    bounds.floor.position.z -= 5;
+
     this.world.addBody(bounds.bottom);
     this.world.addBody(bounds.top);
     this.world.addBody(bounds.left);
     this.world.addBody(bounds.right);
+    this.world.addBody(bounds.floor);
 
     this.balls = [];
 
@@ -118,49 +121,43 @@ export class Interaction3d {
 
   init() {
     const sphere3 = new CanvasSphere(new CanvasTextureText());
-    sphere3.mesh.scale.set(0, 0, 0);
+    // sphere3.mesh.scale.set(0, 0, 0);
     this.balls.push(sphere3);
     this.scene.add(sphere3.mesh);
     this.world.add(sphere3.body);
 
-    this.timeline
-      .to(sphere3.mesh.scale, 0.5, {
-        x: 3,
-        y: 3,
-        z: 3,
-        ease: Power2.easeOut,
-        delay: 0.2
-      })
-      .to(sphere3.mesh.scale, 0.5, {
-        x: 1,
-        y: 1,
-        z: 1,
-        delay: 0.5,
-        ease: Power2.easeOut,
-        onComplete() {
-          document.querySelector('h1').classList.remove('hidden');
-          document.querySelector('nav ul').classList.remove('hidden');
-        }
-      })
-      .set(this, { isIntroFinished: true, delay: 1 })
-      .call(this.addBalls.bind(this), [], '+=0.7');
+    document.querySelector('h1').classList.remove('hidden');
+    document.querySelector('nav ul').classList.remove('hidden');
+    this.isIntroFinished = true;
+    this.addBalls();
   }
 
   addBalls() {
-    let sphere = new Sphere(Utils.paletteArray[Utils.random(0, 3)]); //new CanvasSphere(new CanvasTextureHL());
-    sphere.body.position.x -= 3;
-    sphere.body.position.y = 5;
-    this.balls.push(sphere);
+    // let sphere = new Sphere(Utils.paletteArray[Utils.random(0, 3)]); //new CanvasSphere(new CanvasTextureHL());
+    // sphere.body.position.x -= 3;
+    // sphere.body.position.y = 5;
+    // this.balls.push(sphere);
 
-    sphere = new Sphere(Utils.paletteArray[Utils.random(0, 3)]); //new CanvasSphere(new CanvasTextureVL());
-    sphere.mesh.rotation.z = Math.PI;
-    this.balls.push(sphere);
+    // sphere = new Sphere(Utils.paletteArray[Utils.random(0, 3)]); //new CanvasSphere(new CanvasTextureVL());
+    // sphere.mesh.rotation.z = Math.PI;
+    // this.balls.push(sphere);
 
-    for (let i = 0; i < 4; i++) {
+    const initalPositionBounds = this.bounds.map((value) => (value -= 5));
+
+    for (let i = 0; i < 6; i++) {
       this.balls.push(new Sphere(Utils.paletteArray[Utils.random(0, 3)]));
     }
 
     for (let i = 1; i < this.balls.length; i++) {
+      this.balls[i].body.position.x = Utils.random(
+        -initalPositionBounds[0] / this.cameraSize,
+        initalPositionBounds[0] / this.cameraSize
+      );
+      this.balls[i].body.position.y = Utils.random(
+        -initalPositionBounds[1] / this.cameraSize,
+        initalPositionBounds[1] / this.cameraSize
+      );
+
       this.scene.add(this.balls[i].mesh);
       this.world.add(this.balls[i].body);
     }

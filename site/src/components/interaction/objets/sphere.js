@@ -7,7 +7,7 @@ export class Sphere {
   constructor(color = 0x000000) {
     this.mat = new THREE.MeshStandardMaterial({
       color,
-      roughness: 0.3
+      roughness: 0.3,
     });
     this.mesh = new THREE.Mesh(sphereGeom, this.mat);
 
@@ -15,7 +15,7 @@ export class Sphere {
     this.body = new CANNON.Body({
       mass: 10,
       position: new CANNON.Vec3(0, 0, 0),
-      shape
+      shape,
     });
     this.body.mass = 4 * shape.volume();
 
@@ -37,9 +37,6 @@ export class Sphere {
   }
 
   update() {
-    // TODO: replace this with world movement limitations if possible
-    this.body.position.z = 0;
-
     this.mesh.position.x = this.body.position.x;
     this.mesh.position.y = this.body.position.y;
     this.mesh.position.z = this.body.position.z;
@@ -59,7 +56,7 @@ export class CanvasSphere extends Sphere {
 
     this.mat = new THREE.MeshStandardMaterial({
       map: this.sphereTexture,
-      roughness: 0.3
+      roughness: 0.3,
     });
     this.mesh = new THREE.Mesh(sphereGeom, this.mat);
   }
