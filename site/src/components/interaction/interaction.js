@@ -4,10 +4,11 @@ import { Sphere, CanvasSphere } from './objets/sphere';
 import { CanvasTextureText } from './objets/canvas-texture';
 import { Utils } from '../utils';
 
-import { TimelineLite, Power4, Power2 } from 'gsap';
+import { TimelineLite } from 'gsap';
 
 export class Interaction3d {
-  constructor() {
+  constructor(domEl) {
+    this.domEl = domEl;
     this.cameraSize = 50;
 
     this.bounds = [document.body.clientWidth, window.innerHeight];
@@ -47,9 +48,7 @@ export class Interaction3d {
       antialias: true,
     });
     this.renderer.setSize(this.bounds[0], this.bounds[1]);
-    document
-      .querySelector('.interaction')
-      .appendChild(this.renderer.domElement);
+    domEl.appendChild(this.renderer.domElement);
 
     // CannonJS
     this.world = new CANNON.World();
@@ -119,20 +118,20 @@ export class Interaction3d {
     this.isIntroFinished = false;
   }
 
-  init() {
-    const sphere3 = new CanvasSphere(new CanvasTextureText());
-    // sphere3.mesh.scale.set(0, 0, 0);
-    this.balls.push(sphere3);
-    this.scene.add(sphere3.mesh);
-    this.world.add(sphere3.body);
+  init(spheresCount) {
+    // const sphere3 = new CanvasSphere(new CanvasTextureText());
+    // // sphere3.mesh.scale.set(0, 0, 0);
+    // this.balls.push(sphere3);
+    // this.scene.add(sphere3.mesh);
+    // this.world.add(sphere3.body);
 
     document.querySelector('h1').classList.remove('hidden');
     document.querySelector('nav ul').classList.remove('hidden');
     this.isIntroFinished = true;
-    this.addBalls();
+    this.addBalls(spheresCount);
   }
 
-  addBalls() {
+  addBalls(spheresCount) {
     // let sphere = new Sphere(Utils.paletteArray[Utils.random(0, 3)]); //new CanvasSphere(new CanvasTextureHL());
     // sphere.body.position.x -= 3;
     // sphere.body.position.y = 5;
@@ -144,11 +143,11 @@ export class Interaction3d {
 
     const initalPositionBounds = this.bounds.map((value) => (value -= 5));
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < spheresCount; i++) {
       this.balls.push(new Sphere(Utils.paletteArray[Utils.random(0, 3)]));
     }
 
-    for (let i = 1; i < this.balls.length; i++) {
+    for (let i = 0; i < this.balls.length; i++) {
       this.balls[i].body.position.x = Utils.random(
         -initalPositionBounds[0] / this.cameraSize,
         initalPositionBounds[0] / this.cameraSize

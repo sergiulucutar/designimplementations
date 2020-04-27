@@ -2,34 +2,57 @@ import { Interaction3d } from './components/interaction/interaction';
 
 const wrapperEl = document.querySelector('.wrapper');
 
-var interaction;
-var fixedTimeStep = 1.0 / 60.0;
+let interaction, workInteraction;
+let boundingBox;
+const fixedTimeStep = 1.0 / 60.0;
 function loop() {
   requestAnimationFrame(loop);
 
-  // if (lastTime !== undefined) {
-  //   dt = (time - lastTime) / 1000;
-  if (interaction.isIntroFinished) {
-    interaction.world.step(fixedTimeStep);
+  if (isInteractionInView(interaction)) {
+    if (interaction.isIntroFinished) {
+      interaction.world.step(fixedTimeStep);
+    }
+    interaction.update();
+    interaction.draw();
   }
-  interaction.update();
-  interaction.draw();
-  // }
 
-  // lastTime = time;
+  if (isInteractionInView(workInteraction)) {
+    if (workInteraction.isIntroFinished) {
+      workInteraction.world.step(fixedTimeStep);
+    }
+    workInteraction.update();
+    workInteraction.draw();
+  }
+}
+
+function isInteractionInView(interaction) {
+  boundingBox = interaction.domEl.getBoundingClientRect();
+  return (
+    (boundingBox.top + window.scrollY >= window.pageYOffset &&
+      boundingBox.top + window.scrollY <=
+        window.pageYOffset + window.innerHeight) ||
+    (boundingBox.bottom + window.scrollY > window.pageYOffset &&
+      boundingBox.bottom + window.scrollY <
+        window.pageYOffset + window.innerHeight)
+  );
 }
 
 window.onresize = () => {
   interaction.reseize();
 };
 
-var scroll = 0;
 window.onload = () => {
-  window.addEventListener('scroll', (event) => {
+  window.addEventListener('scroll', () => {
     wrapperEl.style = `transform: translateY(${-window.scrollY / 4}px)`;
   });
 
-  interaction = new Interaction3d();
-  interaction.init();
+  interaction = new Interaction3d(document.querySelector('#home .interaction'));
+  interaction.init(5);
+
+  workInteraction = new Interaction3d(
+    document.querySelector('#work .interaction')
+  );
+  workInteraction.init(3);
+
   loop();
 };

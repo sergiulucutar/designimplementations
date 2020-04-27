@@ -15,6 +15,7 @@
 }
 
 html {
+  font-family: 'Syne', sans-serif;
   font-size: 62.5%;
   scroll-behavior: smooth;
 }
@@ -54,6 +55,14 @@ h3 {
   border-radius: 50%;
   background-color: var(--c_blue);
   z-index: -1;
+}
+
+.interaction {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  z-index: 2;
 }
 
 nav {
@@ -119,14 +128,6 @@ nav {
   grid-template-rows: repeat(6, 1fr);
   grid-template-columns: repeat(6, 1fr);
 
-  .interaction {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    z-index: 2;
-  }
-
   h1 {
     grid-column: 1 / -1;
     grid-row: 1 / -1;
@@ -136,32 +137,25 @@ nav {
     align-items: center;
     justify-content: center;
 
-    font-size: 6rem;
+    font-size: 3rem;
 
     overflow: hidden;
     transform: translateY(-5%);
 
+    @media only screen and (min-width: $screen) {
+      font-size: 6rem;
+    }
+
     span {
       display: block;
 
-      // &:nth-of-type(2) {
-      //   align-self: center;
-      // }
-
       &:last-child {
-        // align-self: flex-end;
         line-height: 1.1;
 
         color: var(--c_black);
         -webkit-text-stroke: 1px white;
 
         transition-delay: 0.5s;
-      }
-    }
-
-    &.hidden {
-      span {
-        // transform: translateY(200%) skewY(15deg);
       }
     }
   }
@@ -256,25 +250,39 @@ nav {
 #work {
   position: relative;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-template-columns: 40% 40% auto;
+  grid-gap: 4vw;
+  row-gap: 12vmax;
 
-  padding: 24px 100px;
+  padding: 8vmax 4vw;
 
-  .shape {
-    position: absolute;
-    top: 10%;
-    left: 50%;
+  .interaction {
+    pointer-events: none;
+  }
 
-    width: 20vmax;
-    height: 20vmax;
+  p {
+    // padding: 20% 0;
+
+    font-family: 'Syne', sans-serif;
+
+    font-size: 1.8rem;
+    line-height: 1.68;
+  }
+
+  ul {
+    grid-row: 2;
+    grid-column: 1 / span 2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
   }
 
   li {
     font-family: 'Syne Extra', sans-serif;
-    font-size: 3rem;
+    font-size: 6rem;
 
     text-align: center;
 
@@ -285,7 +293,14 @@ nav {
     a {
       color: white;
 
+      transition: color 0.2s cubic-bezier(0, 0.32, 0.23, 1);
+
       text-decoration: none;
+
+      &:hover {
+        color: var(--c_black);
+        -webkit-text-stroke: 1px white;
+      }
     }
   }
 }
@@ -302,6 +317,12 @@ nav {
 
   span {
     display: block;
+    font-family: 'Syne Extra', sans-serif;
+  }
+  a {
+    font-family: 'Syne';
+
+    color: white;
   }
 }
 
