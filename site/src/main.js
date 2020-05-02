@@ -1,4 +1,5 @@
 import { Interaction3d } from './components/interaction/interaction';
+import { WorkInteraction } from './components/interaction/work-interaction';
 
 const wrapperEl = document.querySelector('.wrapper');
 
@@ -49,7 +50,7 @@ window.onload = () => {
   interaction = new Interaction3d(document.querySelector('#home .interaction'));
   interaction.init(5);
 
-  workInteraction = new Interaction3d(
+  workInteraction = new WorkInteraction(
     document.querySelector('#work .interaction')
   );
   workInteraction.init(3);

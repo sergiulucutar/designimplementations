@@ -1,7 +1,8 @@
 import * as CANNON from 'cannon';
 import * as THREE from 'three';
 
-const size = 1.5 * ((window.innerWidth + window.innerHeight) / 1000);
+const size =
+  (1.4 * (window.innerWidth + window.innerHeight)) / window.innerHeight;
 const sphereGeom = new THREE.SphereBufferGeometry(size, 52, 52);
 export class Sphere {
   constructor(color = 0x000000) {

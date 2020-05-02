@@ -1,7 +1,6 @@
 import * as CANNON from 'cannon';
 import * as THREE from 'three';
-import { Sphere, CanvasSphere } from './objets/sphere';
-import { CanvasTextureText } from './objets/canvas-texture';
+import { Sphere } from './objets/sphere';
 import { Utils } from '../utils';
 
 import { TimelineLite } from 'gsap';
@@ -31,16 +30,7 @@ export class Interaction3d {
 
     const spotLight = new THREE.SpotLight(0xffffff, 1);
     spotLight.position.set(0, 80, 70);
-
     spotLight.castShadow = true;
-
-    spotLight.shadow.mapSize.width = 1024;
-    spotLight.shadow.mapSize.height = 1024;
-
-    spotLight.shadow.camera.near = 100;
-    spotLight.shadow.camera.far = 4000;
-    spotLight.shadow.camera.fov = 30;
-
     this.scene.add(spotLight);
 
     this.renderer = new THREE.WebGLRenderer({
@@ -72,7 +62,7 @@ export class Interaction3d {
       }),
     };
 
-    var groundShape = new CANNON.Plane();
+    const groundShape = new CANNON.Plane();
     bounds.top.addShape(groundShape);
     bounds.bottom.addShape(groundShape);
     bounds.left.addShape(groundShape);
@@ -119,12 +109,6 @@ export class Interaction3d {
   }
 
   init(spheresCount) {
-    // const sphere3 = new CanvasSphere(new CanvasTextureText());
-    // // sphere3.mesh.scale.set(0, 0, 0);
-    // this.balls.push(sphere3);
-    // this.scene.add(sphere3.mesh);
-    // this.world.add(sphere3.body);
-
     document.querySelector('h1').classList.remove('hidden');
     document.querySelector('nav ul').classList.remove('hidden');
     this.isIntroFinished = true;
@@ -132,15 +116,6 @@ export class Interaction3d {
   }
 
   addBalls(spheresCount) {
-    // let sphere = new Sphere(Utils.paletteArray[Utils.random(0, 3)]); //new CanvasSphere(new CanvasTextureHL());
-    // sphere.body.position.x -= 3;
-    // sphere.body.position.y = 5;
-    // this.balls.push(sphere);
-
-    // sphere = new Sphere(Utils.paletteArray[Utils.random(0, 3)]); //new CanvasSphere(new CanvasTextureVL());
-    // sphere.mesh.rotation.z = Math.PI;
-    // this.balls.push(sphere);
-
     const initalPositionBounds = this.bounds.map((value) => (value -= 5));
 
     for (let i = 0; i < spheresCount; i++) {
