@@ -1,9 +1,8 @@
-import * as CANNON from 'cannon';
 import * as THREE from 'three';
 import { Sphere } from './objets/sphere';
 import { Utils } from '../utils';
-
-import { TimelineLite } from 'gsap';
+import { World } from './objets/world';
+import { TweenLite, Power2 } from 'gsap';
 
 export class Interaction3d {
   constructor(domEl) {
@@ -20,14 +19,12 @@ export class Interaction3d {
       5,
       100
     );
-
     this.camera.position.set(0, 0, 50);
 
     this.scene = new THREE.Scene();
 
     const ambLight = new THREE.AmbientLight(0xffffff, 0.2);
     this.scene.add(ambLight);
-
     const spotLight = new THREE.SpotLight(0xffffff, 1);
     spotLight.position.set(0, 80, 70);
     spotLight.castShadow = true;
@@ -40,100 +37,52 @@ export class Interaction3d {
     this.renderer.setSize(this.bounds[0], this.bounds[1]);
     domEl.appendChild(this.renderer.domElement);
 
-    // CannonJS
-    this.world = new CANNON.World();
-    this.world.gravity.z = -9.8;
-
-    const bounds = {
-      top: new CANNON.Body({
-        mass: 0,
-      }),
-      bottom: new CANNON.Body({
-        mass: 0,
-      }),
-      left: new CANNON.Body({
-        mass: 0,
-      }),
-      right: new CANNON.Body({
-        mass: 0,
-      }),
-      floor: new CANNON.Body({
-        mass: 0,
-      }),
-    };
-
-    const groundShape = new CANNON.Plane();
-    bounds.top.addShape(groundShape);
-    bounds.bottom.addShape(groundShape);
-    bounds.left.addShape(groundShape);
-    bounds.right.addShape(groundShape);
-    bounds.floor.addShape(groundShape);
-
-    bounds.bottom.position.y = -this.bounds[1] / this.cameraSize;
-    bounds.bottom.quaternion.setFromAxisAngle(
-      new CANNON.Vec3(1, 0, 0),
-      -Math.PI / 2
-    );
-
-    bounds.top.position.y = this.bounds[1] / this.cameraSize;
-    bounds.top.quaternion.setFromAxisAngle(
-      new CANNON.Vec3(1, 0, 0),
-      Math.PI / 2
-    );
-
-    bounds.left.position.x = -this.bounds[0] / this.cameraSize;
-    bounds.left.quaternion.setFromAxisAngle(
-      new CANNON.Vec3(0, 1, 0),
-      Math.PI / 2
-    );
-
-    bounds.right.position.x = this.bounds[0] / this.cameraSize;
-    bounds.right.quaternion.setFromAxisAngle(
-      new CANNON.Vec3(0, 1, 0),
-      -Math.PI / 2
-    );
-
-    bounds.floor.position.z -= 5;
-
-    this.world.addBody(bounds.bottom);
-    this.world.addBody(bounds.top);
-    this.world.addBody(bounds.left);
-    this.world.addBody(bounds.right);
-    this.world.addBody(bounds.floor);
+    this.physiscs = new World(this.bounds, this.cameraSize);
 
     this.balls = [];
-
-    // Intro timeline
-    this.timeline = new TimelineLite();
-    this.isIntroFinished = false;
+    this.isIntroFinished = true;
   }
 
   init(spheresCount) {
-    document.querySelector('h1').classList.remove('hidden');
-    document.querySelector('nav ul').classList.remove('hidden');
-    this.isIntroFinished = true;
+    const offset = 40;
+
     this.addBalls(spheresCount);
+
+    TweenLite.from(this.physiscs.bounds.top.position, 1, {
+      y: `+=${offset}`,
+      ease: Power2.out,
+    });
+    TweenLite.from(this.physiscs.bounds.bottom.position, 1, {
+      y: `-=${offset}`,
+      ease: Power2.out,
+    });
+    TweenLite.from(this.physiscs.bounds.left.position, 1, {
+      x: `-=${offset}`,
+      ease: Power2.out,
+    });
+    TweenLite.from(this.physiscs.bounds.right.position, 1, {
+      x: `+=${offset}`,
+      ease: Power2.out,
+    });
   }
 
   addBalls(spheresCount) {
-    const initalPositionBounds = this.bounds.map((value) => (value -= 5));
-
     for (let i = 0; i < spheresCount; i++) {
       this.balls.push(new Sphere(Utils.paletteArray[Utils.random(0, 3)]));
     }
 
     for (let i = 0; i < this.balls.length; i++) {
       this.balls[i].body.position.x = Utils.random(
-        -initalPositionBounds[0] / this.cameraSize,
-        initalPositionBounds[0] / this.cameraSize
+        -this.bounds[0] / this.cameraSize - 40,
+        -this.bounds[0] / this.cameraSize
       );
       this.balls[i].body.position.y = Utils.random(
-        -initalPositionBounds[1] / this.cameraSize,
-        initalPositionBounds[1] / this.cameraSize
+        -this.bounds[1] / this.cameraSize - 40,
+        -this.bounds[1] / this.cameraSize
       );
 
       this.scene.add(this.balls[i].mesh);
-      this.world.add(this.balls[i].body);
+      this.physiscs.world.add(this.balls[i].body);
     }
   }
 

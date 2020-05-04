@@ -5,7 +5,7 @@
     <meta name="description" content="Web Developer Portofolio" />
     <meta name="author" content="Sergiu Lucutar" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#011936" />
+    <meta name="theme-color" content="#101110" />
     <link rel="stylesheet" href="main.scss" />
     <title>Sergiu Lucutar</title>
   </head>
@@ -24,7 +24,7 @@
       </section>
       <section id="about">
         <div>
-          <img src="assets/images/portrait.jpg" alt="portrait" />
+          <img src="assets/images/portrait.jpg" alt="portrait" defer />
         </div>
         <div>
           <h2>a short introduction</h2>
@@ -102,8 +102,12 @@
           </div>
         </div>
         <div class="work_slider">
-          <span class="show">1</span><span>2</span><span>3</span><span>4</span
-          ><span>5</span>&nbsp;&nbsp;-5
+          <span class="show"><span>1</span></span>
+          <span><span>2</span></span>
+          <span><span>3</span></span>
+          <span><span>4</span></span>
+          <span><span>5</span></span
+          >&nbsp;&nbsp;-5
         </div>
       </section>
       <section id="contact">
@@ -120,6 +124,7 @@
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
+    <script src="preload.js"></script>
     <script src="main.js"></script>
   </body>
 </html>

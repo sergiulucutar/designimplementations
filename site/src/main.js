@@ -11,7 +11,7 @@ function loop() {
 
   if (isInteractionInView(interaction)) {
     if (interaction.isIntroFinished) {
-      interaction.world.step(fixedTimeStep);
+      interaction.physiscs.world.step(fixedTimeStep);
     }
     interaction.update();
     interaction.draw();
@@ -19,7 +19,7 @@ function loop() {
 
   if (isInteractionInView(workInteraction)) {
     if (workInteraction.isIntroFinished) {
-      workInteraction.world.step(fixedTimeStep);
+      workInteraction.physiscs.world.step(fixedTimeStep);
     }
     workInteraction.update();
     workInteraction.draw();
@@ -42,7 +42,7 @@ window.onresize = () => {
   interaction.reseize();
 };
 
-window.onload = () => {
+window.startInteraction = () => {
   window.addEventListener('scroll', () => {
     wrapperEl.style = `transform: translateY(${-window.scrollY / 4}px)`;
   });
