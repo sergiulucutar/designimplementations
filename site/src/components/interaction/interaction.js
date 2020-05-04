@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { Sphere } from './objets/sphere';
 import { Utils } from '../utils';
 import { World } from './objets/world';
-import { TweenLite, Power2 } from 'gsap';
 
 export class Interaction3d {
   constructor(domEl) {
@@ -44,26 +43,7 @@ export class Interaction3d {
   }
 
   init(spheresCount) {
-    const offset = 40;
-
     this.addBalls(spheresCount);
-
-    TweenLite.from(this.physiscs.bounds.top.position, 1, {
-      y: `+=${offset}`,
-      ease: Power2.out,
-    });
-    TweenLite.from(this.physiscs.bounds.bottom.position, 1, {
-      y: `-=${offset}`,
-      ease: Power2.out,
-    });
-    TweenLite.from(this.physiscs.bounds.left.position, 1, {
-      x: `-=${offset}`,
-      ease: Power2.out,
-    });
-    TweenLite.from(this.physiscs.bounds.right.position, 1, {
-      x: `+=${offset}`,
-      ease: Power2.out,
-    });
   }
 
   addBalls(spheresCount) {
@@ -73,12 +53,12 @@ export class Interaction3d {
 
     for (let i = 0; i < this.balls.length; i++) {
       this.balls[i].body.position.x = Utils.random(
-        -this.bounds[0] / this.cameraSize - 40,
-        -this.bounds[0] / this.cameraSize
+        -this.bounds[0] / this.cameraSize,
+        this.bounds[0] / this.cameraSize
       );
       this.balls[i].body.position.y = Utils.random(
-        -this.bounds[1] / this.cameraSize - 40,
-        -this.bounds[1] / this.cameraSize
+        -this.bounds[1] / this.cameraSize,
+        this.bounds[1] / this.cameraSize
       );
 
       this.scene.add(this.balls[i].mesh);

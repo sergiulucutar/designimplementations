@@ -1,5 +1,5 @@
-import { Interaction3d } from './components/interaction/interaction';
 import { WorkInteraction } from './components/interaction/work-interaction';
+import { HomeInteraction } from './components/interaction/home-interaction';
 
 const wrapperEl = document.querySelector('.wrapper');
 
@@ -47,8 +47,10 @@ window.startInteraction = () => {
     wrapperEl.style = `transform: translateY(${-window.scrollY / 4}px)`;
   });
 
-  interaction = new Interaction3d(document.querySelector('#home .interaction'));
-  interaction.init(5);
+  interaction = new HomeInteraction(
+    document.querySelector('#home .interaction')
+  );
+  interaction.init();
 
   workInteraction = new WorkInteraction(
     document.querySelector('#work .interaction')
