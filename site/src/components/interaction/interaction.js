@@ -31,7 +31,7 @@ export class Interaction3d {
 
     this.renderer = new THREE.WebGLRenderer({
       alpha: 1,
-      antialias: true,
+      antialias: true
     });
     this.renderer.setSize(this.bounds[0], this.bounds[1]);
     domEl.appendChild(this.renderer.domElement);
@@ -78,7 +78,7 @@ export class Interaction3d {
 
   reseize() {
     this.bounds[0] = document.body.clientWidth;
-    this.bounds[1] = document.body.clientHeight;
+    this.bounds[1] = window.innerHeight;
 
     this.renderer.setSize(this.bounds[0], this.bounds[1]);
 

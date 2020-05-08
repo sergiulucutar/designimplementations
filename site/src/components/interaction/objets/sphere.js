@@ -4,19 +4,22 @@ import * as THREE from 'three';
 const size =
   (1.4 * (window.innerWidth + window.innerHeight)) / window.innerHeight;
 const sphereGeom = new THREE.SphereBufferGeometry(size, 40, 40);
+
+export const defaultBallMass = 10;
+
 export class Sphere {
   constructor(color = 0x000000) {
     this.mat = new THREE.MeshStandardMaterial({
       color,
-      roughness: 0.3,
+      roughness: 0.3
     });
     this.mesh = new THREE.Mesh(sphereGeom, this.mat);
 
     const shape = new CANNON.Sphere(size);
     this.body = new CANNON.Body({
-      mass: 10,
+      mass: defaultBallMass,
       position: new CANNON.Vec3(0, 0, 0),
-      shape,
+      shape
     });
     this.body.mass = 4 * shape.volume();
 

@@ -44,7 +44,7 @@ window.onresize = () => {
 
 window.startInteraction = () => {
   window.addEventListener('scroll', () => {
-    wrapperEl.style = `transform: translateY(${-window.scrollY / 4}px)`;
+    // wrapperEl.style = `transform: translateY(${-window.scrollY / 4}px)`;
   });
 
   interaction = new HomeInteraction(

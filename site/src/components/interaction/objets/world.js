@@ -7,20 +7,20 @@ export class World {
 
     this.bounds = {
       top: new CANNON.Body({
-        mass: 0,
+        mass: 0
       }),
       bottom: new CANNON.Body({
-        mass: 0,
+        mass: 0
       }),
       left: new CANNON.Body({
-        mass: 0,
+        mass: 0
       }),
       right: new CANNON.Body({
-        mass: 0,
+        mass: 0
       }),
       floor: new CANNON.Body({
-        mass: 0,
-      }),
+        mass: 0
+      })
     };
 
     const groundShape = new CANNON.Plane();

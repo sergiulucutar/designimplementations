@@ -28,10 +28,39 @@ body {
   overflow-x: hidden;
 }
 
+a {
+  position: relative;
+
+  display: inline-block;
+
+  color: white;
+  font-family: 'Syne Bold', sans-serif;
+  text-decoration: none;
+  vertical-align: bottom;
+
+  overflow: hidden;
+}
+
+@keyframes a_hover {
+  50% {
+    transform: translateX(100%);
+  }
+  51% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
 h1,
 h2,
 h3 {
   font-family: 'Syne Extra', sans-serif;
+}
+
+p {
+  line-height: 1.6;
 }
 
 .wrapper {
@@ -46,21 +75,45 @@ h3 {
 
     width: 100vw;
     min-height: 100vh;
+    padding: 8vmax 4vw;
 
     overflow: hidden;
-  }
-}
 
-.shape {
-  border-radius: 50%;
-  background-color: var(--c_blue);
-  z-index: -1;
+    @media only screen and (min-width: $screen) {
+      padding: 6vw 4vw;
+    }
+
+    a {
+      line-height: 1.6;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+
+        display: block;
+
+        border-bottom: 2px solid white;
+      }
+
+      &:hover {
+        &::before {
+          animation: a_hover 0.5s var(--bezier);
+        }
+      }
+    }
+  }
 }
 
 .interaction {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100vw;
+  height: 100vh;
   right: unset;
 
   z-index: 2;
@@ -69,9 +122,10 @@ h3 {
 nav {
   position: fixed;
   top: 0;
+  width: 100%;
   padding: 2vw 4vw;
 
-  width: 100%;
+  z-index: 3;
 
   ul {
     display: flex;
@@ -85,17 +139,18 @@ nav {
       font-family: 'Syne Bold', sans-serif;
       font-size: 1.8rem;
 
+      opacity: 1;
       perspective: 1000px;
+      transition: all 0.6s cubic-bezier(0.33, 1, 0.68, 1);
 
       a {
         display: inline-block;
         color: inherit;
         text-decoration: none;
 
-        opacity: 1;
         transform: rotateX(0) translateY(0);
         transform-origin: bottom;
-        transition: all 0.6s var(--bezier);
+        transition: all 0.6s cubic-bezier(0.33, 1, 0.68, 1);
       }
 
       &:nth-of-type(2) a {
@@ -108,14 +163,19 @@ nav {
     }
 
     &.hidden {
-      a {
+      li {
         opacity: 0;
-        transform: rotateX(90deg) translateY(-100%);
+        transform: translateY(-100%);
+        a {
+          transform: rotateX(90deg);
+        }
       }
     }
   }
 
   @media only screen and (min-width: $phone) {
+    width: unset;
+
     right: 0;
     padding: 2vw;
 
@@ -144,24 +204,22 @@ nav {
     align-items: center;
     justify-content: center;
 
-    font-size: 3rem;
-
-    overflow: hidden;
-    perspective: 1000px;
+    font-size: 8vw;
     transform: translateY(-5%);
 
     @media only screen and (min-width: $screen) {
-      font-size: 6rem;
+      font-size: 8rem;
     }
 
-    span {
-      display: block;
+    > span {
+      display: inline-block;
 
       opacity: 1;
-      transform: rotate(0) translateY(0);
-      transform-origin: bottom;
+      perspective: 1000px;
 
-      transition: all 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+      .char {
+        display: inline-block;
+      }
 
       &:nth-child(2) {
         transition-delay: 0.1s;
@@ -176,16 +234,11 @@ nav {
         transform-origin: top;
         transition-delay: 0.6s;
       }
-    }
 
-    &.hidden {
       span {
-        opacity: 0;
-        transform: translateY(-100%) rotateX(90deg);
+        opacity: 1;
 
-        &:last-child {
-          transform: translateY(100%) rotateX(-90deg);
-        }
+        transform-origin: bottom;
       }
     }
   }
@@ -214,7 +267,6 @@ nav {
 
 #about {
   display: block;
-  padding: 12vh 4vw;
 
   background-color: var(--c_blue);
 
@@ -232,23 +284,26 @@ nav {
 
       font-family: 'Syne', sans-serif;
       font-size: 1.8rem;
+      vertical-align: top;
 
       h2 {
-        font-size: 3rem;
-        margin-bottom: 40px;
+        font-size: 6.8vw;
+        margin: 20px 0;
       }
 
       p {
-        line-height: 1.68;
-        margin-bottom: 20px;
+        margin: 14px 0;
 
         &:first-of-type {
           font-size: 2.4rem;
         }
       }
 
+      h3 {
+        margin-top: 40px;
+      }
+
       ul {
-        margin: 10px;
         list-style: disc;
 
         li {
@@ -263,14 +318,10 @@ nav {
     grid-template-columns: 40% 40% auto;
     grid-gap: 4vw;
 
-    padding: 1vh 4vw;
-
     > div {
-      padding: 20% 0;
-
       &:nth-of-type(2) {
         h2 {
-          font-size: 6rem;
+          font-size: 3vw;
         }
       }
     }
@@ -297,7 +348,7 @@ nav {
     font-family: 'Syne', sans-serif;
 
     font-size: 1.6rem;
-    line-height: 1.68;
+    line-height: 1.6;
 
     @media only screen and (min-width: $screen) {
       grid-column: 1 / span 2;
@@ -327,14 +378,17 @@ nav {
       position: absolute;
 
       font-family: 'Syne Extra', sans-serif;
-      font-size: 3.6rem;
+      font-size: 10vw;
       text-align: left;
-      word-break: break-all;
 
       opacity: 0;
       perspective: 1000px;
       transform: translateY(-100%);
       transition: all 1s cubic-bezier(0.33, 1, 0.68, 1);
+
+      @media only screen and (min-width: $screen) {
+        font-size: 2.8vw;
+      }
 
       span {
         display: inline-block;
@@ -374,7 +428,7 @@ nav {
 
   .description {
     grid-row: 5;
-    grid-column: 2 / span 2;
+    grid-column: 1 / span 2;
 
     position: relative;
     display: flex;
@@ -383,7 +437,7 @@ nav {
 
     margin-top: 20px;
 
-    font-size: 1.6rem;
+    font-size: 1.8rem;
 
     div {
       position: absolute;
@@ -402,7 +456,8 @@ nav {
         align-self: flex-end;
 
         margin-top: 10px;
-        color: white;
+
+        z-index: 4;
       }
     }
 
@@ -425,20 +480,18 @@ nav {
 
   .work_slider {
     grid-row: -2;
-    grid-column: 1;
+    grid-column: 3;
 
     position: relative;
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
 
-    font-size: 6rem;
+    font-size: 7rem;
 
     @media only screen and (min-width: $screen) {
       grid-row: 2;
       grid-column: 2;
-
-      font-size: 7rem;
     }
 
     > span {
@@ -480,23 +533,40 @@ nav {
   }
 }
 
-#contact {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.contact {
+  display: grid;
+
+  padding: 8vmax 4vw;
 
   background-color: var(--c_blue);
 
-  font-size: 3rem;
-
-  span {
-    display: block;
-    font-family: 'Syne Extra', sans-serif;
+  @media only screen and (min-width: $screen) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
-  a {
-    font-family: 'Syne';
 
-    color: white;
+  &_content {
+    grid-row: 1;
+    grid-column: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    font-size: 1.8rem;
+
+    h2 {
+      font-size: 2.8rem;
+
+      margin-bottom: 2vmax;
+
+      @media only screen and (min-width: $screen) {
+        font-size: 6rem;
+      }
+    }
+
+    p {
+      margin-top: 1vmax;
+    }
   }
 }
