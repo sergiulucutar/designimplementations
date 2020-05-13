@@ -5,14 +5,23 @@
     <meta name="description" content="Web Developer Portofolio" />
     <meta name="author" content="Sergiu Lucutar" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#101110" />
+    <meta name="theme-color" content="#191716" />
     <link rel="stylesheet" href="main.scss" />
+    <link
+      rel="stylesheet"
+      href="../node_modules/locomotive-scroll/dist/locomotive-scroll.min.css"
+    />
     <title>Sergiu Lucutar</title>
   </head>
   <body>
-    <div class="wrapper">
-      <section id="home">
-        <div class="interaction"></div>
+    <div class="wrapper" data-scroll-container>
+      <section id="home" data-scroll-section>
+        <div
+          class="interaction"
+          data-scroll
+          data-scroll-call="interact3D"
+          data-scroll-repeat
+        ></div>
         <h1 class="hidden">
           <span
             ><span class="char">S</span><span class="char">E</span
@@ -37,7 +46,7 @@
           <div class="scroll-indicator_line"></div>
         </div> -->
       </section>
-      <section id="about">
+      <section id="about" data-scroll-section>
         <div>
           <img src="assets/images/portrait.jpg" alt="portrait" defer />
         </div>
@@ -63,70 +72,74 @@
           <h3>Others</h3>
           <p>
             Drawing. I started 3 years ago as a hobbie. I’m still working on it,
-            but, hey... <a href="http://">check it out</a>. You can be the judge
-            of that. &#128513;
+            but, hey... <a href="http://">check it out</a>. I'm sure you will
+            think of them as no less than masterpieces. &#128513;
           </p>
-          <p>Fiction, movies and books &#128125; &#128302;</p>
+          <p>Fiction in movies and books &#128125; &#128302;</p>
         </div>
       </section>
-      <section id="work">
+      <section id="work" class="work" data-scroll-section>
         <article>
           These implementations are some experiments that I did. Some don't have
           a full implemneted functionality. The purpuse is to familiarize myself
           with different techiologies and aquire knowledge in UI design or
           creating work that has require a more creative approch.
         </article>
-        <div class="interaction"></div>
         <ul>
-          <li class="show"><span>GRADIENT</span></li>
-          <li><span>BEER COMPANY</span></li>
-          <li><span>LEAPING STAR</span></li>
-          <li><span>DIAGONAL</span></li>
-          <li><span>FASHION X</span></li>
+          <li>
+            <a href="" data-name="GRADIENT">GRADIENT</a>
+            <div class="image_wrapper">
+              <div
+                class="image"
+                style="background-image: url('assets/images/portrait.jpg');"
+              ></div>
+            </div>
+          </li>
+          <li>
+            <a href="" data-name="BEER COMPANY">BEER COMPANY</a>
+            <div class="image_wrapper">
+              <div
+                class="image"
+                style="background-image: url('assets/images/portrait.jpg');"
+              ></div>
+            </div>
+          </li>
+          <li>
+            <a href="" data-name="LEAPING STAR">LEAPING STAR</a>
+            <div class="image_wrapper">
+              <div
+                class="image"
+                style="background-image: url('assets/images/portrait.jpg');"
+              ></div>
+            </div>
+          </li>
+          <li>
+            <a href="" data-name="DIAGONAL">DIAGONAL</a>
+            <div class="image_wrapper">
+              <div
+                class="image"
+                style="background-image: url('assets/images/portrait.jpg');"
+              ></div>
+            </div>
+          </li>
+          <li>
+            <a href="" data-name="FASHION X">FASHION X</a>
+            <div class="image_wrapper">
+              <div
+                class="image"
+                style="background-image: url('assets/images/portrait.jpg');"
+              ></div>
+            </div>
+          </li>
         </ul>
-        <div class="description">
-          <div data-id="0" class="show">
-            <p>
-              Horizontal parallax slider, adapting a design from Dribble.
-            </p>
-            <a href="">Lanch Project</a>
-          </div>
-          <div data-id="1">
-            <p>
-              A webside design for a beer company based on a beer thinghy that I
-              liked.
-            </p>
-            <a href="">Lanch Project</a>
-          </div>
-          <div data-id="2">
-            <p>
-              A short game with plain canvas js
-            </p>
-            <a href="">Lanch Project</a>
-          </div>
-          <div data-id="3">
-            <p>
-              A layput design for a fashion publication.
-            </p>
-            <a href="">Lanch Project</a>
-          </div>
-          <div data-id="4">
-            <p>
-              Some Dribble design wabste implementation.
-            </p>
-            <a href="">Lanch Project</a>
-          </div>
-        </div>
-        <div class="work_slider">
-          <span class="show"><span>1</span></span>
-          <span><span>2</span></span>
-          <span><span>3</span></span>
-          <span><span>4</span></span>
-          <span><span>5</span></span
-          >&nbsp;&nbsp;-5
-        </div>
       </section>
-      <section id="contact" class="contact">
+      <section id="contact" class="contact" data-scroll-section>
+        <div
+          class="interaction"
+          data-scroll
+          data-scroll-call="interaction-contact"
+          data-scroll-repeat
+        ></div>
         <section class="contact_content">
           <div>
             <h2>GET IN TOUCH</h2>
@@ -140,7 +153,7 @@
               on delivering creative visual experiences.
             </p>
           </div>
-          <footer>2020, Sergiu Lucuțar</footer>
+          <footer>2020, SERGIU LUCUȚAR</footer>
         </section>
       </section>
     </div>

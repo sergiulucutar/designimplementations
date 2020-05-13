@@ -5,7 +5,7 @@ import { TimelineLite, Elastic, TweenLite } from 'gsap';
 import { ReflectiveSphere, Sphere } from './objets/sphere';
 
 const defaultPivot = new CANNON.Vec3(0, 0, 0);
-export class HomeInteraction extends Interaction3d {
+export class ContactInteraction extends Interaction3d {
   constructor(domEl) {
     super(domEl);
     this.cubCamera = null;
@@ -25,9 +25,6 @@ export class HomeInteraction extends Interaction3d {
   init() {
     this.createReflextionText();
 
-    this.addSphere(new Sphere());
-    this.addSphere(new Sphere());
-    this.addSphere(new Sphere());
     this.addSphere(new ReflectiveSphere());
     // this.addSphere(new ReflectiveSphere());
 
@@ -125,20 +122,30 @@ export class HomeInteraction extends Interaction3d {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
-    const canvasSize = 2048;
+    const canvasSize = 1024;
     canvas.width = canvasSize;
     canvas.height = canvasSize;
 
-    const fontSize = 80;
+    this.spotLight = null;
+
+    const fontSize = 40;
     ctx.font = `${fontSize}px Syne Extra`;
     ctx.textAlign = 'center';
     ctx.fillStyle = '#e0e2db';
-    ctx.fillText('SERGIU', canvasSize / 2, canvasSize / 2 - fontSize);
-    ctx.fillText('LUCUȚAR', canvasSize / 2, canvasSize / 2);
-    ctx.fillStyle = '#e0e2db';
-    ctx.fillText('DEVELOPER', canvasSize / 2, canvasSize / 2 + fontSize);
 
-    // document.body.appendChild(canvas);
+    const gap = fontSize * 4;
+    let parity = 0;
+    for (let i = 0; i < canvasSize; i += gap) {
+      let j = 0;
+      if (parity % 2 !== 0) {
+        j = gap / 4;
+      }
+
+      for (; j < canvasSize; j += gap / 2) {
+        ctx.fillText('Bye', i, j);
+      }
+      parity++;
+    }
 
     const planeGeom = new THREE.PlaneGeometry(
       (this.bounds[0] / this.cameraSize) * 2,

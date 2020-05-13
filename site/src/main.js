@@ -1,61 +1,118 @@
-import { WorkInteraction } from './components/interaction/work-interaction';
 import { HomeInteraction } from './components/interaction/home-interaction';
+import LocomotiveScroll from 'locomotive-scroll';
+import { TweenLite, Elastic } from 'gsap';
+import { ContactInteraction } from './components/interaction/contact-interaction';
 
-const wrapperEl = document.querySelector('.wrapper');
+// let interaction, homeEl, contactEl;
+// let isInteractionInView = true;
 
-let interaction, workInteraction;
-let boundingBox;
+const homeInteraction = {
+  el: null,
+  isInView: false,
+  interactionObj: null
+};
+const contactInteraction = {
+  el: null,
+  isInView: false,
+  interactionObj: null,
+  scrollValue: 'interaction-contact'
+};
+
 const fixedTimeStep = 1.0 / 60.0;
 function loop() {
   requestAnimationFrame(loop);
 
-  if (isInteractionInView(interaction)) {
-    if (interaction.isIntroFinished) {
-      interaction.physiscs.world.step(fixedTimeStep);
-    }
-    interaction.update();
-    interaction.draw();
+  if (homeInteraction.isInView) {
+    homeInteraction.interactionObj.physiscs.world.step(fixedTimeStep);
+    homeInteraction.interactionObj.update();
+    homeInteraction.interactionObj.draw();
   }
 
-  if (isInteractionInView(workInteraction)) {
-    if (workInteraction.isIntroFinished) {
-      workInteraction.physiscs.world.step(fixedTimeStep);
-    }
-    workInteraction.update();
-    workInteraction.draw();
+  if (contactInteraction.isInView) {
+    contactInteraction.interactionObj.physiscs.world.step(fixedTimeStep);
+    contactInteraction.interactionObj.update();
+    contactInteraction.interactionObj.draw();
   }
-}
-
-function isInteractionInView(interaction) {
-  boundingBox = interaction.domEl.getBoundingClientRect();
-  return (
-    (boundingBox.top + window.scrollY >= window.pageYOffset &&
-      boundingBox.top + window.scrollY <=
-        window.pageYOffset + window.innerHeight) ||
-    (boundingBox.bottom + window.scrollY > window.pageYOffset &&
-      boundingBox.bottom + window.scrollY <
-        window.pageYOffset + window.innerHeight)
-  );
 }
 
 window.onresize = () => {
-  interaction.reseize();
+  homeInteraction.interactionObj.reseize();
+};
+
+const SCROLL = {
+  values: {
+    interact3D: 'interact3D'
+  },
+  ways: {
+    enter: 'enter',
+    leave: 'leave'
+  }
 };
 
 window.startInteraction = () => {
-  window.addEventListener('scroll', () => {
-    // wrapperEl.style = `transform: translateY(${-window.scrollY / 4}px)`;
+  const scroll = new LocomotiveScroll({
+    el: document.querySelector('[data-scroll-container]'),
+    smooth: true
   });
 
-  interaction = new HomeInteraction(
-    document.querySelector('#home .interaction')
-  );
-  interaction.init();
+  scroll.on('call', (value, way, obj) => {
+    if (value === SCROLL.values.interact3D) {
+      if (way === SCROLL.ways.enter) {
+        homeInteraction.isInView = true;
+      } else {
+        homeInteraction.isInView = false;
+      }
+    }
 
-  workInteraction = new WorkInteraction(
-    document.querySelector('#work .interaction')
+    if (value === contactInteraction.scrollValue) {
+      if (way === SCROLL.ways.enter) {
+        contactInteraction.isInView = true;
+      } else {
+        contactInteraction.isInView = false;
+      }
+    }
+  });
+
+  [...document.querySelectorAll('.work li')].forEach(el => {
+    el.addEventListener('mouseenter', setupSelectedImage.bind(this));
+  });
+
+  [...document.querySelectorAll('.work li')].forEach(el => {
+    el.addEventListener('mousemove', updateImagePosition.bind(this));
+  });
+
+  // Home interaction start
+  homeInteraction.el = document.querySelector('#home');
+  homeInteraction.interactionObj = new HomeInteraction(
+    homeInteraction.el.querySelector('#home .interaction')
   );
-  workInteraction.init(3);
+  homeInteraction.interactionObj.init();
+
+  // Contact interaction start
+  contactInteraction.el = document.querySelector('#contact');
+  contactInteraction.interactionObj = new ContactInteraction(
+    contactInteraction.el.querySelector('#contact .interaction')
+  );
+  contactInteraction.interactionObj.init();
 
   loop();
 };
+
+let hoveredElImage;
+
+function setupSelectedImage(event) {
+  // if (hoveredElImage) {
+  //   hoveredElImage.querySelector('.image').style['transform'] = `scale(1)`;
+  // }
+  hoveredElImage = event.currentTarget.querySelector('.image_wrapper');
+  TweenLite.from(hoveredElImage.querySelector('.image'), 0.6, {
+    scale: 0,
+    ease: Elastic.easeOut
+  });
+}
+
+function updateImagePosition(event) {
+  hoveredElImage.style['transform'] = `translate3d(${
+    event.offsetX - hoveredElImage.offsetWidth / 2
+  }px, ${event.offsetY - hoveredElImage.offsetHeight / 2}px, 0)`;
+}
