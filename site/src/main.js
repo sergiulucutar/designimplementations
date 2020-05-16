@@ -49,30 +49,30 @@ const SCROLL = {
   }
 };
 
+const scroll = new LocomotiveScroll({
+  el: document.querySelector('[data-scroll-container]'),
+  smooth: true
+});
+
+scroll.on('call', (value, way, obj) => {
+  if (value === SCROLL.values.interact3D) {
+    if (way === SCROLL.ways.enter) {
+      homeInteraction.isInView = true;
+    } else {
+      homeInteraction.isInView = false;
+    }
+  }
+
+  if (value === contactInteraction.scrollValue) {
+    if (way === SCROLL.ways.enter) {
+      contactInteraction.isInView = true;
+    } else {
+      contactInteraction.isInView = false;
+    }
+  }
+});
+
 window.startInteraction = () => {
-  const scroll = new LocomotiveScroll({
-    el: document.querySelector('[data-scroll-container]'),
-    smooth: true
-  });
-
-  scroll.on('call', (value, way, obj) => {
-    if (value === SCROLL.values.interact3D) {
-      if (way === SCROLL.ways.enter) {
-        homeInteraction.isInView = true;
-      } else {
-        homeInteraction.isInView = false;
-      }
-    }
-
-    if (value === contactInteraction.scrollValue) {
-      if (way === SCROLL.ways.enter) {
-        contactInteraction.isInView = true;
-      } else {
-        contactInteraction.isInView = false;
-      }
-    }
-  });
-
   [...document.querySelectorAll('.work li')].forEach(el => {
     el.addEventListener('mouseenter', setupSelectedImage.bind(this));
   });
@@ -101,9 +101,6 @@ window.startInteraction = () => {
 let hoveredElImage;
 
 function setupSelectedImage(event) {
-  // if (hoveredElImage) {
-  //   hoveredElImage.querySelector('.image').style['transform'] = `scale(1)`;
-  // }
   hoveredElImage = event.currentTarget.querySelector('.image_wrapper');
   TweenLite.from(hoveredElImage.querySelector('.image'), 0.6, {
     scale: 0,

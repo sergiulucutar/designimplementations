@@ -142,7 +142,7 @@ export class ContactInteraction extends Interaction3d {
       }
 
       for (; j < canvasSize; j += gap / 2) {
-        ctx.fillText('Bye', i, j);
+        ctx.fillText('BYE', i, j);
       }
       parity++;
     }

@@ -44,14 +44,15 @@ void main() {
 }
 `;
 const size =
-  (1.8 * (window.innerWidth + window.innerHeight)) / window.innerHeight;
-const sphereGeom = new THREE.SphereBufferGeometry(size, 40, 40);
+  (2 * (window.innerWidth + window.innerHeight)) / window.innerHeight;
+const sphereGeom = new THREE.TetrahedronBufferGeometry(size, 0);
 const sphereMat = new THREE.MeshStandardMaterial({
   color: Utils.palette.purple,
   roughness: 0.5
 });
 export const defaultBallMass = 10;
-const shape = new CANNON.Sphere(size);
+const shape = new CANNON.Sphere(size / 1.2);
+// const shape = new CANNON.Cylinder(0, size, size, 3);
 
 class SphereProto {
   constructor() {

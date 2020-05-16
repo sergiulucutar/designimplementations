@@ -27,7 +27,7 @@ export class HomeInteraction extends Interaction3d {
 
     this.addSphere(new Sphere());
     this.addSphere(new Sphere());
-    this.addSphere(new Sphere());
+    // this.addSphere(new Sphere());
     this.addSphere(new ReflectiveSphere());
     // this.addSphere(new ReflectiveSphere());
 
@@ -130,12 +130,19 @@ export class HomeInteraction extends Interaction3d {
     canvas.height = canvasSize;
 
     const fontSize = 80;
+    ctx.fillStyle = '#e0e2db';
     ctx.font = `${fontSize}px Syne Extra`;
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#e0e2db';
+
+    // const gap = canvasSize / 20;
+    // for (let i = 0; i < canvasSize; i += gap) {
+    //   for (let j = 0; j < canvasSize; j += gap) {
+    //     ctx.fillText('|', i, j);
+    //   }
+    // }
+
     ctx.fillText('SERGIU', canvasSize / 2, canvasSize / 2 - fontSize);
     ctx.fillText('LUCUȚAR', canvasSize / 2, canvasSize / 2);
-    ctx.fillStyle = '#e0e2db';
     ctx.fillText('DEVELOPER', canvasSize / 2, canvasSize / 2 + fontSize);
 
     // document.body.appendChild(canvas);
@@ -150,7 +157,7 @@ export class HomeInteraction extends Interaction3d {
     });
     const plane = new THREE.Mesh(planeGeom, mat);
     plane.scale.x = -1;
-    plane.position.z = -60;
+    plane.position.z = -50;
 
     this.scene.add(plane);
   }
