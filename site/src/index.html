@@ -14,15 +14,36 @@
     <title>Sergiu Lucutar</title>
   </head>
   <body>
+    <div class="loader">
+      <div class="loader_text loader_text-primary">
+        <span>L</span>
+        <span>O</span>
+        <span>A</span>
+        <span>D</span>
+        <span>I</span>
+        <span>N</span>
+        <span>G</span>
+      </div>
+      <div class="loader_text loader_text-secondary">
+        <span>L</span>
+        <span>O</span>
+        <span>A</span>
+        <span>D</span>
+        <span>I</span>
+        <span>N</span>
+        <span>G</span>
+      </div>
+    </div>
     <div class="wrapper" data-scroll-container>
       <section id="home" data-scroll-section>
         <div
           class="interaction"
           data-scroll
+          data-scroll-speed="-2"
           data-scroll-call="interact3D"
           data-scroll-repeat
         ></div>
-        <h1 class="hidden">
+        <h1 class="hidden" data-scroll data-scroll-speed="-3">
           <span
             ><span class="char">S</span><span class="char">E</span
             ><span class="char">R</span><span class="char">G</span
@@ -48,7 +69,13 @@
       </section>
       <section id="about" data-scroll-section>
         <div>
-          <img src="assets/images/portrait.jpg" alt="portrait" defer />
+          <img
+            data-scroll
+            data-scroll-speed="-2"
+            src="assets/images/portrait.jpg"
+            alt="portrait"
+            defer
+          />
         </div>
         <div>
           <h2>A SHORT INTRODUCTION</h2>
@@ -68,12 +95,17 @@
             <li>ThreeJS, Canvas API in general</li>
             <li>Adding more interaction</li>
           </ul>
-          <p><a href="">CodePen</a> user on a regular basis.</p>
+          <p>
+            <a href="https://codepen.io/sergiulucutar">CodePen</a> user on a
+            regular basis.
+          </p>
           <h3>Others</h3>
           <p>
             Drawing. I started 3 years ago as a hobbie. I’m still working on it,
-            but, hey... <a href="http://">check it out</a>. I'm sure you will
-            think of them as no less than masterpieces. &#128513;
+            but, hey...
+            <a href="https://www.instagram.com/sergiulucutar">check it out</a>.
+            I'm sure you will think of them as no less than masterpieces.
+            &#128513;
           </p>
           <p>Fiction in movies and books &#128125; &#128302;</p>
         </div>
@@ -85,83 +117,117 @@
           with different techiologies and aquire knowledge in UI design or
           creating work that has require a more creative approch.
         </article>
+        <h2>SOME SKETCHES</h2>
         <ul>
           <li>
-            <a href="" data-name="GRADIENT">GRADIENT</a>
-            <div class="image_wrapper">
-              <div
-                class="image"
-                style="background-image: url('assets/images/portrait.jpg');"
-              ></div>
+            <span class="project_index">01</span>
+            <div class="project">
+              <a href="" data-name="GRADIENT">GRADIENT</a>
+              <div class="project_image_wrapper">
+                <div
+                  class="project_image"
+                  style="background-image: url('assets/images/portrait.jpg');"
+                ></div>
+              </div>
             </div>
           </li>
           <li>
-            <a href="" data-name="BEER COMPANY">BEER COMPANY</a>
-            <div class="image_wrapper">
-              <div
-                class="image"
-                style="background-image: url('assets/images/portrait.jpg');"
-              ></div>
+            <span class="project_index">02</span>
+            <div class="project">
+              <a href="" data-name="BEER COMPANY">BEER COMPANY</a>
+              <div class="project_image_wrapper">
+                <div
+                  class="project_image"
+                  style="background-image: url('assets/images/portrait.jpg');"
+                ></div>
+              </div>
             </div>
           </li>
           <li>
-            <a href="" data-name="LEAPING STAR">LEAPING STAR</a>
-            <div class="image_wrapper">
-              <div
-                class="image"
-                style="background-image: url('assets/images/portrait.jpg');"
-              ></div>
+            <span class="project_index">03</span>
+            <div class="project">
+              <a href="" data-name="LEAPING STAR">LEAPING STAR</a>
+              <div class="project_image_wrapper">
+                <div
+                  class="project_image"
+                  style="background-image: url('assets/images/portrait.jpg');"
+                ></div>
+              </div>
             </div>
           </li>
           <li>
-            <a href="" data-name="DIAGONAL">DIAGONAL</a>
-            <div class="image_wrapper">
-              <div
-                class="image"
-                style="background-image: url('assets/images/portrait.jpg');"
-              ></div>
+            <span class="project_index">04</span>
+            <div class="project">
+              <a href="" data-name="DIAGONAL">DIAGONAL</a>
+              <div class="project_image_wrapper">
+                <div
+                  class="project_image"
+                  style="background-image: url('assets/images/portrait.jpg');"
+                ></div>
+              </div>
             </div>
           </li>
           <li>
-            <a href="" data-name="FASHION X">FASHION X</a>
-            <div class="image_wrapper">
-              <div
-                class="image"
-                style="background-image: url('assets/images/portrait.jpg');"
-              ></div>
+            <span class="project_index">05</span>
+            <div class="project">
+              <a href="" data-name="FASHION X">FASHION X</a>
+              <div class="project_image_wrapper">
+                <div
+                  class="project_image"
+                  style="background-image: url('assets/images/portrait.jpg');"
+                ></div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <span class="project_index">...more on </span>
+            <div class="project">
+              <a href="https://codepen.io/sergiulucutar" data-name="CODEPEN"
+                >CODEPEN</a
+              >
+              <div class="project_image_wrapper">
+                <div
+                  class="project_image"
+                  style="background-image: url('assets/images/portrait.jpg');"
+                ></div>
+              </div>
             </div>
           </li>
         </ul>
       </section>
       <section id="contact" class="contact" data-scroll-section>
+        <section class="contact_content">
+          <div>
+            <h2>GET IN TOUCH</h2>
+            <ul>
+              <li><a href="mailto:sergiu.lucutar@gmail.com">Email</a></li>
+              <li>
+                <a href="https://www.linkedin.com/in/sergiu-lucutar-76ab1114b"
+                  >LinkedIn</a
+                >
+              </li>
+              <li><a href="https://twitter.com/sergiulucutar">Twitter</a></li>
+            </ul>
+            <p>
+              I'm currently lookng for a full time position in a agency that
+              targets visually interesting projects.
+            </p>
+          </div>
+          <footer>2020, SERGIU LUCUȚAR</footer>
+        </section>
         <div
           class="interaction"
           data-scroll
           data-scroll-call="interaction-contact"
           data-scroll-repeat
         ></div>
-        <section class="contact_content">
-          <div>
-            <h2>GET IN TOUCH</h2>
-            <p>
-              Send an email at <a href="">sergiu.lucutar@gmail.com</a>. Checkout
-              my <a href="http://">Linkedin</a> and
-              <a href="http://">Twitter</a>.
-            </p>
-            <p>
-              I'm currently looking for a full-time job in a agency that focuses
-              on delivering creative visual experiences.
-            </p>
-          </div>
-          <footer>2020, SERGIU LUCUȚAR</footer>
-        </section>
       </section>
     </div>
     <nav>
       <ul class="hidden">
-        <li><a href="#about">About</a></li>
-        <li><a href="#work">Work</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li onclick="scrollToSection('about')">ABOUT</li>
+        <li onclick="scrollToSection('work')">WORK</li>
+        <li onclick="scrollToSection('contact')">CONTACT</li>
       </ul>
     </nav>
     <script src="preload.js"></script>

@@ -36,7 +36,7 @@ void main() {
   vec4 reflectedColor = textureCube(cube, vec3(-vReflect.x, vReflect.yz));
   vec4 refractedColor = vec4(1.0);
 
-  refractedColor.r = textureCube( cube, vec3( -vRefract[0].x, vRefract[0].yz ) ).g;
+  refractedColor.r = textureCube( cube, vec3( -vRefract[0].x, vRefract[0].yz ) ).r;
   refractedColor.g = textureCube( cube, vec3( -vRefract[1].x, vRefract[1].yz ) ).g;
   refractedColor.b = textureCube( cube, vec3( -vRefract[2].x, vRefract[2].yz ) ).b;
 
@@ -44,8 +44,9 @@ void main() {
 }
 `;
 const size =
-  (2 * (window.innerWidth + window.innerHeight)) / window.innerHeight;
-const sphereGeom = new THREE.TetrahedronBufferGeometry(size, 0);
+  (2 * (window.innerWidth + window.innerHeight)) /
+  Math.min(window.innerHeight, window.innerWidth);
+const sphereGeom = new THREE.BoxBufferGeometry(size, size, size);
 const sphereMat = new THREE.MeshStandardMaterial({
   color: Utils.palette.purple,
   roughness: 0.5

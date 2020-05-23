@@ -9,7 +9,8 @@ import { ContactInteraction } from './components/interaction/contact-interaction
 const homeInteraction = {
   el: null,
   isInView: false,
-  interactionObj: null
+  interactionObj: null,
+  scrollValue: 'interact3D'
 };
 const contactInteraction = {
   el: null,
@@ -35,14 +36,7 @@ function loop() {
   }
 }
 
-window.onresize = () => {
-  homeInteraction.interactionObj.reseize();
-};
-
 const SCROLL = {
-  values: {
-    interact3D: 'interact3D'
-  },
   ways: {
     enter: 'enter',
     leave: 'leave'
@@ -55,7 +49,7 @@ const scroll = new LocomotiveScroll({
 });
 
 scroll.on('call', (value, way, obj) => {
-  if (value === SCROLL.values.interact3D) {
+  if (value === homeInteraction.scrollValue) {
     if (way === SCROLL.ways.enter) {
       homeInteraction.isInView = true;
     } else {
@@ -73,11 +67,8 @@ scroll.on('call', (value, way, obj) => {
 });
 
 window.startInteraction = () => {
-  [...document.querySelectorAll('.work li')].forEach(el => {
+  [...document.querySelectorAll('.work .project')].forEach(el => {
     el.addEventListener('mouseenter', setupSelectedImage.bind(this));
-  });
-
-  [...document.querySelectorAll('.work li')].forEach(el => {
     el.addEventListener('mousemove', updateImagePosition.bind(this));
   });
 
@@ -99,17 +90,23 @@ window.startInteraction = () => {
 };
 
 let hoveredElImage;
-
 function setupSelectedImage(event) {
-  hoveredElImage = event.currentTarget.querySelector('.image_wrapper');
-  TweenLite.from(hoveredElImage.querySelector('.image'), 0.6, {
+  hoveredElImage = event.currentTarget.querySelector('.project_image_wrapper');
+  TweenLite.from(hoveredElImage.querySelector('.project_image'), 0.6, {
     scale: 0,
     ease: Elastic.easeOut
   });
 }
-
 function updateImagePosition(event) {
   hoveredElImage.style['transform'] = `translate3d(${
     event.offsetX - hoveredElImage.offsetWidth / 2
   }px, ${event.offsetY - hoveredElImage.offsetHeight / 2}px, 0)`;
 }
+
+window.scrollToSection = id => {
+  scroll.scrollTo(document.getElementById(id));
+};
+
+window.onresize = () => {
+  homeInteraction.interactionObj.reseize();
+};
