@@ -5,7 +5,14 @@
       cy="0"
       :r="this.r"
       fill="white"
-      :style="{transform: 'translate3d(' + this.cursorPosition.x + 'px, ' + this.cursorPosition.y + 'px, 0)'}"
+      :style="{
+        transform:
+          'translate3d(' +
+          this.cursorPosition.x +
+          'px, ' +
+          this.cursorPosition.y +
+          'px, 0)'
+      }"
     />
     <circle
       cx="0"
@@ -13,7 +20,14 @@
       :r="this.r"
       fill="transparent"
       stroke="white"
-      :style="{transform: 'translate3d(' + mirrotCursorPositionX + 'px, ' + this.cursorPosition.y + 'px, 0)'}"
+      :style="{
+        transform:
+          'translate3d(' +
+          mirrotCursorPositionX +
+          'px, ' +
+          this.cursorPosition.y +
+          'px, 0)'
+      }"
     />
   </svg>
 </template>
@@ -23,10 +37,10 @@ export default {
   data() {
     return {
       cursorPosition: {
-        x: 100,
-        y: 100
+        x: 0,
+        y: 0
       },
-      r: 10,
+      r: 0,
       hovered: false,
       mirrotCursorPositionX: window.innerWidth
     };

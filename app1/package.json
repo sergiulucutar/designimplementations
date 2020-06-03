@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "parcel serve watch src/index.html",
+    "build": "parcel build src/index.html --public-url /diagonal/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "assetsPath": "src/assets",
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -19,6 +21,7 @@
     "eslint": "^6.1.0",
     "parcel": "^1.12.3",
     "parcel-bundler": "^1.12.3",
+    "parcel-plugin-asset-copier": "^1.0.0",
     "sass": "^1.22.9"
   }
 }

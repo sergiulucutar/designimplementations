@@ -15,4 +15,8 @@ export class Utils {
     text.forEach(c => (html += `<span class="char">${c}</span>`));
     return html;
   }
+
+  static randomSign() {
+    return Math.sign(Math.random() - 0.5);
+  }
 }

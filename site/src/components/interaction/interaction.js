@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon';
 import { World } from './objets/world';
-import { Utils } from '../utils';
 import { ReflectiveSphere } from './objets/sphere';
 
-import { TimelineLite, Elastic, TweenLite } from 'gsap';
+import { TimelineLite, Elastic, TweenMax } from 'gsap';
+import { Utils } from '../utils';
+import { Power2 } from 'gsap/gsap-core';
 
 const defaultPivot = new CANNON.Vec3(0, 0, 0);
 const defaultPivotShape = new CANNON.Sphere(0.1);
@@ -58,17 +59,6 @@ export class Interaction3d {
 
   addSphere(sphere) {
     this.spheres.push(sphere);
-
-    sphere.body.position.x = Utils.random(
-      -this.bounds[0] / this.cameraSize,
-      this.bounds[0] / this.cameraSize
-    );
-
-    sphere.body.position.y = Utils.random(
-      -this.bounds[1] / this.cameraSize,
-      this.bounds[1] / this.cameraSize
-    );
-
     this.scene.add(sphere.mesh);
     this.physiscs.world.add(sphere.body);
 
@@ -104,18 +94,25 @@ export class Interaction3d {
           x: 0.01,
           y: 0.01,
           z: 0.01,
-          ease: Elastic.easeOut,
-          onStart: () => (sphere.mesh.visible = true)
+          ease: Power2.easeOut,
+          onStart: () => {
+            sphere.body.torque = new CANNON.Vec3(
+              Utils.randomSign() * Utils.random(5, 10) * 2000,
+              Utils.randomSign() * Utils.random(5, 10) * 2000,
+              Utils.randomSign() * Utils.random(5, 10) * 2000
+            );
+            sphere.mesh.visible = true;
+          }
         },
-        index * 0.2
+        index * 0.3
       );
     });
   }
 
   init() {
-    this.domEl.addEventListener('touchstart', event => {
-      this.selectSphere(event.touches[0]);
-    });
+    // this.domEl.addEventListener('touchstart', event => {
+    //   this.selectSphere(event.touches[0]);
+    // });
 
     this.domEl.addEventListener('mousedown', this.selectSphere.bind(this));
     this.domEl.addEventListener('mousemove', this.moveSphere.bind(this));
@@ -168,13 +165,16 @@ export class Interaction3d {
       );
 
       if (sphere) {
-        TweenLite.from(intersects[0].object.scale, 1.2, {
-          x: 0.8,
-          y: 0.8,
-          z: 0.8,
-          ease: Elastic.easeOut,
-          onInterrupt: () => intersects[0].object.scale.set(1, 1, 1)
-        });
+        if (!sphere.tween) {
+          sphere.tween = TweenMax.from(intersects[0].object.scale, 1.2, {
+            x: 0.8,
+            y: 0.8,
+            z: 0.8,
+            ease: Elastic.easeOut
+          });
+        } else {
+          sphere.tween.restart();
+        }
 
         if (event.offsetX) {
           this.jointBody.position.x =
@@ -203,38 +203,9 @@ export class Interaction3d {
     this.physiscs.world.addConstraint(this.mouseContraint);
   }
 
-  touchShape(event) {
-    // Calculate OffsetX and OffsetY when the touch event is fired
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-
-    const intersects = this.raycaster.intersectObjects(this.scene.children);
-    if (intersects.length) {
-      const sphere = this.spheres.find(
-        sphere => sphere.mesh === intersects[0].object
-      );
-
-      if (sphere) {
-        TweenLite.from(intersects[0].object.scale, 1.2, {
-          x: 0.8,
-          y: 0.8,
-          z: 0.8,
-          ease: Elastic.easeOut,
-          onInterrupt: () => intersects[0].object.scale.set(1, 1, 1)
-        });
-
-        // Set the shape on a random trajectory
-        sphere.body.velocity.x =
-          (Math.random() + 1) * Math.sign(Math.random() - 0.5) * 10;
-        sphere.body.velocity.y =
-          (Math.random() + 1) * Math.sign(Math.random() - 0.5) * 10;
-      }
-    }
-  }
-
   reseize() {
-    console.log('resize');
-    this.bounds[0] = document.body.clientWidth;
-    this.bounds[1] = window.innerHeight;
+    this.bounds[0] = this.domEl.offsetWidth;
+    this.bounds[1] = this.domEl.offsetHeight;
 
     this.renderer.setSize(this.bounds[0], this.bounds[1]);
 

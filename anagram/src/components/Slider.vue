@@ -1,44 +1,52 @@
 <template>
   <div>
     <div class="anagram_background" :data-sliderIndex="sliderIndex">
-      <transition-group class="anagram_background-left" name="slideleft" tag="div">
+      <transition-group
+        class="anagram_background-left"
+        name="slideleft"
+        tag="div"
+      >
         <div
-          v-show="sliderIndex==0 && show"
+          v-show="sliderIndex == 0 && show"
           key="1"
           class="layer"
-          :style="{backgroundImage: 'url(' + state.images[0].src + ')'}"
+          :style="{ backgroundImage: 'url(' + state.images[0].src + ')' }"
         ></div>
         <div
-          v-show="sliderIndex==1"
+          v-show="sliderIndex == 1"
           key="2"
           class="layer"
-          :style="{backgroundImage: 'url(' + state.images[1].src + ')'}"
+          :style="{ backgroundImage: 'url(' + state.images[1].src + ')' }"
         ></div>
         <div
-          v-show="sliderIndex==2"
+          v-show="sliderIndex == 2"
           key="3"
           class="layer"
-          :style="{backgroundImage: 'url(' + state.images[2].src + ')'}"
+          :style="{ backgroundImage: 'url(' + state.images[2].src + ')' }"
         ></div>
       </transition-group>
-      <transition-group class="anagram_background-right" name="slideright" tag="div">
+      <transition-group
+        class="anagram_background-right"
+        name="slideright"
+        tag="div"
+      >
         <div
-          v-show="sliderIndex==0 && show"
+          v-show="sliderIndex == 0 && show"
           key="1"
           class="layer"
-          :style="{backgroundImage: 'url(' + state.images[0].src + ')'}"
+          :style="{ backgroundImage: 'url(' + state.images[0].src + ')' }"
         ></div>
         <div
-          v-show="sliderIndex==1"
+          v-show="sliderIndex == 1"
           key="2"
           class="layer"
-          :style="{backgroundImage: 'url(' + state.images[1].src + ')'}"
+          :style="{ backgroundImage: 'url(' + state.images[1].src + ')' }"
         ></div>
         <div
-          v-show="sliderIndex==2"
+          v-show="sliderIndex == 2"
           key="3"
           class="layer"
-          :style="{backgroundImage: 'url(' + state.images[2].src + ')'}"
+          :style="{ backgroundImage: 'url(' + state.images[2].src + ')' }"
         ></div>
       </transition-group>
     </div>
@@ -48,7 +56,7 @@
         <Logo :show="show"></Logo>
         <!-- <span>A</span>
         <span>NA*</span>
-        <span>GRAM*</span> -->
+        <span>GRAM*</span>-->
         <span class="slide_counter">{{ sliderIndex + 1 }} | 3</span>
       </header>
       <button class="menu_button">
@@ -67,34 +75,34 @@
       </button>
       <transition-group class="slide_image" name="slideleft" tag="div">
         <img
-          v-show="sliderIndex==0 && show"
+          v-show="sliderIndex == 0 && show"
           key="1"
           class="layer"
           :src="state.images[3].src"
         />
         <img
-          v-show="sliderIndex==1"
+          v-show="sliderIndex == 1"
           key="2"
           class="layer"
           :src="state.images[4].src"
         />
         <img
-          v-show="sliderIndex==2"
+          v-show="sliderIndex == 2"
           key="3"
           class="layer"
           :src="state.images[5].src"
         />
       </transition-group>
       <transition-group class="slide_description" name="slideright" tag="div">
-        <div v-show="sliderIndex==0 && show" key="1" class="layer">
+        <div v-show="sliderIndex == 0 && show" key="1" class="layer">
           <h3>Custom</h3>
           <h2>IPA</h2>
         </div>
-        <div v-show="sliderIndex==1" key="2" class="layer">
+        <div v-show="sliderIndex == 1" key="2" class="layer">
           <h3>Blue</h3>
           <h2>Stout</h2>
         </div>
-        <div v-show="sliderIndex==2" key="3" class="layer">
+        <div v-show="sliderIndex == 2" key="3" class="layer">
           <h3>That</h3>
           <h2>Pilsner</h2>
         </div>
@@ -115,7 +123,7 @@
 </template>
 
 <script>
-import { Circ, TweenMax } from "gsap";
+import { Circ, TweenMax } from 'gsap';
 
 import store from './store';
 import Logo from './Logo';
@@ -133,11 +141,11 @@ export default {
     };
   },
   mounted() {
-    setTimeout(() => this.show = true, 10);
+    setTimeout(() => (this.show = true), 10);
   },
   methods: {
     hoverButtons(data) {
-      this.$emit("hoverButtons", data);
+      this.$emit('hoverButtons', data);
     },
     nextSlide(event, data = 1) {
       const wrapperEl = event.target.children[0];
@@ -203,7 +211,7 @@ export default {
   }
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
 
     top: 0;
@@ -226,19 +234,19 @@ export default {
     // opacity: 1;
   }
 
-  &[data-sliderIndex="0"] {
+  &[data-sliderIndex='0'] {
     &:after {
       background-color: #dd6031;
     }
   }
 
-  &[data-sliderIndex="1"] {
+  &[data-sliderIndex='1'] {
     &:after {
       background-color: #246eb9;
     }
   }
 
-  &[data-sliderIndex="2"] {
+  &[data-sliderIndex='2'] {
     &:after {
       background-color: #4cb944;
     }
@@ -258,7 +266,6 @@ main {
     grid-gap: 50px;
   }
 
-
   width: 100%;
   height: 100%;
   padding: 20px;
@@ -270,7 +277,7 @@ main {
     background-color: transparent;
     border: none;
 
-    cursor: none;
+    // cursor: none;
   }
 }
 
@@ -355,7 +362,7 @@ main {
 
     h3 {
       // color: yellow;
-      font-family: "Shadows Into Light", cursive;
+      font-family: 'Shadows Into Light', cursive;
       font-size: 8em;
 
       line-height: 1;

@@ -5,18 +5,19 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "parcel serve watch src/index.html",
+    "build": "parcel build src/index.html --public-url /leapingstar/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^6.1.0",
+    "eslint": "^6.8.0",
     "parcel": "^1.12.3",
     "parcel-bundler": "^1.12.3",
-    "sass": "^1.22.9"
+    "sass": "^1.26.5"
   },
   "dependencies": {
-    "gsap": "^3.0.2"
+    "gsap": "^3.2.6"
   }
 }

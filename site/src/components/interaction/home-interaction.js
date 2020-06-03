@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { Interaction3d } from './interaction';
-import { ReflectiveSphere, Sphere } from './objets/sphere';
+import { ReflectiveSphere, Sphere, shapeSize } from './objets/sphere';
+import { Utils } from '../utils';
 
 export class HomeInteraction extends Interaction3d {
   constructor(domEl) {
@@ -11,10 +12,25 @@ export class HomeInteraction extends Interaction3d {
     super.init();
     this.createReflextionText();
 
-    this.addSphere(new Sphere());
-    this.addSphere(new Sphere());
-    this.addSphere(new ReflectiveSphere());
+    let sphere;
+    for (let i = 0; i < 2; i++) {
+      sphere = new Sphere();
+      this.addSphere(sphere);
+      sphere.body.position.x = Utils.random(
+        -this.bounds[0] / this.cameraSize + shapeSize,
+        this.bounds[0] / this.cameraSize - shapeSize
+      );
 
+      sphere.body.position.y = Utils.random(
+        -this.bounds[1] / this.cameraSize + shapeSize,
+        this.bounds[1] / this.cameraSize - shapeSize
+      );
+    }
+
+    sphere = new ReflectiveSphere();
+    this.addSphere(sphere);
+    sphere.body.position.x = this.bounds[0] / this.cameraSize / 2;
+    sphere.body.position.y = 0;
     this.showObjects();
   }
 
@@ -31,18 +47,9 @@ export class HomeInteraction extends Interaction3d {
     ctx.font = `${fontSize}px Syne Extra`;
     ctx.textAlign = 'center';
 
-    // const gap = canvasSize / 20;
-    // for (let i = 0; i < canvasSize; i += gap) {
-    //   for (let j = 0; j < canvasSize; j += gap) {
-    //     ctx.fillText('|', i, j);
-    //   }
-    // }
-
     ctx.fillText('SERGIU', canvasSize / 2, canvasSize / 2 - fontSize);
     ctx.fillText('LUCUȚAR', canvasSize / 2, canvasSize / 2);
     ctx.fillText('DEVELOPER', canvasSize / 2, canvasSize / 2 + fontSize);
-
-    // document.body.appendChild(canvas);
 
     const planeGeom = new THREE.PlaneGeometry(
       (this.bounds[0] / this.cameraSize) * 2,

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel serve watch src/index.html",
+    "dev": "parcel serve watch src/index.html --public-url /anagram/",
+    "build": "parcel build src/index.html --public-url /anagram/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -29,5 +30,6 @@
   },
   "alias": {
     "vue": "./node_modules/vue/dist/vue.common.js"
-  }
+  },
+  "assetsPath": "src/assets"
 }

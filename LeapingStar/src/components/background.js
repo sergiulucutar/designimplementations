@@ -1,4 +1,4 @@
-import { random } from "./utils";
+import { random } from './utils';
 
 export default class Background {
   constructor(game) {
@@ -11,11 +11,11 @@ export default class Background {
   init() {
     this.progres = 0;
 
-    this.paralax = document.querySelector(".paralax");
-    this.layers = [...document.querySelectorAll("path")];
-    this.bushLayer = document.querySelector("#b_bush");
+    this.paralax = document.querySelector('.paralax');
+    this.layers = [...document.querySelectorAll('path')];
+    this.bushLayer = document.querySelector('.b_bush');
 
-    this.canvasEl = this.paralax.querySelector("canvas");
+    this.canvasEl = this.paralax.querySelector('canvas');
 
     this.resize();
     this.drawStars();
@@ -28,8 +28,8 @@ export default class Background {
   }
 
   drawStars() {
-    const ctx = this.canvasEl.getContext("2d");
-    ctx.fillStyle = "white";
+    const ctx = this.canvasEl.getContext('2d');
+    ctx.fillStyle = 'white';
     for (let i = 0; i < 100; i++) {
       ctx.beginPath();
       ctx.arc(
@@ -46,16 +46,23 @@ export default class Background {
   update() {
     this.progres = this.game.camera.position[1] / this.game.maxHeight;
     this.layers[0].style.transform = `translate3d(0, ${this.progres * 50}%, 0)`;
-    this.layers[1].style.transform = `translate3d(0, ${this.progres * 140}%, 0)`;
-    this.layers[2].style.transform = `translate3d(0, ${this.progres * 250}%, 0)`;
-    this.bushLayer.style.transform = `translate3d(0, ${this.progres * 500}%, 0)`;
+    this.layers[1].style.transform = `translate3d(0, ${
+      this.progres * 140
+    }%, 0)`;
+    this.layers[2].style.transform = `translate3d(0, ${
+      this.progres * 250
+    }%, 0)`;
+    this.bushLayer.style.transform = `translate3d(0, ${
+      this.progres * 500
+    }%, 0)`;
 
-    document.body.style.background = `linear-gradient(#e66465, ${(.1 + this.progres) *
-      70}%, #f09d51)`;
+    document.body.style.background = `linear-gradient(#e66465, ${
+      (0.1 + this.progres) * 70
+    }%, #f09d51)`;
   }
 
   shake() {
-    this.paralax.classList.add("shake");
-    setTimeout(() => this.paralax.classList.remove("shake"), 600);
+    this.paralax.classList.add('shake');
+    setTimeout(() => this.paralax.classList.remove('shake'), 600);
   }
 }

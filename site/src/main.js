@@ -1,10 +1,6 @@
-import { HomeInteraction } from './components/interaction/home-interaction';
 import LocomotiveScroll from 'locomotive-scroll';
-import { TweenLite, Elastic } from 'gsap';
+import { HomeInteraction } from './components/interaction/home-interaction';
 import { ContactInteraction } from './components/interaction/contact-interaction';
-
-// let interaction, homeEl, contactEl;
-// let isInteractionInView = true;
 
 const homeInteraction = {
   el: null,
@@ -19,20 +15,27 @@ const contactInteraction = {
   scrollValue: 'interaction-contact'
 };
 
-const fixedTimeStep = 1.0 / 60.0;
+const fixedTimeStep = 1.0 / 90.0;
+const fps = 100 / 6;
+let now,
+  then = Date.now();
 function loop() {
   requestAnimationFrame(loop);
 
-  if (homeInteraction.isInView) {
-    homeInteraction.interactionObj.physiscs.world.step(fixedTimeStep);
-    homeInteraction.interactionObj.update();
-    homeInteraction.interactionObj.draw();
-  }
+  now = Date.now();
+  if (now - then > fps) {
+    then = now;
+    if (homeInteraction.isInView) {
+      homeInteraction.interactionObj.physiscs.world.step(fixedTimeStep);
+      homeInteraction.interactionObj.update();
+      homeInteraction.interactionObj.draw();
+    }
 
-  if (contactInteraction.isInView) {
-    contactInteraction.interactionObj.physiscs.world.step(fixedTimeStep);
-    contactInteraction.interactionObj.update();
-    contactInteraction.interactionObj.draw();
+    if (contactInteraction.isInView) {
+      contactInteraction.interactionObj.physiscs.world.step(fixedTimeStep);
+      contactInteraction.interactionObj.update();
+      contactInteraction.interactionObj.draw();
+    }
   }
 }
 
@@ -47,8 +50,10 @@ const scroll = new LocomotiveScroll({
   el: document.querySelector('[data-scroll-container]'),
   smooth: true
 });
+// Fix a locomotive-scroll bug
+setTimeout(() => window.dispatchEvent(new Event('resize')), 10);
 
-scroll.on('call', (value, way, obj) => {
+scroll.on('call', (value, way) => {
   if (value === homeInteraction.scrollValue) {
     if (way === SCROLL.ways.enter) {
       homeInteraction.isInView = true;
@@ -66,36 +71,36 @@ scroll.on('call', (value, way, obj) => {
   }
 });
 
-window.startInteraction = () => {
+window.startInteraction = loop;
+
+window.setupInteractions = () => {
   [...document.querySelectorAll('.work .project')].forEach(el => {
     el.addEventListener('mouseenter', setupSelectedImage.bind(this));
     el.addEventListener('mousemove', updateImagePosition.bind(this));
   });
 
+  window.onresize = () => {
+    homeInteraction.interactionObj.reseize();
+  };
+
   // Home interaction start
-  homeInteraction.el = document.querySelector('#home');
+  homeInteraction.el = document.querySelector('.home');
   homeInteraction.interactionObj = new HomeInteraction(
-    homeInteraction.el.querySelector('#home .interaction')
+    homeInteraction.el.querySelector('.home .interaction')
   );
   homeInteraction.interactionObj.init();
 
   // Contact interaction start
-  contactInteraction.el = document.querySelector('#contact');
+  contactInteraction.el = document.querySelector('.contact');
   contactInteraction.interactionObj = new ContactInteraction(
-    contactInteraction.el.querySelector('#contact .interaction')
+    contactInteraction.el.querySelector('.contact .interaction')
   );
   contactInteraction.interactionObj.init();
-
-  loop();
 };
 
 let hoveredElImage;
 function setupSelectedImage(event) {
   hoveredElImage = event.currentTarget.querySelector('.project_image_wrapper');
-  TweenLite.from(hoveredElImage.querySelector('.project_image'), 0.6, {
-    scale: 0,
-    ease: Elastic.easeOut
-  });
 }
 function updateImagePosition(event) {
   hoveredElImage.style['transform'] = `translate3d(${
@@ -103,10 +108,6 @@ function updateImagePosition(event) {
   }px, ${event.offsetY - hoveredElImage.offsetHeight / 2}px, 0)`;
 }
 
-window.scrollToSection = id => {
-  scroll.scrollTo(document.getElementById(id));
-};
-
-window.onresize = () => {
-  homeInteraction.interactionObj.reseize();
+window.scrollToSection = className => {
+  scroll.scrollTo(document.querySelector(`.${className}`));
 };

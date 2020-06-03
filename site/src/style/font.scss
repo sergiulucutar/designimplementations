@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Syne Extra';
-  src: url('assets/fonts/Syne-Extra.otf');
+  src: url('assets/fonts/Syne-Extra.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: 'Syne Bold';
-  src: url('assets/fonts/Syne-Bold.otf');
+  src: url('assets/fonts/Syne-Bold.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -16,7 +16,7 @@
 
 @font-face {
   font-family: 'Syne';
-  src: url('assets/fonts/Syne-Regular.otf');
+  src: url('assets/fonts/Syne-Regular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;

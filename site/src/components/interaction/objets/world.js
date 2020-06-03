@@ -3,7 +3,6 @@ import * as CANNON from 'cannon';
 export class World {
   constructor(bounds, cameraSize) {
     this.world = new CANNON.World();
-    this.world.gravity.z = -9.8;
 
     this.bounds = {
       top: new CANNON.Body({

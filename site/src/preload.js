@@ -1,98 +1,56 @@
 import { gsap } from 'gsap/gsap-core';
-import { CSSPlugin, Power2, TweenLite, TimelineLite } from 'gsap';
-
-const loaderChars = {
-  primary: [...document.querySelectorAll('.loader_text:nth-child(1) span')],
-  secondary: [...document.querySelectorAll('.loader_text:nth-child(2) span')]
-};
-const transitionTime = 0.4;
-let isWindowLoaded = false;
-
-// Loading animation - middle (loop)
-const loaderTimeline = new TimelineLite();
-loaderTimeline.pause();
-loaderTimeline
-  .to(loaderChars.primary, 0, {
-    opacity: 0,
-    rotateX: -90,
-    yPercent: 100,
-    stagger: transitionTime / 10,
-    ease: Power2.easeOut
-  })
-  .set(
-    loaderChars.secondary,
-    {
-      yPercent: -100
-    },
-    0
-  )
-  .to(
-    loaderChars.secondary,
-    transitionTime,
-    {
-      opacity: 1,
-      rotateX: 0,
-      yPercent: 0,
-      stagger: transitionTime / 10,
-      ease: Power2.easeOut
-    },
-    0
-  );
-
-// Loader animation start
-TweenLite.from(loaderChars.primary, transitionTime, {
-  opacity: 0,
-  rotateX: 90,
-  yPercent: -100,
-  stagger: transitionTime / 10,
-  ease: Power2.easeOut,
-  onComplete: () =>
-    document.querySelector('.loader_text:nth-of-type(1)').classList.add('shown')
-});
-
-const int = setInterval(() => {
-  if (isWindowLoaded) {
-    // Kill the middle;
-    loaderTimeline.progress(0);
-    loaderTimeline.kill();
-
-    // Loader animation end
-    TweenLite.to(loaderChars.primary, transitionTime, {
-      opacity: 0,
-      rotateX: -90,
-      yPercent: 100,
-      stagger: transitionTime / 10,
-      ease: Power2.easeOut,
-      onComplete: () => {
-        clearInterval();
-        startIntro();
-      }
-    });
-    clearInterval(int);
-  } else {
-    loaderTimeline.restart();
-  }
-}, 800);
+import { CSSPlugin, Power2, TimelineLite } from 'gsap';
 
 function startIntro() {
   gsap.registerPlugin(CSSPlugin);
-  const chars = [...document.querySelectorAll('.char')];
-  const loaderEl = document.querySelector('.loader');
+  setupInteractions();
+  const charsFirstWord = [
+    ...document.querySelectorAll('h1 > span:nth-of-type(1) .char')
+  ];
+  const charsSecondWord = [
+    ...document.querySelectorAll('h1 > span:nth-of-type(2) .char')
+  ];
+  const charsThirdWord = [
+    ...document.querySelectorAll('h1 > span:nth-of-type(3) .char')
+  ];
+  const timeline = new TimelineLite({
+    onStart: () => document.querySelector('.loader').classList.add('hide')
+  });
 
-  loaderEl.classList.add('hide');
-
-  const timeline = new TimelineLite();
-  timeline
-    .from(chars, transitionTime, {
-      opacity: 0,
-      rotateX: 90,
-      yPercent: -100,
-      stagger: transitionTime / 10,
-      ease: Power2.easeOut
-    })
-    .call(() => document.querySelector('nav ul').classList.remove('hidden'), [])
-    .call(() => startInteraction(), [], 1);
+  setTimeout(() => {
+    timeline
+      .from(charsFirstWord, 0.8, {
+        opacity: 0,
+        rotateX: 90,
+        yPercent: -100,
+        stagger: 0.04,
+        ease: Power2.easeOut
+      })
+      .from(
+        charsSecondWord,
+        0.8,
+        {
+          opacity: 0,
+          rotateX: 90,
+          yPercent: -100,
+          stagger: 0.04,
+          ease: Power2.easeOut
+        },
+        0
+      )
+      .from(
+        charsThirdWord,
+        0.8,
+        {
+          opacity: 0,
+          rotateX: 90,
+          yPercent: -100,
+          stagger: 0.04,
+          ease: Power2.easeOut
+        },
+        0
+      )
+      .call(() => startInteraction());
+  }, 0);
 }
-window.onload = () => (isWindowLoaded = true);
-
-// setTimeout(() => (isWindowLoaded = true), 8000);
+window.onload = () => startIntro();

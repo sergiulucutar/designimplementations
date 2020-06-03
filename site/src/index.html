@@ -6,36 +6,39 @@
     <meta name="author" content="Sergiu Lucutar" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#191716" />
-    <link rel="stylesheet" href="main.scss" />
+    <link
+      rel="preload"
+      as="font"
+      href="assets/fonts/Syne-Regular.otf"
+      type="font/otf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      as="font"
+      href="assets/fonts/Syne-Bold.otf"
+      type="font/otf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      as="font"
+      href="assets/fonts/Syne-Extra.otf"
+      type="font/otf"
+      crossorigin="anonymous"
+    />
     <link
       rel="stylesheet"
       href="../node_modules/locomotive-scroll/dist/locomotive-scroll.min.css"
     />
+    <link rel="stylesheet" href="style.scss" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <title>Sergiu Lucutar</title>
   </head>
   <body>
-    <div class="loader">
-      <div class="loader_text loader_text-primary">
-        <span>L</span>
-        <span>O</span>
-        <span>A</span>
-        <span>D</span>
-        <span>I</span>
-        <span>N</span>
-        <span>G</span>
-      </div>
-      <div class="loader_text loader_text-secondary">
-        <span>L</span>
-        <span>O</span>
-        <span>A</span>
-        <span>D</span>
-        <span>I</span>
-        <span>N</span>
-        <span>G</span>
-      </div>
-    </div>
+    <div class="loader"></div>
     <div class="wrapper" data-scroll-container>
-      <section id="home" data-scroll-section>
+      <section class="home" data-scroll-section>
         <div
           class="interaction"
           data-scroll
@@ -63,16 +66,13 @@
             ><span class="char">R</span></span
           >
         </h1>
-        <!-- <div class="scroll-indicator">
-          <div class="scroll-indicator_line"></div>
-        </div> -->
       </section>
-      <section id="about" data-scroll-section>
+      <section class="about" data-scroll-section>
         <div>
           <img
             data-scroll
-            data-scroll-speed="-2"
-            src="assets/images/portrait.jpg"
+            data-scroll-speed="-1"
+            src="assets/images/portrait_r2.webp"
             alt="portrait"
             defer
           />
@@ -93,7 +93,7 @@
           <ul>
             <li>WebGL</li>
             <li>ThreeJS, Canvas API in general</li>
-            <li>Adding more interaction</li>
+            <li>ways of adding more interaction</li>
           </ul>
           <p>
             <a href="https://codepen.io/sergiulucutar">CodePen</a> user on a
@@ -101,8 +101,8 @@
           </p>
           <h3>Others</h3>
           <p>
-            Drawing. I started 3 years ago as a hobbie. I’m still working on it,
-            but, hey...
+            Drawing. I started some time ago as a hobbie. I’m still working on
+            it, but, hey...
             <a href="https://www.instagram.com/sergiulucutar">check it out</a>.
             I'm sure you will think of them as no less than masterpieces.
             &#128513;
@@ -110,23 +110,22 @@
           <p>Fiction in movies and books &#128125; &#128302;</p>
         </div>
       </section>
-      <section id="work" class="work" data-scroll-section>
+      <section class="work" data-scroll-section>
         <article>
-          These implementations are some experiments that I did. Some don't have
-          a full implemneted functionality. The purpuse is to familiarize myself
-          with different techiologies and aquire knowledge in UI design or
-          creating work that has require a more creative approch.
+          These implementations are some experiments that I did. The purpose was
+          to familiarize myself with different technologies and acquire
+          knowledge in UI design.
         </article>
         <h2>SOME SKETCHES</h2>
         <ul>
           <li>
             <span class="project_index">01</span>
             <div class="project">
-              <a href="" data-name="GRADIENT">GRADIENT</a>
+              <a href="/gradient" data-name="GRADIENT">GRADIENT</a>
               <div class="project_image_wrapper">
                 <div
                   class="project_image"
-                  style="background-image: url('assets/images/portrait.jpg');"
+                  style="background-image: url('assets/images/project_1.webp');"
                 ></div>
               </div>
             </div>
@@ -134,11 +133,11 @@
           <li>
             <span class="project_index">02</span>
             <div class="project">
-              <a href="" data-name="BEER COMPANY">BEER COMPANY</a>
+              <a href="/anagram" data-name="ANAGRAM">ANAGRAM</a>
               <div class="project_image_wrapper">
                 <div
                   class="project_image"
-                  style="background-image: url('assets/images/portrait.jpg');"
+                  style="background-image: url('assets/images/project_2.webp');"
                 ></div>
               </div>
             </div>
@@ -146,11 +145,11 @@
           <li>
             <span class="project_index">03</span>
             <div class="project">
-              <a href="" data-name="LEAPING STAR">LEAPING STAR</a>
+              <a href="/leapingstar" data-name="LEAPING STAR">LEAPING STAR</a>
               <div class="project_image_wrapper">
                 <div
                   class="project_image"
-                  style="background-image: url('assets/images/portrait.jpg');"
+                  style="background-image: url('assets/images/project_3.webp');"
                 ></div>
               </div>
             </div>
@@ -158,11 +157,11 @@
           <li>
             <span class="project_index">04</span>
             <div class="project">
-              <a href="" data-name="DIAGONAL">DIAGONAL</a>
+              <a href="/xlogo" data-name="XLOGO">XLOGO</a>
               <div class="project_image_wrapper">
                 <div
                   class="project_image"
-                  style="background-image: url('assets/images/portrait.jpg');"
+                  style="background-image: url('assets/images/project_4.webp');"
                 ></div>
               </div>
             </div>
@@ -170,11 +169,11 @@
           <li>
             <span class="project_index">05</span>
             <div class="project">
-              <a href="" data-name="FASHION X">FASHION X</a>
+              <a href="/diagonal" data-name="DIAGONAL">DIAGONAL</a>
               <div class="project_image_wrapper">
                 <div
                   class="project_image"
-                  style="background-image: url('assets/images/portrait.jpg');"
+                  style="background-image: url('assets/images/project_5.webp');"
                 ></div>
               </div>
             </div>
@@ -185,17 +184,11 @@
               <a href="https://codepen.io/sergiulucutar" data-name="CODEPEN"
                 >CODEPEN</a
               >
-              <div class="project_image_wrapper">
-                <div
-                  class="project_image"
-                  style="background-image: url('assets/images/portrait.jpg');"
-                ></div>
-              </div>
             </div>
           </li>
         </ul>
       </section>
-      <section id="contact" class="contact" data-scroll-section>
+      <section class="contact" data-scroll-section>
         <section class="contact_content">
           <div>
             <h2>GET IN TOUCH</h2>
@@ -209,8 +202,8 @@
               <li><a href="https://twitter.com/sergiulucutar">Twitter</a></li>
             </ul>
             <p>
-              I'm currently lookng for a full time position in a agency that
-              targets visually interesting projects.
+              I'm currently looking to be a part of a team that is passionate
+              about crafting visualy interesting ideas.
             </p>
           </div>
           <footer>2020, SERGIU LUCUȚAR</footer>
@@ -224,13 +217,13 @@
       </section>
     </div>
     <nav>
-      <ul class="hidden">
+      <ul>
         <li onclick="scrollToSection('about')">ABOUT</li>
         <li onclick="scrollToSection('work')">WORK</li>
         <li onclick="scrollToSection('contact')">CONTACT</li>
       </ul>
     </nav>
     <script src="preload.js"></script>
-    <script src="main.js"></script>
+    <script src="main.js" defer></script>
   </body>
 </html>

@@ -14,11 +14,8 @@ export class ContactInteraction extends Interaction3d {
 
     const shape = new ReflectiveSphere();
     this.addSphere(shape);
-    shape.body.position.x = (this.bounds[0] / this.cameraSize) * 3;
-    shape.body.position.y = (-this.bounds[1] / this.cameraSize) * 3;
-    // shape.body.position.z = 5;
-    // this.addSphere(new ReflectiveSphere());
-
+    shape.body.position.x = this.bounds[0] / this.cameraSize / 4;
+    shape.body.position.y = -this.bounds[1] / this.cameraSize / 4;
     this.showObjects();
   }
 
@@ -32,7 +29,7 @@ export class ContactInteraction extends Interaction3d {
 
     this.spotLight = null;
 
-    const fontSize = 80;
+    const fontSize = 50;
     ctx.font = `${fontSize}px Syne Extra`;
     ctx.textAlign = 'center';
     ctx.fillStyle = '#e0e2db';
@@ -52,8 +49,8 @@ export class ContactInteraction extends Interaction3d {
     }
 
     const planeGeom = new THREE.PlaneGeometry(
-      (this.bounds[0] / this.cameraSize) * 2,
-      (this.bounds[0] / this.cameraSize) * 2
+      (this.bounds[0] / this.cameraSize) * 2.5,
+      (this.bounds[0] / this.cameraSize) * 2.5
     );
     const texture = new THREE.CanvasTexture(ctx.canvas);
     const mat = new THREE.MeshBasicMaterial({
