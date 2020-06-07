@@ -13,7 +13,7 @@ import CustomCursor from "./CustomCursor.vue";
 import LoadingScreen from "./LoadingScreen.vue";
 import Slider from "./Slider.vue";
 
-import store from './store';
+import store from "./store";
 
 export default {
   components: {
@@ -25,14 +25,18 @@ export default {
     return {
       isLoading: true,
       a_loadingState: false
-    }
+    };
   },
   created() {
     this.loadImages();
   },
   mounted() {
-    setTimeout(() => {this.a_loadingState = true}, 1000);
-    setTimeout(() => {this.a_loadingState = false}, 2000);
+    setTimeout(() => {
+      this.a_loadingState = true;
+    }, 1000);
+    setTimeout(() => {
+      this.a_loadingState = false;
+    }, 2000);
   },
   methods: {
     slide(delta = 1) {
@@ -53,25 +57,29 @@ export default {
     },
     loadImages() {
       const imageUrls = [
-        'https://images.unsplash.com/photo-1494625927555-6ec4433b1571?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1353&q=80',
-        'https://images.unsplash.com/photo-1461300617643-0aeca186c805?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-        'https://images.unsplash.com/photo-1509398270984-356a44f8a4ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80',
-        'https://images.unsplash.com/photo-1512627282235-5174e883f9b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-        'https://images.unsplash.com/photo-1534057308991-b9b3a578f1b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
-        'https://images.unsplash.com/photo-1546498159-9a2fac87e770?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=610&q=80'
+        "./images/beer_bg-1.webp",
+        "./images/beer_bg-2.webp",
+        "./images/beer_bg-3.webp",
+        "./images/beer-1.webp",
+        "./images/beer-2.webp",
+        "./images/beer-3.webp"
       ];
       const promises = [];
 
-      for(let url of imageUrls) {
-        promises.push(new Promise(resolve => {
-          const imgObj = new Image();
-          imgObj.onload = resolve;
-          imgObj.src = url;
-          store.addImage(imgObj);
-        }));
+      for (let url of imageUrls) {
+        promises.push(
+          new Promise(resolve => {
+            const imgObj = new Image();
+            imgObj.onload = resolve;
+            imgObj.src = url;
+            store.addImage(imgObj);
+          })
+        );
       }
 
-      Promise.all(promises).then(() => setTimeout(() => this.isLoading = false, 3000));
+      Promise.all(promises).then(() =>
+        setTimeout(() => (this.isLoading = false), 3000)
+      );
     }
   }
 };
@@ -81,7 +89,7 @@ export default {
 div {
   position: relative;
 
-  cursor: none;
+  // cursor: none;
 
   .sliderControlsArea {
     position: absolute;
@@ -102,10 +110,12 @@ div {
   }
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 1.4s cubic-bezier(0, 0.32, 0.23, 1);
 }
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 </style>

@@ -1,49 +1,38 @@
-import * as CANNON from 'cannon';
 import * as THREE from 'three';
-import { Sphere, CanvasSphere } from './objets/sphere';
-import {
-  CanvasTextureHL,
-  CanvasTextureVL,
-  CanvasTextureText
-} from './objets/canvas-texture';
-import { Utils } from '../utils';
+import * as CANNON from 'cannon';
+import { World } from './objets/world';
+import { ReflectiveSphere } from './objets/sphere';
 
-import { TimelineLite, Power4, Power2 } from 'gsap';
+import { TimelineLite, Elastic, TweenMax } from 'gsap';
+import { Utils } from '../utils';
+import { Power2 } from 'gsap/gsap-core';
+
+const defaultPivot = new CANNON.Vec3(0, 0, 0);
+const defaultPivotShape = new CANNON.Sphere(0.1);
 
 export class Interaction3d {
-  constructor() {
+  constructor(domEl) {
+    this.domEl = domEl;
+    this.bounds = [this.domEl.offsetWidth, this.domEl.offsetHeight];
+
     this.cameraSize = 50;
-
-    this.bounds = [document.body.clientWidth, window.innerHeight];
-
     this.camera = new THREE.OrthographicCamera(
       -this.bounds[0] / this.cameraSize,
       this.bounds[0] / this.cameraSize,
       this.bounds[1] / this.cameraSize,
       -this.bounds[1] / this.cameraSize,
-      5,
-      100
+      0.1,
+      60
     );
-
     this.camera.position.set(0, 0, 50);
 
     this.scene = new THREE.Scene();
 
-    const ambLight = new THREE.AmbientLight(0xffffff, 0.2);
+    const ambLight = new THREE.AmbientLight(0xffffff, 1);
     this.scene.add(ambLight);
-
     const spotLight = new THREE.SpotLight(0xffffff, 1);
-    spotLight.position.set(0, 80, 70);
-
+    spotLight.position.set(0, 20, 70);
     spotLight.castShadow = true;
-
-    spotLight.shadow.mapSize.width = 1024;
-    spotLight.shadow.mapSize.height = 1024;
-
-    spotLight.shadow.camera.near = 100;
-    spotLight.shadow.camera.far = 4000;
-    spotLight.shadow.camera.fov = 30;
-
     this.scene.add(spotLight);
 
     this.renderer = new THREE.WebGLRenderer({
@@ -51,118 +40,30 @@ export class Interaction3d {
       antialias: true
     });
     this.renderer.setSize(this.bounds[0], this.bounds[1]);
-    document
-      .querySelector('.interaction')
-      .appendChild(this.renderer.domElement);
+    domEl.appendChild(this.renderer.domElement);
 
-    // CannonJS
-    this.world = new CANNON.World();
-    this.world.gravity.y = -9.8;
+    this.physiscs = new World(this.bounds, this.cameraSize);
 
-    const bounds = {
-      top: new CANNON.Body({
-        mass: 0
-      }),
-      bottom: new CANNON.Body({
-        mass: 0
-      }),
-      left: new CANNON.Body({
-        mass: 0
-      }),
-      right: new CANNON.Body({
-        mass: 0
-      })
-    };
+    this.spheres = [];
 
-    var groundShape = new CANNON.Plane();
-    bounds.top.addShape(groundShape);
-    bounds.bottom.addShape(groundShape);
-    bounds.left.addShape(groundShape);
-    bounds.right.addShape(groundShape);
-
-    bounds.bottom.position.y = -this.bounds[1] / this.cameraSize;
-    bounds.bottom.quaternion.setFromAxisAngle(
-      new CANNON.Vec3(1, 0, 0),
-      -Math.PI / 2
-    );
-
-    bounds.top.position.y = this.bounds[1] / this.cameraSize;
-    bounds.top.quaternion.setFromAxisAngle(
-      new CANNON.Vec3(1, 0, 0),
-      Math.PI / 2
-    );
-
-    bounds.left.position.x = -this.bounds[0] / this.cameraSize;
-    bounds.left.quaternion.setFromAxisAngle(
-      new CANNON.Vec3(0, 1, 0),
-      Math.PI / 2
-    );
-
-    bounds.right.position.x = this.bounds[0] / this.cameraSize;
-    bounds.right.quaternion.setFromAxisAngle(
-      new CANNON.Vec3(0, 1, 0),
-      -Math.PI / 2
-    );
-
-    this.world.addBody(bounds.bottom);
-    this.world.addBody(bounds.top);
-    this.world.addBody(bounds.left);
-    this.world.addBody(bounds.right);
-
-    this.balls = [];
-
-    // Intro timeline
-    this.timeline = new TimelineLite();
-    this.isIntroFinished = false;
+    // Data used user input
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = new THREE.Vector2();
+    this.jointBody = new CANNON.Body({ mass: 0 });
+    this.jointBody.addShape(defaultPivotShape);
+    this.jointBody.collisionFilterGroup = 0;
+    this.jointBody.collisionFilterMask = 0;
+    this.physiscs.world.addBody(this.jointBody);
+    this.mouseContraint = null;
   }
 
-  init() {
-    const sphere3 = new CanvasSphere(new CanvasTextureText());
-    sphere3.mesh.scale.set(0, 0, 0);
-    this.balls.push(sphere3);
-    this.scene.add(sphere3.mesh);
-    this.world.add(sphere3.body);
+  addSphere(sphere) {
+    this.spheres.push(sphere);
+    this.scene.add(sphere.mesh);
+    this.physiscs.world.add(sphere.body);
 
-    this.timeline
-      .to(sphere3.mesh.scale, 0.5, {
-        x: 3,
-        y: 3,
-        z: 3,
-        ease: Power2.easeOut,
-        delay: 0.2
-      })
-      .to(sphere3.mesh.scale, 0.5, {
-        x: 1,
-        y: 1,
-        z: 1,
-        delay: 0.5,
-        ease: Power2.easeOut,
-        onComplete() {
-          document.querySelector('h1').classList.remove('hidden');
-          document.querySelector('nav ul').classList.remove('hidden');
-        }
-      })
-      .set(this, { isIntroFinished: true, delay: 1 })
-      .call(this.addBalls.bind(this), [], '+=0.7');
-  }
-
-  addBalls() {
-    let sphere = new CanvasSphere(new CanvasTextureHL());
-    sphere.body.position.x -= 3;
-    sphere.body.position.y = 5;
-    this.balls.push(sphere);
-
-    sphere = new CanvasSphere(new CanvasTextureVL());
-    sphere.mesh.rotation.z = Math.PI;
-    this.balls.push(sphere);
-
-    for (let i = 0; i < 4; i++) {
-      this.balls.push(new Sphere(Utils.paletteArray[Utils.random(0, 3)]));
-    }
-
-    for (let i = 1; i < this.balls.length; i++) {
-      this.scene.add(this.balls[i].mesh);
-      this.world.add(this.balls[i].body);
+    if (sphere instanceof ReflectiveSphere) {
+      this.scene.add(sphere.cubeCam);
     }
   }
 
@@ -171,14 +72,140 @@ export class Interaction3d {
   }
 
   update() {
-    for (let ball of this.balls) {
-      ball.update();
+    for (let sphere of this.spheres) {
+      sphere.update();
+
+      if (sphere instanceof ReflectiveSphere) {
+        sphere.mesh.visible = false;
+        sphere.cubeCam.update(this.renderer, this.scene);
+        sphere.mesh.visible = true;
+      }
     }
   }
 
+  showObjects() {
+    const time = new TimelineLite();
+    this.spheres.forEach((sphere, index) => {
+      sphere.mesh.visible = false;
+      time.from(
+        sphere.mesh.scale,
+        0.6,
+        {
+          x: 0.01,
+          y: 0.01,
+          z: 0.01,
+          ease: Power2.easeOut,
+          onStart: () => {
+            sphere.body.torque = new CANNON.Vec3(
+              Utils.randomSign() * Utils.random(5, 10) * 2000,
+              Utils.randomSign() * Utils.random(5, 10) * 2000,
+              Utils.randomSign() * Utils.random(5, 10) * 2000
+            );
+            sphere.mesh.visible = true;
+          }
+        },
+        index * 0.3
+      );
+    });
+  }
+
+  init() {
+    // this.domEl.addEventListener('touchstart', event => {
+    //   this.selectSphere(event.touches[0]);
+    // });
+
+    this.domEl.addEventListener('mousedown', this.selectSphere.bind(this));
+    this.domEl.addEventListener('mousemove', this.moveSphere.bind(this));
+    this.domEl.addEventListener('mouseup', this.leaveSphere.bind(this));
+  }
+
+  /**
+   * User Input handlers
+   */
+  leaveSphere() {
+    this.physiscs.world.removeConstraint(this.mouseContraint);
+    this.mouseContraint = null;
+  }
+
+  moveSphere(event) {
+    if (!this.mouseContraint) {
+      return;
+    }
+
+    this.mouse.x = (event.offsetX / this.bounds[0]) * 2 - 1;
+    this.mouse.y = -(event.offsetY / this.bounds[1]) * 2 + 1;
+
+    this.jointBody.position.x =
+      this.mouse.x * (this.bounds[0] / this.cameraSize);
+    this.jointBody.position.y =
+      this.mouse.y * (this.bounds[1] / this.cameraSize);
+    this.mouseContraint.update();
+  }
+
+  selectSphere(event) {
+    if (event.offsetX) {
+      this.mouse.x = (event.offsetX / this.bounds[0]) * 2 - 1;
+      this.mouse.y = -(event.offsetY / this.bounds[1]) * 2 + 1;
+    } else {
+      this.mouse.x = (event.clientX / this.bounds[0]) * 2 - 1;
+      this.mouse.y =
+        -(
+          (event.clientY - this.domEl.getBoundingClientRect().top) /
+          this.bounds[1]
+        ) *
+          2 +
+        1;
+    }
+
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    const intersects = this.raycaster.intersectObjects(this.scene.children);
+    if (intersects.length) {
+      const sphere = this.spheres.find(
+        sphere => sphere.mesh === intersects[0].object
+      );
+
+      if (sphere) {
+        if (!sphere.tween) {
+          sphere.tween = TweenMax.from(intersects[0].object.scale, 1.2, {
+            x: 0.8,
+            y: 0.8,
+            z: 0.8,
+            ease: Elastic.easeOut
+          });
+        } else {
+          sphere.tween.restart();
+        }
+
+        if (event.offsetX) {
+          this.jointBody.position.x =
+            this.mouse.x * (this.bounds[0] / this.cameraSize);
+          this.jointBody.position.y =
+            this.mouse.y * (this.bounds[1] / this.cameraSize);
+          this.addMouseConstraint(sphere);
+        } else {
+          // Set the shape on a random trajectory
+          sphere.body.velocity.x =
+            (Math.random() + 1) * Math.sign(Math.random() - 0.5) * 10;
+          sphere.body.velocity.y =
+            (Math.random() + 1) * Math.sign(Math.random() - 0.5) * 10;
+        }
+      }
+    }
+  }
+
+  addMouseConstraint(sphere) {
+    this.mouseContraint = new CANNON.PointToPointConstraint(
+      sphere.body,
+      defaultPivot,
+      this.jointBody,
+      defaultPivot
+    );
+    this.physiscs.world.addConstraint(this.mouseContraint);
+  }
+
   reseize() {
-    this.bounds[0] = document.body.clientWidth;
-    this.bounds[1] = document.body.clientHeight;
+    this.bounds[0] = this.domEl.offsetWidth;
+    this.bounds[1] = this.domEl.offsetHeight;
 
     this.renderer.setSize(this.bounds[0], this.bounds[1]);
 

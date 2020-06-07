@@ -5,35 +5,225 @@
     <meta name="description" content="Web Developer Portofolio" />
     <meta name="author" content="Sergiu Lucutar" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="main.scss" />
+    <meta name="theme-color" content="#191716" />
+    <link
+      rel="preload"
+      as="font"
+      href="assets/fonts/Syne-Regular.otf"
+      type="font/otf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      as="font"
+      href="assets/fonts/Syne-Bold.otf"
+      type="font/otf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      as="font"
+      href="assets/fonts/Syne-Extra.otf"
+      type="font/otf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="../node_modules/locomotive-scroll/dist/locomotive-scroll.min.css"
+    />
+    <link rel="stylesheet" href="style.scss" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <title>Sergiu Lucutar</title>
   </head>
   <body>
-    <main>
-      <div class="interaction"></div>
-      <h1 class="hidden">
-        <span><span>Sergiu</span></span>
-        <span><span>Lucuțar</span></span>
-      </h1>
-      <nav>
-        <ul class="hidden">
-          <li><a href="#about">About</a></li>
-          <li><a href="">Work</a></li>
-          <li><a href="">Contact</a></li>
+    <div class="loader"></div>
+    <div class="wrapper" data-scroll-container>
+      <section class="home" data-scroll-section>
+        <div
+          class="interaction"
+          data-scroll
+          data-scroll-speed="-2"
+          data-scroll-call="interact3D"
+          data-scroll-repeat
+        ></div>
+        <h1 class="hidden" data-scroll data-scroll-speed="-3">
+          <span
+            ><span class="char">S</span><span class="char">E</span
+            ><span class="char">R</span><span class="char">G</span
+            ><span class="char">I</span><span class="char">U</span></span
+          >
+          <span
+            ><span class="char">L</span><span class="char">U</span
+            ><span class="char">C</span><span class="char">U</span
+            ><span class="char">Ț</span><span class="char">A</span
+            ><span class="char">R</span></span
+          >
+          <span
+            ><span class="char">D</span><span class="char">E</span
+            ><span class="char">V</span><span class="char">E</span
+            ><span class="char">L</span><span class="char">O</span
+            ><span class="char">P</span><span class="char">E</span
+            ><span class="char">R</span></span
+          >
+        </h1>
+      </section>
+      <section class="about" data-scroll-section>
+        <div>
+          <img
+            data-scroll
+            data-scroll-speed="-1"
+            src="assets/images/portrait_r2.webp"
+            alt="portrait"
+            defer
+          />
+        </div>
+        <div>
+          <h2>A SHORT INTRODUCTION</h2>
+          <p>
+            Front-end developer, currently, based in Iași, Romania.
+          </p>
+          <p>
+            I’m interested in anything that has to do with visual design,
+            animation, interaction and storytelling, especially in products that
+            have a focus on delivering a polished, game-like experience.
+          </p>
+          <p>
+            Currently exploring:
+          </p>
+          <ul>
+            <li>WebGL</li>
+            <li>ThreeJS, Canvas API in general</li>
+            <li>ways of adding more interaction</li>
+          </ul>
+          <p>
+            <a href="https://codepen.io/sergiulucutar">CodePen</a> user on a
+            regular basis.
+          </p>
+          <h3>Others</h3>
+          <p>
+            Drawing. I started some time ago as a hobbie. I’m still working on
+            it, but, hey...
+            <a href="https://www.instagram.com/sergiulucutar">check it out</a>.
+            I'm sure you will think of them as no less than masterpieces.
+            &#128513;
+          </p>
+          <p>Fiction in movies and books &#128125; &#128302;</p>
+        </div>
+      </section>
+      <section class="work" data-scroll-section>
+        <article>
+          These implementations are some experiments that I did. The purpose was
+          to familiarize myself with different technologies and acquire
+          knowledge in UI design.
+        </article>
+        <h2>SOME SKETCHES</h2>
+        <ul>
+          <li>
+            <span class="project_index">01</span>
+            <div class="project">
+              <a href="/gradient" data-name="GRADIENT">GRADIENT</a>
+              <div class="project_image_wrapper">
+                <div
+                  class="project_image"
+                  style="background-image: url('assets/images/project_1.webp');"
+                ></div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <span class="project_index">02</span>
+            <div class="project">
+              <a href="/anagram" data-name="ANAGRAM">ANAGRAM</a>
+              <div class="project_image_wrapper">
+                <div
+                  class="project_image"
+                  style="background-image: url('assets/images/project_2.webp');"
+                ></div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <span class="project_index">03</span>
+            <div class="project">
+              <a href="/leapingstar" data-name="LEAPING STAR">LEAPING STAR</a>
+              <div class="project_image_wrapper">
+                <div
+                  class="project_image"
+                  style="background-image: url('assets/images/project_3.webp');"
+                ></div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <span class="project_index">04</span>
+            <div class="project">
+              <a href="/xlogo" data-name="XLOGO">XLOGO</a>
+              <div class="project_image_wrapper">
+                <div
+                  class="project_image"
+                  style="background-image: url('assets/images/project_4.webp');"
+                ></div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <span class="project_index">05</span>
+            <div class="project">
+              <a href="/diagonal" data-name="DIAGONAL">DIAGONAL</a>
+              <div class="project_image_wrapper">
+                <div
+                  class="project_image"
+                  style="background-image: url('assets/images/project_5.webp');"
+                ></div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <span class="project_index">...more on </span>
+            <div class="project">
+              <a href="https://codepen.io/sergiulucutar" data-name="CODEPEN"
+                >CODEPEN</a
+              >
+            </div>
+          </li>
         </ul>
-      </nav>
-    </main>
-    <section class="about" id="about">
-      <div>
-        Hi, I'm Sergiu Lucutar, font-end developer that loves anything that has
-        to do with experince design, animation, story telling, etc.
-      </div>
-      <div>
-        <img src="assets/images/portrait.jpg" alt="portrait" />
-      </div>
-    </section>
-    <section class="work"></section>
-    <section class="contact"></section>
-    <script src="main.js"></script>
+      </section>
+      <section class="contact" data-scroll-section>
+        <section class="contact_content">
+          <div>
+            <h2>GET IN TOUCH</h2>
+            <ul>
+              <li><a href="mailto:sergiu.lucutar@gmail.com">Email</a></li>
+              <li>
+                <a href="https://www.linkedin.com/in/sergiu-lucutar-76ab1114b"
+                  >LinkedIn</a
+                >
+              </li>
+              <li><a href="https://twitter.com/sergiulucutar">Twitter</a></li>
+            </ul>
+            <p>
+              I'm currently looking to be a part of a team that is passionate
+              about crafting visualy interesting ideas.
+            </p>
+          </div>
+          <footer>2020, SERGIU LUCUȚAR</footer>
+        </section>
+        <div
+          class="interaction"
+          data-scroll
+          data-scroll-call="interaction-contact"
+          data-scroll-repeat
+        ></div>
+      </section>
+    </div>
+    <nav>
+      <ul>
+        <li onclick="scrollToSection('about')">ABOUT</li>
+        <li onclick="scrollToSection('work')">WORK</li>
+        <li onclick="scrollToSection('contact')">CONTACT</li>
+      </ul>
+    </nav>
+    <script src="preload.js"></script>
+    <script src="main.js" defer></script>
   </body>
 </html>
