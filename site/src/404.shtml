@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Web Developer Portofolio" />
+    <meta name="author" content="Sergiu Lucutar" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#191716" />
+    <link
+      rel="preload"
+      as="font"
+      href="assets/fonts/Syne-Bold.otf"
+      type="font/otf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      as="font"
+      href="assets/fonts/Syne-Extra.otf"
+      type="font/otf"
+      crossorigin="anonymous"
+    />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <title>Sergiu Lucutar</title>
+    <style>
+      @font-face {
+        font-family: 'Syne Extra';
+        src: url('assets/fonts/Syne-Extra.otf') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Syne Bold';
+        src: url('assets/fonts/Syne-Bold.otf') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+
+        margin: 0;
+        overflow: hidden;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        background-color: #191716;
+      }
+
+      h1 {
+        color: #e0e2db;
+
+        font-family: 'Syne Extra', sans-serif;
+        font-size: 3vw;
+      }
+
+      h1 span {
+        color: #3d348b;
+      }
+
+      a {
+        position: relative;
+
+        display: inline-block;
+
+        color: #e6af2e;
+        font-family: 'Syne Bold', sans-serif;
+        font-size: 1.4vw;
+        text-decoration: none;
+        vertical-align: bottom;
+
+        line-height: 1.6;
+
+        overflow: hidden;
+      }
+
+      a::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+
+        display: block;
+
+        border-bottom: 2px solid #e6af2e;
+      }
+      a:hover::before {
+        animation: a_hover 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+      }
+
+      @keyframes a_hover {
+        45% {
+          transform: translateX(100%);
+        }
+        54% {
+          transform: translateX(100%);
+        }
+        55% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1><span>404</span>: PAGE NOT FOUND</h1>
+    <a href="http://sergiulucutar.com/">GO HOME</a>
+  </body>
+</html>

@@ -354,32 +354,35 @@ nav {
 
   @media only screen and (min-width: $screen) {
     display: grid;
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 40% 40% 20%;
   }
 
   article {
     grid-row: 1;
-    grid-column: 1 / -1;
+    grid-column: 2;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
     font-family: 'Syne', sans-serif;
-
     font-size: 1.6rem;
     line-height: 1.6;
 
     @media only screen and (min-width: $screen) {
-      grid-column: 1;
+      grid-column: 3;
     }
   }
 
   h2 {
-    grid-row: 2;
-    grid-column: 2;
+    grid-row: 1;
+    grid-column: 1;
 
     margin-top: 6vmax;
 
     color: white;
     font-size: 5.4vmax;
-    text-align: right;
+    text-align: left;
 
     @media only screen and (min-width: $screen) {
       margin: 20px 0;
@@ -499,8 +502,8 @@ nav {
           }
         }
 
-        width: 21.3vmax;
-        height: 10vmax;
+        width: 18vmax;
+        height: 8vmax;
 
         background-position: center;
         background-repeat: no-repeat;

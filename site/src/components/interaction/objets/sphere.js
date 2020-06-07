@@ -2,7 +2,7 @@ import * as CANNON from 'cannon';
 import * as THREE from 'three';
 import { Utils } from '../../utils';
 
-const vertexShader = `
+const vertexShader = /* glsl */ `
 float refractionRatio = 1.02;
 
 varying vec3 vReflect;
@@ -25,7 +25,7 @@ void main() {
   gl_Position = projectionMatrix * mvPos;
 }
 `;
-const fragmentShader = `
+const fragmentShader = /* glsl */ `
 uniform samplerCube cube;
 
 varying vec3 vReflect;

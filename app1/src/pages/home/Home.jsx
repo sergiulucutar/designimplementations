@@ -111,10 +111,10 @@ export default class Home extends React.Component {
           ))}
         </div>
         <div className='hero_button hero_button-next'>
-          <button onClick={() => this.slide(false)}>Next</button>
+          <button onClick={() => this.slide(false)}>NEXT</button>
         </div>
         <div className='hero_button hero_button-prev'>
-          <button onClick={() => this.slide(true)}>Prev</button>
+          <button onClick={() => this.slide(true)}>PREV</button>
         </div>
         <div className='hero_index'>
           <span>
