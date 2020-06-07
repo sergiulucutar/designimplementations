@@ -16,7 +16,7 @@ function startIntro() {
   const timeline = new TimelineLite({
     onStart: () => document.querySelector('.loader').classList.add('hide')
   });
-
+  startInteraction();
   setTimeout(() => {
     timeline
       .from(charsFirstWord, 0.8, {
@@ -49,8 +49,7 @@ function startIntro() {
           ease: Power2.easeOut
         },
         0
-      )
-      .call(() => startInteraction());
+      );
   }, 0);
 }
 window.onload = () => startIntro();

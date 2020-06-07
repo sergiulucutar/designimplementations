@@ -31,7 +31,6 @@ export class HomeInteraction extends Interaction3d {
     this.addSphere(sphere);
     sphere.body.position.x = this.bounds[0] / this.cameraSize / 2;
     sphere.body.position.y = 0;
-    this.showObjects();
   }
 
   createReflextionText() {

@@ -89,13 +89,14 @@ export class Interaction3d {
       sphere.mesh.visible = false;
       time.from(
         sphere.mesh.scale,
-        0.6,
+        0.8,
         {
           x: 0.01,
           y: 0.01,
           z: 0.01,
           ease: Power2.easeOut,
           onStart: () => {
+            sphere.body.angularDamping = 0.5;
             sphere.body.torque = new CANNON.Vec3(
               Utils.randomSign() * Utils.random(5, 10) * 2000,
               Utils.randomSign() * Utils.random(5, 10) * 2000,
@@ -104,7 +105,7 @@ export class Interaction3d {
             sphere.mesh.visible = true;
           }
         },
-        index * 0.3
+        index * 0.04
       );
     });
   }

@@ -71,10 +71,16 @@ scroll.on('call', (value, way) => {
   }
 });
 
-window.startInteraction = loop;
+window.startInteraction = () => {
+  homeInteraction.interactionObj.showObjects();
+  contactInteraction.interactionObj.showObjects();
+  loop();
+};
 
 window.setupInteractions = () => {
-  [...document.querySelectorAll('.work .project')].forEach(el => {
+  [
+    ...document.querySelectorAll('.work li:not(:last-of-type) .project')
+  ].forEach(el => {
     el.addEventListener('mouseenter', setupSelectedImage.bind(this));
     el.addEventListener('mousemove', updateImagePosition.bind(this));
   });

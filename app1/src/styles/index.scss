@@ -8,10 +8,18 @@
   * {
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
+
+    outline: none;
+
+    &:focus {
+      outline: none;
+    }
   }
 }
 
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
 }
@@ -41,6 +49,7 @@ html {
   background-color: var(--c_red);
 
   color: var(--c_white);
+  letter-spacing: 2px;
 
   z-index: 6;
   cursor: pointer;
@@ -61,7 +70,8 @@ button {
 .corners-hover {
   position: relative;
 
-  &::after, &::before {
+  &::after,
+  &::before {
     content: ' ';
     position: absolute;
     display: block;
@@ -71,36 +81,37 @@ button {
     border-color: var(--c_white);
     opacity: 0;
 
-    transition: all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
 
   &::after {
-      bottom: 0;
-      left: 0;
+    bottom: 0;
+    left: 0;
 
-      border-left: 3px solid var(--c_red);
-      border-bottom: 3px solid var(--c_red);
+    border-left: 3px solid var(--c_red);
+    border-bottom: 3px solid var(--c_red);
 
-      transform: translate(-50px, 50px);
+    transform: translate(-50px, 50px);
   }
 
   &::before {
-      top: 0;
-      right: 0;
+    top: 0;
+    right: 0;
 
-      border-top: 3px solid var(--c_red);
-      border-right: 3px solid var(--c_red);
+    border-top: 3px solid var(--c_red);
+    border-right: 3px solid var(--c_red);
 
-      transform: translate(50px, -50px);
+    transform: translate(50px, -50px);
   }
 
   &:hover {
-      color: var(--c_white);
+    color: var(--c_white);
 
-      &::after, &::before {
-          opacity: 1;
+    &::after,
+    &::before {
+      opacity: 1;
 
-          transform: translate(0, 0);
-      }
+      transform: translate(0, 0);
+    }
   }
 }

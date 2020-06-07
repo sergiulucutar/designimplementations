@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Interaction3d } from './interaction';
-import { ReflectiveSphere, Sphere } from './objets/sphere';
+import { ReflectiveSphere } from './objets/sphere';
 
 export class ContactInteraction extends Interaction3d {
   constructor(domEl) {
@@ -16,14 +16,13 @@ export class ContactInteraction extends Interaction3d {
     this.addSphere(shape);
     shape.body.position.x = this.bounds[0] / this.cameraSize / 4;
     shape.body.position.y = -this.bounds[1] / this.cameraSize / 4;
-    this.showObjects();
   }
 
   createReflextionText() {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
-    const canvasSize = 1024;
+    const canvasSize = 2048;
     canvas.width = canvasSize;
     canvas.height = canvasSize;
 
@@ -49,8 +48,8 @@ export class ContactInteraction extends Interaction3d {
     }
 
     const planeGeom = new THREE.PlaneGeometry(
-      (this.bounds[0] / this.cameraSize) * 2.5,
-      (this.bounds[0] / this.cameraSize) * 2.5
+      (this.bounds[0] / this.cameraSize) * 4,
+      (this.bounds[0] / this.cameraSize) * 4
     );
     const texture = new THREE.CanvasTexture(ctx.canvas);
     const mat = new THREE.MeshBasicMaterial({

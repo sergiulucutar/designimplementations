@@ -23,13 +23,13 @@
       opacity: 0;
       z-index: 0;
 
-      transition: opacity .6s cubic-bezier(.55, 0, .1, 1);
+      transition: opacity 0.6s cubic-bezier(0.55, 0, 0.1, 1);
 
       &-displayed {
         opacity: 1;
         z-index: 1;
 
-        transition: opacity .6s cubic-bezier(.55, 0, .1, 1) .3s;
+        transition: opacity 0.6s cubic-bezier(0.55, 0, 0.1, 1) 0.3s;
       }
 
       @media only screen and (min-width: 767px) {
@@ -77,9 +77,8 @@
           grid-column: 2;
         }
       }
-
     }
-    
+
     article {
       @media only screen and (min-width: 767px) {
         padding-right: 80px;
@@ -88,12 +87,12 @@
       h2 {
         padding: 20px 0;
         margin-bottom: 20px;
-        
+
         background-color: var(--c_blue-light);
         color: var(--c_white);
         font-size: 2rem;
       }
-  
+
       p {
         line-height: 1.5;
       }
@@ -133,7 +132,7 @@
       grid-row: 5;
       grid-column: 4 / span 3;
       margin-left: 80px;
-      
+
       z-index: 1;
 
       @media only screen and (min-width: 767px) {
@@ -145,7 +144,6 @@
 
         margin-left: 0px;
       }
-
     }
 
     &-prev {
@@ -160,34 +158,36 @@
       border: none;
 
       background-color: var(--c_red);
-      
+
       color: var(--c_white);
+      letter-spacing: 2px;
     }
   }
 
   .image {
-
-    &_top, &_bottom {
+    &_top,
+    &_bottom {
       position: relative;
       overflow: hidden;
-    
+
       .layer {
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
-        
+
+        filter: grayscale(1);
         animation-fill-mode: forwards;
         opacity: 0;
-        transition: opacity .6s cubic-bezier(.55, 0, .1, 1);
+        transition: opacity 0.6s cubic-bezier(0.55, 0, 0.1, 1);
         z-index: 0;
 
         &-displayed {
-          animation: slide .6s cubic-bezier(.55, 0, .1, 1);
+          animation: slide 0.6s cubic-bezier(0.55, 0, 0.1, 1);
           opacity: 1;
           z-index: 2;
 
           &.reverse {
-            animation: slide-reverse .6s cubic-bezier(.55, 0, .1, 1);
+            animation: slide-reverse 0.6s cubic-bezier(0.55, 0, 0.1, 1);
           }
         }
 
@@ -227,7 +227,7 @@
 
     a {
       padding: 20px;
-      
+
       background-color: var(--c_white);
       color: var(--c_red);
       font-size: 1.4rem;
@@ -246,7 +246,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     background-color: var(--c_red);
 
     color: var(--c_white);
@@ -266,7 +266,7 @@
     grid-column: 1;
 
     z-index: 3;
-    
+
     @media only screen and (min-width: 767px) {
       background-color: var(--c_blue-light);
       mix-blend-mode: multiply;
@@ -280,7 +280,7 @@
   }
 
   to {
-    clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%); 
+    clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
   }
 }
 
@@ -290,6 +290,6 @@
   }
 
   to {
-    clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%); 
+    clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
   }
 }
