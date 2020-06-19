@@ -43,29 +43,35 @@ void main() {
   gl_FragColor = mix(refractedColor, reflectedColor, clamp(vReflectionFactor, 0.0, 1.0));
 }
 `;
-export const shapeSize =
-  (2 * (window.innerWidth + window.innerHeight)) /
-  Math.min(window.innerHeight, window.innerWidth);
-const sphereGeom = new THREE.BoxBufferGeometry(shapeSize, shapeSize, shapeSize);
-const sphereMat = new THREE.MeshStandardMaterial({
-  color: Utils.palette.purple,
-  roughness: 0.5
-});
-export const defaultBallMass = 10;
-const shape = new CANNON.Box(
-  new CANNON.Vec3(shapeSize / 2, shapeSize / 2, shapeSize / 2)
-);
 
-class SphereProto {
+export const defaultBallMass = 10;
+
+export class SphereProto {
+  static setShapeSize(size) {
+    SphereProto.shapeSize = size;
+    SphereProto.geom = new THREE.BoxBufferGeometry(
+      SphereProto.shapeSize,
+      SphereProto.shapeSize,
+      SphereProto.shapeSize
+    );
+    SphereProto.shape = new CANNON.Box(
+      new CANNON.Vec3(
+        SphereProto.shapeSize / 2,
+        SphereProto.shapeSize / 2,
+        SphereProto.shapeSize / 2
+      )
+    );
+  }
+
   constructor() {
-    this.mesh = new THREE.Mesh(sphereGeom);
+    this.mesh = new THREE.Mesh(SphereProto.geom);
 
     this.body = new CANNON.Body({
       mass: defaultBallMass,
       position: new CANNON.Vec3(0, 0, 0),
-      shape
+      shape: SphereProto.shape
     });
-    this.body.mass = 4 * shape.volume();
+    this.body.mass = 4 * Sphere.shape.volume();
     this.body.angularDamping = 0;
   }
 
@@ -83,9 +89,12 @@ class SphereProto {
 }
 
 export class Sphere extends SphereProto {
-  constructor() {
+  constructor(color = Utils.palette.purple) {
     super();
-    this.mesh.material = sphereMat;
+    this.mesh.material = new THREE.MeshStandardMaterial({
+      color: color,
+      roughness: 1
+    });
   }
 }
 

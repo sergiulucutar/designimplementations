@@ -2,7 +2,8 @@ export class Utils {
   static get palette() {
     return {
       white: '#e0e2db',
-      purple: '#3d348b'
+      purple: '#3d348b',
+      yellow: '#e6af2e'
     };
   }
 

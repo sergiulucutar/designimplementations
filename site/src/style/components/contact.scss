@@ -1,0 +1,62 @@
+.contact {
+  position: relative;
+  display: grid;
+
+  padding: 8vmax 4vw;
+
+  background-color: var(--c_purple);
+
+  @media only screen and (min-width: $screen) {
+    display: grid;
+    grid-template-columns: 40% 60%;
+  }
+
+  &_content {
+    grid-row: 1;
+    grid-column: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    font-size: 1.8rem;
+
+    > div > * {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-size: 5.4vmax;
+    }
+
+    ul {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    footer {
+      text-align: center;
+
+      @media only screen and (min-width: $screen) {
+        text-align: left;
+      }
+    }
+  }
+
+  .interaction {
+    position: absolute;
+    top: 50vh;
+    right: 0;
+    width: 100vw;
+    height: 50vh;
+
+    z-index: 2;
+
+    @media only screen and (min-width: $screen) {
+      top: 0;
+
+      width: 50vw;
+      height: 100vh;
+    }
+  }
+}
