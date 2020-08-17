@@ -1,0 +1,26 @@
+{
+  "name": "Design7",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel serve watch src/index.html",
+    "build": "parcel build src/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "assetsPath": "src/assets",
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "parcel": "^1.12.3",
+    "parcel-bundler": "^1.12.3",
+    "parcel-plugin-asset-copier": "^1.0.0",
+    "sass": "^1.22.9"
+  },
+  "dependencies": {
+    "gsap": "^3.4.2",
+    "pixi.js": "^5.3.3"
+  }
+}
