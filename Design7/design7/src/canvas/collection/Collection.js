@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import { Container } from 'react-pixi-fiber';
-import { withRouter } from 'react-router-dom';
+import { Container, Text, withApp } from 'react-pixi-fiber';
 
 class Collection extends Component {
-  componentWillMount() {
-    console.log(this.props);
-    this.props.history.listen((location, action) => {
-      console.log('ASTA Nu', location, action);
-    });
-  }
+  componentWillMount() {}
 
   render() {
-    return <Container></Container>;
+    return (
+      <Container>
+        <Text
+          text='CMGHT 
+        Collection'
+          x={this.props.bounds.width / 2}
+          y={this.props.bounds.height / 2}
+        ></Text>
+      </Container>
+    );
   }
 }
 
-export default withRouter(Collection);
+export default withApp(Collection);

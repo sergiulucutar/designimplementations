@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Container } from 'react-pixi-fiber';
+import { Container, withApp } from 'react-pixi-fiber';
 import { Power2, TimelineLite } from 'gsap';
 import Slide from './Slide';
-import { withRouter } from 'react-router-dom';
 
 class Home extends Component {
   constructor(props) {
@@ -11,21 +10,6 @@ class Home extends Component {
     this.activeSlide = 0;
 
     this.container = React.createRef();
-  }
-
-  componentWillMount() {
-    console.log('Will mount ', this.props);
-    this.props.history.listen((location, action) => {
-      console.log('ASTA DA', location, action);
-    });
-  }
-
-  componentDidMount() {
-    document.addEventListener('wheel', event => this.scroll());
-  }
-
-  componentWillUnmount() {
-    console.log('wheel unmount');
   }
 
   scroll() {
@@ -68,4 +52,4 @@ class Home extends Component {
   }
 }
 
-export default withRouter(Home);
+export default withApp(Home);

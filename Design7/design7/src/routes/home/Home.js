@@ -6,12 +6,6 @@ class Home extends Component {
     this.props.history.push('/collections/1');
   }
 
-  componentWillMount() {
-    this.props.history.listen((location, action) => {
-      console.log('ASTA Nu', location, action);
-    });
-  }
-
   render() {
     return (
       <main>

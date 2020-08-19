@@ -26,20 +26,8 @@ class App extends React.Component {
     return (
       <div className='APP'>
         <Stage options={OPTIONS}>
-          <Router>
-            <Suspense>
-              <Switch>
-                <Route
-                  exact
-                  path='/'
-                  render={() => <CanvasHome bounds={bounds}></CanvasHome>}
-                />
-                <Route path='/collections/:id'>
-                  <CanvasCollection bounds={bounds}></CanvasCollection>
-                </Route>
-              </Switch>
-            </Suspense>
-          </Router>
+          <CanvasHome bounds={bounds}></CanvasHome>
+          <CanvasCollection bounds={bounds}></CanvasCollection>
         </Stage>
 
         <div className='wrapper'>
@@ -53,14 +41,12 @@ class App extends React.Component {
             </nav>
           </header>
 
-          <Router>
-            <Suspense fallback={<div>Loading...</div>}>
-              <Switch>
-                <Route exact path='/' component={Home} />
-                <Route path='/collections/:id' component={Collection} />
-              </Switch>
-            </Suspense>
-          </Router>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Switch>
+              <Route exact path='/' component={Home} />
+              <Route path='/collections/:id' component={Collection} />
+            </Switch>
+          </Suspense>
 
           <footer>
             <div className='slider_numbers'>1 / 4</div>

@@ -40,6 +40,19 @@ class Slide extends Component {
         resolution: this.texture.height / this.texture.width
       });
     });
+
+    window.appHistory.listen(location => {
+      if (this.tweenReference) {
+        this.tweenReference.kill();
+      }
+
+      console.log('This is a location', location);
+      if (location.pathname !== '/') {
+        this.transitionIn();
+      } else {
+        this.transitionOut();
+      }
+    });
   }
 
   componentDidMount() {
