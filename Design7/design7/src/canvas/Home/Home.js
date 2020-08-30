@@ -3,7 +3,7 @@ import { Container, withApp } from 'react-pixi-fiber';
 import { Power2, TimelineLite } from 'gsap';
 import Slide from './Slide';
 
-class Home extends Component {
+class CanvasHome extends Component {
   constructor(props) {
     super(props);
 
@@ -52,4 +52,4 @@ class Home extends Component {
   }
 }
 
-export default withApp(Home);
+export default CanvasHome;

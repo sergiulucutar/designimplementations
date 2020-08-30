@@ -41,18 +41,18 @@ class Slide extends Component {
       });
     });
 
-    window.appHistory.listen(location => {
-      if (this.tweenReference) {
-        this.tweenReference.kill();
-      }
+    // window.appHistory.listen(location => {
+    //   if (this.tweenReference) {
+    //     this.tweenReference.kill();
+    //   }
 
-      console.log('This is a location', location);
-      if (location.pathname !== '/') {
-        this.transitionIn();
-      } else {
-        this.transitionOut();
-      }
-    });
+    //   console.log('This is a location', location);
+    //   if (location.pathname !== '/') {
+    //     this.transitionIn();
+    //   } else {
+    //     this.transitionOut();
+    //   }
+    // });
   }
 
   componentDidMount() {
