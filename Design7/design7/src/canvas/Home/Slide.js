@@ -35,11 +35,15 @@ class Slide extends Component {
     this.mask.endFill();
 
     this.texture = PIXI.Texture.from(picture);
-    this.texture.on('update', () => {
-      this.setState({
-        resolution: this.texture.height / this.texture.width
-      });
-    });
+
+    //this needs to be changes
+    if (this.texture.width > 1) {
+      this.updateImageResolution(this.texture.width, this.texture.height);
+    }
+
+    this.texture.on('update', () =>
+      this.updateImageResolution(this.texture.width, this.texture.height)
+    );
 
     // window.appHistory.listen(location => {
     //   if (this.tweenReference) {
@@ -116,6 +120,12 @@ class Slide extends Component {
         );
         this.mask.endFill();
       }
+    });
+  }
+
+  updateImageResolution(width, height) {
+    this.setState({
+      resolution: height / width
     });
   }
 

@@ -1,29 +1,37 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { render } from 'react-pixi-fiber';
-import CanvasHome from '../../canvas/Home/Home';
+import CanvasHome from '../../canvas/home/Home';
+
+import './Home.scss';
 
 class Home extends Component {
   constructor(props) {
     super(props);
 
     this.canvasComponent = React.createRef();
+
+    //handlers
+    this.h_scroll = this.scroll.bind(this);
   }
 
   viewMore() {
     this.props.history.push('/collections/1');
   }
 
+  scroll(event) {
+    this.canvasComponent.current.scroll(event);
+  }
+
   componentDidMount() {
     // this.canvasComponent.transitionIn();
-
-    document.addEventListener('wheel', () =>
-      this.canvasComponent.current.scroll()
-    );
+    console.log('ADD event listener');
+    document.addEventListener('wheel', this.h_scroll);
   }
 
   componentWillUnmount() {
     // this.canvasComponent.transitionOut();
+    document.removeEventListener('wheel', this.h_scroll);
   }
 
   render() {

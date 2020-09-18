@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, withApp } from 'react-pixi-fiber';
+import { Container, Graphics, Circle } from 'react-pixi-fiber';
 import { Power2, TimelineLite } from 'gsap';
 import Slide from './Slide';
 
@@ -10,24 +10,42 @@ class CanvasHome extends Component {
     this.activeSlide = 0;
 
     this.container = React.createRef();
+    this.graphic = React.createRef();
+
+    this.isSliding = false;
   }
 
-  scroll() {
-    const currentItem = this.container.current.getChildAt(this.activeSlide);
-    const nextitem = this.container.current.getChildAt(++this.activeSlide);
+  nextSlideNumber(delta) {
+    const totalSlides = this.container.current.children.length;
+    return (this.activeSlide + totalSlides + delta) % totalSlides;
+  }
 
-    nextitem.position.y = this.props.bounds.height;
-    nextitem.visible = true;
-    // currentItem.visible = true;
+  scroll(event) {
+    if (this.isSliding) {
+      return;
+    }
+    this.isSliding = true;
+
+    const delta = Math.sign(event.deltaY);
+    const currentItem = this.container.current.getChildAt(this.activeSlide);
+    this.activeSlide = this.nextSlideNumber(delta);
+    const nextitem = this.container.current.getChildAt(this.activeSlide);
+
     const timeline = new TimelineLite({
+      onStart: () => {
+        nextitem.visible = true;
+      },
       onComplete: () => {
         currentItem.visible = false;
         currentItem.position.y = 0;
+        this.isSliding = false;
       }
     });
     timeline
+      .set(currentItem.position, { y: 0 })
+      .set(nextitem.position, { y: -delta * this.props.bounds.height })
       .to(currentItem.position, 1.2, {
-        y: -this.props.bounds.height,
+        y: delta * this.props.bounds.height,
         ease: Power2.easeInOut
       })
       .to(
@@ -41,12 +59,26 @@ class CanvasHome extends Component {
       );
   }
 
+  componentDidMount() {
+    const graphicEl = this.graphic.current;
+    graphicEl.beginFill(0xff7d00);
+    graphicEl.drawCircle(
+      (this.props.bounds.width / 4) * 3,
+      (this.props.bounds.height / 3) * 2,
+      Math.min(this.props.bounds.width * 0.3, 180)
+    );
+    graphicEl.endFill();
+  }
+
   render() {
     return (
-      <Container ref={this.container}>
-        <Slide bounds={this.props.bounds} visible={true}></Slide>
-        <Slide bounds={this.props.bounds} visible={false}></Slide>
-        <Slide bounds={this.props.bounds} visible={false}></Slide>
+      <Container>
+        <Container ref={this.container}>
+          <Slide bounds={this.props.bounds} visible={true}></Slide>
+          <Slide bounds={this.props.bounds} visible={false}></Slide>
+          <Slide bounds={this.props.bounds} visible={false}></Slide>
+        </Container>
+        <Graphics ref={this.graphic} />
       </Container>
     );
   }

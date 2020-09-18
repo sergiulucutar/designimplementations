@@ -13,15 +13,12 @@ class CanvasCollection extends Component {
     this.container = React.createRef();
   }
 
-  componentWillMount() {}
-
   componentDidMount() {
-    // this.container.current.on('scroll', event => console.log(event));
     const positions = [];
     for (let i = 0; i < 8; i++) {
       positions.push({
         x: (this.props.bounds.width / 6) * Math.floor(random(0, 6)),
-        y: 400 * i,
+        y: 500 * i,
         zIndex: Math.floor(Math.random() * 2) - 1
       });
     }
