@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Graphics, Circle } from 'react-pixi-fiber';
+import { Container, Graphics } from 'react-pixi-fiber';
 import { Power2, TimelineLite } from 'gsap';
-import Slide from './Slide';
+import { SlideShaded } from './SlideShaded';
+import * as PIXI from 'pixi.js';
+
+import slide1 from '../../assets/slide1.jpg';
+import slide2 from '../../assets/slide2.jpg';
+import slide3 from '../../assets/slide3.jpg';
+import slide4 from '../../assets/slide4.jpg';
 
 class CanvasHome extends Component {
   constructor(props) {
@@ -13,6 +19,19 @@ class CanvasHome extends Component {
     this.graphic = React.createRef();
 
     this.isSliding = false;
+    this.slides = [];
+
+    this.init();
+  }
+
+  init() {
+    const slides = [slide1, slide2, slide3, slide4];
+
+    for (let i = 0; i < 4; i++) {
+      const texture = PIXI.Texture.from(slides[i]);
+      const slide = new SlideShaded(this.props.bounds, texture);
+      this.slides.push(slide);
+    }
   }
 
   nextSlideNumber(delta) {
@@ -27,32 +46,36 @@ class CanvasHome extends Component {
     this.isSliding = true;
 
     const delta = Math.sign(event.deltaY);
-    const currentItem = this.container.current.getChildAt(this.activeSlide);
+    const currentItem = this.slides[this.activeSlide]; ///this.container.current.getChildAt(this.activeSlide);
     this.activeSlide = this.nextSlideNumber(delta);
-    const nextitem = this.container.current.getChildAt(this.activeSlide);
+    const nextItem = this.slides[this.activeSlide]; //this.container.current.getChildAt(this.activeSlide);
+
+    currentItem.mesh.zIndex = 1;
+    nextItem.mesh.zIndex = 0;
+    this.container.current.sortChildren();
 
     const timeline = new TimelineLite({
       onStart: () => {
-        nextitem.visible = true;
+        nextItem.mesh.visible = true;
+        currentItem.transitionDirection = delta;
       },
       onComplete: () => {
-        currentItem.visible = false;
-        currentItem.position.y = 0;
+        currentItem.mesh.visible = false;
         this.isSliding = false;
       }
     });
     timeline
-      .set(currentItem.position, { y: 0 })
-      .set(nextitem.position, { y: -delta * this.props.bounds.height })
-      .to(currentItem.position, 1.2, {
+      .set(currentItem.mesh.position, { y: 0 })
+      .set(nextItem.mesh.position, { y: 0 })
+      .to(currentItem.mesh.position, 1.2, {
         y: delta * this.props.bounds.height,
         ease: Power2.easeInOut
       })
-      .to(
-        nextitem.position,
+      .from(
+        currentItem,
         1.2,
         {
-          y: 0,
+          transitionTime: 1,
           ease: Power2.easeInOut
         },
         0
@@ -68,16 +91,19 @@ class CanvasHome extends Component {
       Math.min(this.props.bounds.width * 0.3, 180)
     );
     graphicEl.endFill();
+
+    // Add slide meshes to Stage and mark the first one as visible
+    const container = this.container.current;
+    for (let slide of this.slides) {
+      container.addChild(slide.mesh);
+    }
+    container.getChildAt(0).visible = true;
   }
 
   render() {
     return (
       <Container>
-        <Container ref={this.container}>
-          <Slide bounds={this.props.bounds} visible={true}></Slide>
-          <Slide bounds={this.props.bounds} visible={false}></Slide>
-          <Slide bounds={this.props.bounds} visible={false}></Slide>
-        </Container>
+        <Container ref={this.container} sortableChildren={true} />
         <Graphics ref={this.graphic} />
       </Container>
     );

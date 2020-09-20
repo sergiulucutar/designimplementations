@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Sprite } from 'react-pixi-fiber';
 import { Texture, Graphics, Geometry } from 'pixi.js';
 
-import picture from '../../assets/image1.jpg';
+import picture from '../../assets/slide1.jpg';
 import { TweenLite } from 'gsap';
 import { Power4 } from 'gsap/gsap-core';
 

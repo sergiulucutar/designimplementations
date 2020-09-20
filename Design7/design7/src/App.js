@@ -4,6 +4,7 @@ import React, { Suspense, lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { Application } from 'pixi.js';
+import * as PIXI from 'pixi.js';
 
 const Home = lazy(() => import('./routes/home/Home.js'));
 const Collection = lazy(() => import('./routes/collection/Collection'));
@@ -36,6 +37,13 @@ class App extends React.Component {
       view: canvas,
       resizeTo: window
     });
+
+    //loader
+    // const loader = PIXI.Loader.shared;
+    // loader.add('slide1', './assets/slide1.jpg');
+    // loader.add('slide2', './assets/slide2.jpg');
+    // loader.add('slide3', './assets/slide3.jpg');
+    // loader.add('slide4', './assets/slide4.jpg');
   }
 
   componentDidMount() {
@@ -57,10 +65,10 @@ class App extends React.Component {
         <header>
           <span className='logo'>LOGO</span>
           <nav>
-            <a href=''>Home</a>
-            <a href=''>Stories</a>
-            <a href=''>Extra</a>
-            <a href=''>Contact</a>
+            <a href='/'>Home</a>
+            <a href='/'>Stories</a>
+            <a href='/'>Extra</a>
+            <a href='/'>Contact</a>
           </nav>
         </header>
 

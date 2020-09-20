@@ -24,13 +24,10 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    // this.canvasComponent.transitionIn();
-    console.log('ADD event listener');
     document.addEventListener('wheel', this.h_scroll);
   }
 
   componentWillUnmount() {
-    // this.canvasComponent.transitionOut();
     document.removeEventListener('wheel', this.h_scroll);
   }
 
