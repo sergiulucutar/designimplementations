@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Text } from 'react-pixi-fiber';
+import { Container, Graphics, Text } from 'react-pixi-fiber';
 import Picture from './Picture';
 import { random } from 'gsap/gsap-core';
 
@@ -10,7 +10,7 @@ class CanvasCollection extends Component {
       pictuePositions: []
     };
 
-    this.container = React.createRef();
+    this.background = React.createRef();
   }
 
   componentDidMount() {
@@ -28,6 +28,16 @@ class CanvasCollection extends Component {
     });
 
     document.addEventListener('wheel', this.updatePicturesPosition.bind(this));
+
+    this.background.current.clear();
+    this.background.current.beginFill(0xff7d00);
+    this.background.current.drawRect(
+      0,
+      0,
+      this.props.bounds.width / 2,
+      this.props.bounds.height
+    );
+    this.background.current.endFill();
   }
 
   componentWillUnmount() {
@@ -49,7 +59,7 @@ class CanvasCollection extends Component {
   render() {
     const fontOptions = {
       fontFamily: 'WremenaLight',
-      fontSize: 140,
+      fontSize: 90,
       fill: 0xffffff,
       align: 'center'
     };
@@ -60,27 +70,30 @@ class CanvasCollection extends Component {
     };
 
     return (
-      <Container sortableChildren={true}>
-        <Text
-          text='CMGHT 
-        Collection'
-          x={this.props.bounds.width / 2}
-          y={this.props.bounds.height / 2}
-          style={fontOptions}
-          anchor={TextAnchor}
-          zIndex={0}
-        ></Text>
-        {this.state.pictuePositions.map((pos, index) => {
-          return (
-            <Picture
-              x={pos.x}
-              y={pos.y}
-              zIndex={pos.zIndex}
-              pixi={this.props.pixi}
-              key={index}
-            />
-          );
-        })}
+      <Container>
+        <Graphics ref={this.background} />
+        <Container sortableChildren={true}>
+          <Text
+            text='CMGHT 
+          Collection'
+            x={this.props.bounds.width / 2}
+            y={this.props.bounds.height / 2}
+            style={fontOptions}
+            anchor={TextAnchor}
+            zIndex={0}
+          ></Text>
+          {this.state.pictuePositions.map((pos, index) => {
+            return (
+              <Picture
+                x={pos.x}
+                y={pos.y}
+                zIndex={pos.zIndex}
+                pixi={this.props.pixi}
+                key={index}
+              />
+            );
+          })}
+        </Container>
       </Container>
     );
   }

@@ -1,10 +1,15 @@
 import './App.scss';
 
 import React, { Suspense, lazy } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 import { Application } from 'pixi.js';
 import * as PIXI from 'pixi.js';
+
+import slide1 from './assets/slide1.jpg';
+import slide2 from './assets/slide2.jpg';
+import slide3 from './assets/slide3.jpg';
+import slide4 from './assets/slide4.jpg';
 
 const Home = lazy(() => import('./routes/home/Home.js'));
 const Collection = lazy(() => import('./routes/collection/Collection'));
@@ -16,6 +21,13 @@ const Collection = lazy(() => import('./routes/collection/Collection'));
 //   antialias: true,
 //   view:
 // };
+
+const loader = PIXI.Loader.shared;
+loader
+  .add('image1', slide1)
+  .add('image2', slide2)
+  .add('image3', slide3)
+  .add('image4', slide4);
 
 class App extends React.Component {
   constructor() {
@@ -30,20 +42,13 @@ class App extends React.Component {
 
     const canvas = document.createElement('canvas');
     this.pixi = new Application({
-      backgroundColor: 0x6d696a,
+      transparent: true,
       height: this.state.bounds.height,
       width: this.state.bounds.width,
       antialias: true,
       view: canvas,
       resizeTo: window
     });
-
-    //loader
-    // const loader = PIXI.Loader.shared;
-    // loader.add('slide1', './assets/slide1.jpg');
-    // loader.add('slide2', './assets/slide2.jpg');
-    // loader.add('slide3', './assets/slide3.jpg');
-    // loader.add('slide4', './assets/slide4.jpg');
   }
 
   componentDidMount() {
@@ -57,6 +62,8 @@ class App extends React.Component {
         height: document.body.offsetHeight
       });
     });
+
+    loader.load(() => this.props.history.push('/home'));
   }
 
   render() {
@@ -76,7 +83,7 @@ class App extends React.Component {
           <Switch>
             <Route
               exact
-              path='/'
+              path='/home'
               render={() => (
                 <Home bounds={this.state.bounds} pixi={this.pixi} />
               )}
@@ -89,7 +96,6 @@ class App extends React.Component {
             />
           </Switch>
         </Suspense>
-
         {/* <footer>
           <div className='slider_numbers'>1 / 4</div>
         </footer> */}
@@ -98,4 +104,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withRouter(App);

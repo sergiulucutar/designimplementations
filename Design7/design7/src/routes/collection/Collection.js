@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { render } from 'react-pixi-fiber';
 
+import './Collection.scss';
+
 import CanvasCollection from '../../canvas/collection/Collection';
 
 class Collection extends Component {
@@ -13,7 +15,9 @@ class Collection extends Component {
 
     return (
       <div>
-        <Link to='/'>Home</Link>
+        <Link className='button button-close' to='/'>
+          Home
+        </Link>
       </div>
     );
   }

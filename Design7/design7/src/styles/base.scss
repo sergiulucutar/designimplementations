@@ -2,6 +2,11 @@
   box-sizing: border-box;
 }
 
+:root {
+  --t_easeIn: cubic-bezier(0.32, 0, 0.67, 0);
+  --t_easeOut: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
 html {
   color: white;
   font-family: 'Wremena';

@@ -9,17 +9,41 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      activeSlideIndex: 0
+    };
+
     this.canvasComponent = React.createRef();
 
     //handlers
     this.h_scroll = this.scroll.bind(this);
+
+    this.slidesContent = [
+      {
+        title: 'CMGHT'
+      },
+      {
+        title: 'Zmashra'
+      },
+      {
+        title: 'Whatever'
+      }
+    ];
   }
 
   viewMore() {
-    this.props.history.push('/collections/1');
+    this.canvasComponent.current.close();
+    setTimeout(() => this.props.history.push('/collections/1'), 2000);
   }
 
   scroll(event) {
+    this.setState({
+      activeSlideIndex:
+        (this.state.activeSlideIndex +
+          this.slidesContent.length +
+          Math.sign(event.deltaY)) %
+        this.slidesContent.length
+    });
     this.canvasComponent.current.scroll(event);
   }
 
@@ -38,18 +62,27 @@ class Home extends Component {
     );
 
     return (
-      <main>
-        <div className='slide'>
-          <h1>
-            CMGHT <br />
-            Collection
-          </h1>
-          {/* <Link to='/collections/1'>view more</Link> */}
+      <div className='wrapper'>
+        <main>
+          <div className='slides'>
+            {this.slidesContent.map((slide, index) => (
+              <div
+                className={
+                  this.state.activeSlideIndex === index
+                    ? 'slide slide-active'
+                    : 'slide'
+                }
+              >
+                <h1>{slide.title}</h1>
+                <h2>collection</h2>
+              </div>
+            ))}
+          </div>
           <button className='button' onClick={() => this.viewMore()}>
             View More
           </button>
-        </div>
-      </main>
+        </main>
+      </div>
     );
   }
 }
