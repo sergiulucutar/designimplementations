@@ -84,12 +84,17 @@ float line(vec2 uv, float width) {
 void main() {
   // float color = 1.0 -smoothstep(0.8, 0.85, 1.0 - fract(pos + u_time / 10.0));
   // float pos = (nUv.x + nUv.y) * 1.0;
-  vec2 newuv = vPosition.xy / 4.0;
+  float xCoord = vUv.x * vPosition.x;
+  vec2 newuv =  vec2(xCoord / 4.0, vPosition.y / 4.0);
   vec2 noise = vec2(cnoise(newuv + uTime / (100.0 * uTimeSpeed)));
   newuv += noise;
-  newuv = vec2(fract(newuv.x + noise.y));
+  // newuv = vec2();
+  newuv = vec2(min(fract(newuv.x), fract(newuv.y)));
 
-  gl_FragColor = vec4(vec3(line(newuv, uWidth)), 1.0);
+  vec3 seaColor = mix(vec3(0.21, 0.153, 0.87), vec3(0.21, 0.87, 0.153), vUv.x);
+  vec3 color = mix(vec3(1.0, 1.0, 1.0), seaColor, line(newuv, uWidth));
+
+  gl_FragColor = vec4(color, 1.0);
 }
 `;
 
@@ -111,7 +116,7 @@ export class Wall {
           value: 0
         },
         uWidth: {
-          value: 0.1
+          value: 0.05
         },
         uTimeSpeed: {
           value: 1.0
@@ -123,17 +128,6 @@ export class Wall {
     this.hasStorm = false;
 
     this.constructor.instance = this;
-
-    setInterval(() => {
-      if (!this.hasStorm && Math.random() < 0.5) {
-        this.toStormState();
-        return;
-      }
-
-      if (this.hasStorm) {
-        this.fromStormState();
-      }
-    }, 5000);
   }
 
   update(time) {

@@ -1,5 +1,8 @@
 import * as THREE from 'three';
+import { TweenLite, Power2 } from 'gsap';
+
 import { Wall } from './components/wall';
+// import { Wall } from './components/sea_blue';
 import { Boat } from './components/boat';
 
 class App {
@@ -25,7 +28,7 @@ class App {
     document.querySelector('.wrapper').appendChild(this.renderer.domElement);
 
     // Light
-    const ambientList = new THREE.AmbientLight('white', 0.2);
+    const ambientList = new THREE.AmbientLight('white', 0.7);
     this.scene.add(ambientList);
 
     const directionalLight = new THREE.DirectionalLight('white');
@@ -45,8 +48,7 @@ class App {
     this.scene.add(this.wall.mesh);
 
     this.boat.mesh.position.z = -9;
-    this.boat.mesh.rotation.y = Math.PI / 3;
-    this.boat.mesh.scale.setScalar(0.6);
+    this.boat.mesh.scale.setScalar(0.8);
 
     this.addEventListeners();
   }
@@ -57,9 +59,7 @@ class App {
 
   update(time) {
     this.wall.update(time);
-    this.boat.mesh.rotation.y += Math.sin(time / 4) * 0.01;
-    // this.boat.mesh.rotation.y += 0.01;
-    // this.controls.update();
+    this.boat.mesh.rotation.y += Math.sin(time / 2) * 0.005;
 
     // Camera moveemnt;
     if (distance(this.camera.position, this.cursorPosition) > 0.05) {
@@ -71,35 +71,64 @@ class App {
   }
 
   addEventListeners() {
-    const auxVec = new THREE.Vector3(0, 0, 0.1);
-    this.domEl.addEventListener('mousemove', () => {
+    this.domEl.addEventListener('click', event => {
       this.cursorPosition.x = -1 + 2 * (event.offsetX / this.bounds[0]);
       this.cursorPosition.y = 1 - 2 * (event.offsetY / this.bounds[1]);
 
-      auxVec.x = this.cursorPosition.x;
-      auxVec.y = this.cursorPosition.y;
-      auxVec.z = 0.5;
-      auxVec.unproject(this.camera);
-      const dir = auxVec.sub(this.camera.position).normalize();
-      const pos = this.camera.position
-        .clone()
-        .add(dir.multiplyScalar(-this.camera.position.z / dir.z));
-      this.boat.mesh.position.x = pos.x;
-      this.boat.mesh.position.y = pos.y;
+      this.raycaster.setFromCamera(this.cursorPosition, this.camera);
+      const intersations = this.raycaster.intersectObject(this.wall.mesh);
+      if (intersations.length) {
+        this.moveBoat(intersations[0]);
+        this.rotateBoatOnMovement(intersations[0]);
+      }
     });
+  }
 
-    // this.domEl.addEventListener('mousedown', event => {
-    // this.checkforCursorIntersections();
-    // });
-    // this.domEl.addEventListener('mouseleave', () => {
-    //   this.cursorPosition.x = 0;
-    //   this.cursorPosition.y = 0;
-    // });
+  rotateBoatOnMovement(intersection) {
+    let angle =
+      (Math.atan2(
+        intersection.point.y - this.boat.mesh.position.y,
+        intersection.point.x - this.boat.mesh.position.x
+      ) *
+        180) /
+      Math.PI;
+
+    angle = (angle / 360) * 2 * Math.PI;
+    TweenLite.to(this.boat.mesh.rotation, 0.2, {
+      z: angle - Math.PI / 2,
+      ease: Power2.easeInOut
+    });
+  }
+
+  moveBoat(intersection) {
+    if (this.boat.queuedMovement) {
+      this.boat.queuedMovement.kill();
+    }
+    this.queuedMovement = TweenLite.from(this.boat, 2, {
+      movementTime: 0,
+      ease: Power2.easeInOut,
+      onUpdate: () => {
+        this.boat.mesh.position.x = lerp(
+          this.boat.mesh.position.x,
+          intersection.point.x,
+          this.boat.movementTime
+        );
+        this.boat.mesh.position.y = lerp(
+          this.boat.mesh.position.y,
+          intersection.point.y,
+          this.boat.movementTime
+        );
+      }
+    });
   }
 }
 
 function distance(pos1, pos2) {
   return Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2));
+}
+
+function lerp(a, b, t) {
+  return a + (b - a) * t;
 }
 
 let time = 0,

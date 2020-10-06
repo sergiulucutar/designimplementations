@@ -1,0 +1,25 @@
+{
+  "name": "ThreeJSBase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel serve watch src/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "parcel": "^1.12.3",
+    "parcel-bundler": "^1.12.3",
+    "parcel-plugin-asset-copier": "^1.0.0",
+    "sass": "^1.22.9"
+  },
+  "dependencies": {
+    "gsap": "^3.0.2",
+    "load-bmfont": "^1.4.1",
+    "three": "^0.115.0"
+  },
+  "assetsPath": "src/assets"
+}
