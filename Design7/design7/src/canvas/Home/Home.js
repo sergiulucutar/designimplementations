@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Graphics } from 'react-pixi-fiber';
 import { Power2, TimelineLite } from 'gsap';
-import { SlideShaded } from './SlideShaded';
+import { Image } from '../Image';
 import * as PIXI from 'pixi.js';
 import { Bubble } from './Bubble';
 
@@ -21,9 +21,14 @@ class CanvasHome extends Component {
   }
 
   init() {
+    const size = {
+      ...this.props.bounds,
+      width: this.props.bounds.width / 2
+    };
+
     for (let i = 0; i < 4; i++) {
       const texture = PIXI.Loader.shared.resources[`image${i + 1}`].texture;
-      const slide = new SlideShaded(this.props.bounds, texture);
+      const slide = new Image(size, texture);
       this.slides.push(slide);
     }
   }
@@ -100,6 +105,14 @@ class CanvasHome extends Component {
     this.bubble.moveTo(
       this.props.bounds.width / 4,
       this.props.bounds.height / 2,
+      1
+    );
+  }
+
+  open() {
+    this.bubble.revertTo(
+      (this.props.bounds.width / 4) * 3,
+      (this.props.bounds.height / 3) * 2,
       1
     );
   }

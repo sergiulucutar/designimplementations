@@ -45,6 +45,30 @@ export class Bubble {
       });
   }
 
+  revertTo(newX, newY, time) {
+    const timeline = new TimelineLite({
+      onUpdate: () => {
+        this.state.y += Math.sin(this.state.offsetY * Math.PI) * 150;
+        this.draw();
+      }
+    });
+    timeline
+      .call(() => (this.graphic.mask = this.mask))
+      .set(this.state, { r: 700 })
+      .to(this.state, time * 0.5, {
+        r: 0,
+        ease: Power2.easeIn
+      })
+      .set(this.state, { offsetY: 0 })
+      .to(this.state, time * 0.5, {
+        x: newX,
+        y: newY,
+        r: this.state.r,
+        offsetY: 1,
+        ease: Power2.easeOut
+      });
+  }
+
   draw() {
     this.graphic.clear();
     this.graphic.beginFill(0xff7d00);

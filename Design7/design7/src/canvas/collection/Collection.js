@@ -1,34 +1,65 @@
+import * as PIXI from 'pixi.js';
 import React, { Component } from 'react';
 import { Container, Graphics, Text } from 'react-pixi-fiber';
-import Picture from './Picture';
 import { random } from 'gsap/gsap-core';
+import { Image } from '../Image';
+import { TimelineLite, TweenLite, TweenMax } from 'gsap';
+import { Power2 } from 'gsap/gsap-core';
+import gsap from 'gsap/gsap-core';
 
 class CanvasCollection extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      pictuePositions: []
-    };
 
+    this.contentConatiner = React.createRef();
     this.background = React.createRef();
+    this.images = [];
   }
 
   componentDidMount() {
-    const positions = [];
-    for (let i = 0; i < 8; i++) {
-      positions.push({
-        x: (this.props.bounds.width / 6) * Math.floor(random(0, 6)),
-        y: 500 * i,
-        zIndex: Math.floor(Math.random() * 2) - 1
-      });
+    this.drawBackground();
+    this.createImages();
+    this.addImagesToScene();
+  }
+
+  componentWillUnmount() {
+    this.killTimelines();
+  }
+
+  createImages() {
+    const size = { width: 400, height: 400 * 1.4 };
+
+    for (let j = 0; j < 2; j++) {
+      for (let i = 0; i < 4; i++) {
+        const texture = PIXI.Loader.shared.resources[`image${i + 1}`].texture;
+        const slide = new Image(size, texture, 50);
+        slide.speed = 3;
+        this.images.push(slide);
+      }
     }
+  }
 
-    this.setState({
-      pictuePositions: positions
+  addImagesToScene() {
+    let lastIndex = 0,
+      currentIndex = 0;
+    this.images.forEach((image, index) => {
+      lastIndex = currentIndex;
+
+      do {
+        currentIndex = Math.floor(random(0, 5));
+      } while (lastIndex === currentIndex);
+
+      image.mesh.position.x =
+        (this.props.bounds.width / 6) * currentIndex +
+        this.props.bounds.width * 0.1;
+      image.mesh.position.y = 500 * index;
+      image.mesh.zIndex = Math.floor(Math.random() * 2) - 1;
+
+      this.contentConatiner.current.addChild(image.mesh);
     });
+  }
 
-    document.addEventListener('wheel', this.updatePicturesPosition.bind(this));
-
+  drawBackground() {
     this.background.current.clear();
     this.background.current.beginFill(0xff7d00);
     this.background.current.drawRect(
@@ -40,20 +71,43 @@ class CanvasCollection extends Component {
     this.background.current.endFill();
   }
 
-  componentWillUnmount() {
-    document.removeEventListener(
-      'wheel',
-      this.updatePicturesPosition.bind(this)
-    );
+  updatePicturesPosition(event) {
+    // const distance =
+    // props.y / 2 + (props.y / 2) * this.speed - this.sprite.current.y;
+    this.killTimelines();
+    this.images.forEach(image => {
+      const distance = event.deltaY * image.speed;
+      image.offset = Math.abs(distance * 0.05);
+      image.transitionDirection = Math.sign(event.deltaY);
+
+      image.timeline = new TimelineLite()
+        .to(image.mesh.position, 0.8, {
+          y: `+=${distance}`,
+          ease: Power2.easeOut
+        })
+        .from(
+          image,
+          0.8,
+          {
+            transitionTime: 1,
+            ease: Power2.easeOut
+          },
+          0
+        );
+    });
   }
 
-  updatePicturesPosition(event) {
-    this.setState({
-      pictuePositions: this.state.pictuePositions.map(value => {
-        value.y += event.deltaY;
-        return value;
-      })
+  killTimelines() {
+    this.images.forEach(image => {
+      if (image.timeline) {
+        image.timeline.kill();
+        delete image.timeline;
+      }
     });
+  }
+
+  scroll(event) {
+    this.updatePicturesPosition(event);
   }
 
   render() {
@@ -72,7 +126,7 @@ class CanvasCollection extends Component {
     return (
       <Container>
         <Graphics ref={this.background} />
-        <Container sortableChildren={true}>
+        <Container ref={this.contentConatiner} sortableChildren={true}>
           <Text
             text='CMGHT 
           Collection'
@@ -82,17 +136,6 @@ class CanvasCollection extends Component {
             anchor={TextAnchor}
             zIndex={0}
           ></Text>
-          {this.state.pictuePositions.map((pos, index) => {
-            return (
-              <Picture
-                x={pos.x}
-                y={pos.y}
-                zIndex={pos.zIndex}
-                pixi={this.props.pixi}
-                key={index}
-              />
-            );
-          })}
         </Container>
       </Container>
     );

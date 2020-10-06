@@ -74,10 +74,6 @@ class Picture extends Component {
     this.sprite = React.createRef();
 
     this.speed = Math.random();
-
-    // this.shader = Shader.from(vertexShader, fragmentShader, {
-    //   uOffset: -5
-    // });
   }
 
   componentWillMount() {
