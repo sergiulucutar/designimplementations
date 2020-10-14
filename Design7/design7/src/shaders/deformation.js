@@ -29,7 +29,7 @@ export const vertexShader = /* GLSL */ `
   }
 `;
 
-export const fragmentShader = `
+export const fragmentShader = /* GLSL */ `
 precision mediump float;
 
 varying vec2 vUvs;
