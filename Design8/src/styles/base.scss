@@ -1,0 +1,31 @@
+:root {
+  --c_black: #100f10;
+  --c_white: #e0dfe1;
+  --c_white-border: hsla(75, 3%, 88%, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--c_white);
+  text-decoration: none;
+}
+
+h2 {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+body {
+  background-color: var(--c_black);
+
+  color: var(--c_white);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header,
+.wrapper {
+  padding: 12px;
+}

@@ -1,0 +1,45 @@
+main {
+  display: block;
+
+  padding-top: 20vh;
+  padding-bottom: 12px;
+
+  article {
+    flex-grow: 100;
+  }
+
+  h1 {
+    padding-left: 0;
+    margin-bottom: 12px;
+
+    font-size: 2rem;
+    font-weight: bold;
+
+    @media screen and (min-width: $r_small_screen) {
+      padding-left: 25%;
+    }
+  }
+
+  p {
+    align-self: flex-end;
+
+    width: 66%;
+    padding: 20px 0;
+
+    font-size: 1.2rem;
+  }
+
+  .image_placeholder {
+    grid-column: 2 / -1;
+  }
+
+  @media screen and (min-width: $r_small_screen) {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+
+    p {
+      padding-bottom: 0;
+    }
+  }
+}
