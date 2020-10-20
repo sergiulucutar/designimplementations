@@ -1,4 +1,5 @@
 import LocomotiveScroll from 'locomotive-scroll';
+
 import { canvas } from './canvas';
 
 const scroll = new LocomotiveScroll({
@@ -8,5 +9,10 @@ const scroll = new LocomotiveScroll({
 });
 
 scroll.on('scroll', event => {
-  canvas.setWrapperYPosition(-event.scroll.y);
+  canvas.updareImagePositions(-event.scroll.y);
+});
+
+scroll.on('call', (value) => {
+  const imageIndex = value.split('-')[1];
+  canvas.showImage(imageIndex);
 });

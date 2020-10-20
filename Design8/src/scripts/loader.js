@@ -12,7 +12,6 @@ const loaderDisplayedObj = {
   el: document.querySelector('#loader_progress')
 };
 loader.onProgress.add(({ progress }) => {
-  // displayedValue = progress;
   gsap.killTweensOf(loaderDisplayedObj);
   gsap.to(loaderDisplayedObj, 0.4, {
     progressValue: progress,

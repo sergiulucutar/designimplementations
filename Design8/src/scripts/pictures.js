@@ -9,47 +9,39 @@ import { vertexShader } from '../shaders/vertex.shader';
 export class Pictures {
   constructor() {
     this.geoms = {};
+
+    this.container = new PIXI.Container();
   }
 
   init(htmlEls) {
-    const container = new PIXI.Container();
     htmlEls.forEach((el, index) => {
       const bounds = el.getBoundingClientRect();
       let sprite;
 
+      const imageData = [
+        Math.round(bounds.width),
+        Math.round(bounds.height),
+        PIXI.Loader.shared.resources[`image${index}`].texture
+      ]
+
       if (index === 0) {
-        sprite = this.createDisplacementMesh(
-          el.offsetLeft,
-          el.offsetTop,
-          Math.round(bounds.width),
-          Math.round(bounds.height),
-          PIXI.Loader.shared.resources['image0'].texture
-        );
+        sprite = this.createDisplacementMesh(...imageData);
       } else {
-        sprite = this.createMesh(
-          el.offsetLeft,
-          el.offsetTop,
-          Math.round(bounds.width),
-          Math.round(bounds.height),
-          PIXI.Loader.shared.resources[`image${index}`]
-            ? PIXI.Loader.shared.resources[`image${index}`].texture
-            : PIXI.Loader.shared.resources['image5'].texture
-        );
+        sprite = this.createMesh(...imageData);
       }
 
-      container.addChild(sprite);
+      sprite.position.x = el.offsetLeft;
+      sprite.position.y = el.offsetTop;
+      this.container.addChild(sprite);
 
       this.addEventListener(el, sprite);
     });
-    this.images = container;
-
-    return container;
   }
 
   resize(htmlEls) {
     htmlEls.forEach((el, index) => {
       const bounds = el.getBoundingClientRect();
-      const sprite = this.images.getChildAt(index);
+      const sprite = this.container.getChildAt(index);
       sprite.x = el.offsetLeft;
       sprite.y = el.offsetTop;
       sprite.width = Math.round(bounds.width);
@@ -57,27 +49,24 @@ export class Pictures {
     });
   }
 
-  createMesh(x, y, width, height, texture) {
+  createMesh(width, height, texture) {
     const uniforms = {
       uTexture: texture,
       uSize: [width, height],
-      uTime: 0
+      uTime: 0,
+      uAlpha: 0
     };
 
     const shader = PIXI.Shader.from(vertexShader, fragmentShader_default, uniforms);
-    const mesh = new PIXI.Mesh(this.getGeom(width, height), shader);
-    mesh.position.x = x;
-    mesh.position.y = y;
-    return mesh;
+    return new PIXI.Mesh(this.getGeom(width, height), shader);
   }
 
-  createDisplacementMesh(x, y, width, height, texture) {
+  createDisplacementMesh(width, height, texture) {
     const uniforms = {
       uDisplacement: PIXI.Loader.shared.resources['displacement'].texture,
       uTexture: texture,
       uSize: [width, height],
-      uTime: 0,
-      uTimeLoop: 1
+      uTime: 0
     };
 
     const shader = PIXI.Shader.from(
@@ -85,10 +74,7 @@ export class Pictures {
       fragmentShader_displacement,
       uniforms
     );
-    const mesh = new PIXI.Mesh(this.getGeom(width, height), shader);
-    mesh.position.x = x;
-    mesh.position.y = y;
-    return mesh;
+    return new PIXI.Mesh(this.getGeom(width, height), shader);
   }
 
   getGeom(width, height) {
@@ -104,16 +90,18 @@ export class Pictures {
   addEventListener(el, image) {
     el.addEventListener('mouseenter', () => {
       gsap.killTweensOf(image.material.uniforms);
-      gsap.to(image.material.uniforms, 1, {
+      gsap.to(image.material.uniforms, {
         uTime: 1,
+        duration: 1,
         ease: 'power2.out'
       });
     });
 
     el.addEventListener('mouseleave', () => {
       gsap.killTweensOf(image.material.uniforms);
-      gsap.to(image.material.uniforms, 0.6, {
+      gsap.to(image.material.uniforms, {
         uTime: 0,
+        duration: 0.6,
         ease: 'power2.out'
       });
     });

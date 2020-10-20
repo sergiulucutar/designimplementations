@@ -1,4 +1,6 @@
+import gsap from 'gsap/gsap-core';
 import * as PIXI from 'pixi.js';
+
 import { Pictures } from './pictures';
 
 class Canvas {
@@ -16,26 +18,31 @@ class Canvas {
       transparent: true
     });
 
-    this.wrapperContainer = new PIXI.Container();
-    this.app.stage.addChild(this.wrapperContainer);
+    this.images = new Pictures();
+    this.app.stage.addChild(this.images.container);
 
     document.getElementById('canvas').appendChild(this.app.view);
   }
 
   init() {
-    this.images = new Pictures();
-    this.wrapperContainer.addChild(
-      this.images.init(document.querySelectorAll('.image_placeholder'))
-    );
+    this.images.init(document.querySelectorAll('.image_placeholder'));
   }
 
   resize() {
-    const imageEls = document.querySelectorAll('.image_placeholder');
-    this.images.resize(imageEls);
+    this.images.resize(document.querySelectorAll('.image_placeholder'));
   }
 
-  setWrapperYPosition(pos) {
-    this.wrapperContainer.y = pos;
+  updareImagePositions(pos) {
+    this.images.container.position.y = pos;
+  }
+
+  showImage(imageIndex) {
+    if(this.images.container.children.length) {
+      gsap.to(this.images.container.getChildAt(imageIndex).material.uniforms, {
+        uAlpha: 1,
+        duration: 0.6
+      });
+    }
   }
 }
 

@@ -6,8 +6,10 @@ export const fragmentShader_default = /* GLSL */ `
   uniform sampler2D uTexture;
   uniform float uTime;
 
-  void main() {
+  uniform float uAlpha;
+  uniform vec2 uScale;
 
+  void main() {
     vec2 r_vUvs = (vUvs - 0.5) * (1.0 - (0.1 * uTime)) + 0.5;
     vec2 b_vUvs = (vUvs - 0.5) * (1.0 - (0.2 * uTime)) + 0.5;
 
@@ -15,6 +17,8 @@ export const fragmentShader_default = /* GLSL */ `
     float g = texture2D(uTexture, r_vUvs).g;
     float b = texture2D(uTexture, vUvs).b;
 
-    gl_FragColor = vec4(r, g, b, 1.0);
+    vec3 color = vec3(r, g, b);
+    gl_FragColor = vec4(color * uAlpha, uAlpha);
+    // gl_FragColor = texture2D(uTexture, newvUvs);
   }
 `;

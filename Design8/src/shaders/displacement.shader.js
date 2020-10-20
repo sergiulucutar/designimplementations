@@ -7,7 +7,6 @@ export const fragmentShader_displacement = /* GLSL */ `
   uniform sampler2D uDisplacement;
 
   uniform float uTime;
-  uniform float uTimeLoop;
 
   mat2 getRotM(float angle) {
     float s = sin(angle);
